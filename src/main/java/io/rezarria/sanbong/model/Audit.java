@@ -3,6 +3,8 @@ package io.rezarria.sanbong.model;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -22,11 +24,13 @@ public class Audit {
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     protected Account createdBy;
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = true)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     protected Account lastModifiedBy;
     @CreatedDate
     @EqualsAndHashCode.Exclude

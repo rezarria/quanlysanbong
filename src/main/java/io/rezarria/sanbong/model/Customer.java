@@ -1,12 +1,16 @@
 package io.rezarria.sanbong.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
-
 import java.util.Set;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @Entity
@@ -15,7 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Customer extends User {
-    @OneToMany(mappedBy = "customer", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "customer", cascade = {}, fetch = FetchType.LAZY,orphanRemoval = false)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<FieldUseHistory> FieldUseHistories;

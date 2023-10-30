@@ -1,8 +1,5 @@
 package io.rezarria.sanbong.security.config;
 
-import io.rezarria.sanbong.security.jwt.JwtFilter;
-import io.rezarria.sanbong.security.jwt.JwtUtils;
-import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -12,6 +9,10 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import io.rezarria.sanbong.security.jwt.JwtFilter;
+import io.rezarria.sanbong.security.jwt.JwtUtils;
+import jakarta.servlet.DispatcherType;
 
 @Configuration
 @EnableWebSecurity
@@ -27,8 +28,7 @@ public class WebSecurity {
                                 .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                                 .requestMatchers("/api/security/checkInfo").permitAll()
                                 .requestMatchers("/api/**").permitAll()
-                                .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ASYNC, DispatcherType.REQUEST, DispatcherType.INCLUDE, DispatcherType.INCLUDE).permitAll()
-                                .anyRequest().permitAll()
+                                .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)

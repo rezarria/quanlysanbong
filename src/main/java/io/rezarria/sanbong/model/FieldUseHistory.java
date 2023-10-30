@@ -1,13 +1,22 @@
 package io.rezarria.sanbong.model;
 
+import java.util.Date;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-
-import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -16,26 +25,42 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FieldUseHistory extends BaseEntity {
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {}, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "field_id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Field field;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {}, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JoinColumn(name = "staff_id")
     private Staff staff;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {}, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JoinColumn(name = "customer_id")
     private Customer customer;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {}, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JoinColumn(name = "field_detail_d")
     private FieldDetail fieldDetail;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {}, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JoinColumn(name = "field_price_id")
     private FieldPrice fieldPrice;
+    
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
     private String description;
