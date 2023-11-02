@@ -19,11 +19,13 @@ public class Account extends BaseEntity {
     private String password;
     private boolean active;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false, mappedBy = "account")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     @Builder.Default
+    @EqualsAndHashCode.Exclude
     private Set<AccountRole> roles = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {}, orphanRemoval = false, optional = true)
     @JsonIgnoreProperties("account")
+    @EqualsAndHashCode.Exclude
     private User user;
 }

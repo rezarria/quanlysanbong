@@ -7,6 +7,7 @@ import io.rezarria.sanbong.model.Role;
 import io.rezarria.sanbong.repository.AccountRepository;
 import io.rezarria.sanbong.repository.AccountRoleRepository;
 import io.rezarria.sanbong.repository.RoleRepository;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ public class TestController {
     private final AccountRepository accountRepository;
     private final RoleRepository roleRepository;
     private final AccountRoleRepository accountRoleRepository;
+    private final EntityManager entityManager;
 
     @GetMapping("/all")
     public ResponseEntity<?> all() {
@@ -53,6 +55,9 @@ public class TestController {
         roleRepository.save(role);
         roleRepository.save(role2);
 
+        entityManager.detach(role);
+        entityManager.detach(role2);
+
         account.getRoles().add(AccountRole.builder().role(role).account(account).id(AccountRoleKey.builder().accountId(account.getId()).roleId(role.getId()).build()).build());
         account.getRoles().add(AccountRole.builder().role(role2).account(account).id(AccountRoleKey.builder().accountId(account.getId()).roleId(role2.getId()).build()).build());
 
@@ -82,9 +87,9 @@ public class TestController {
     @GetMapping("/run3")
     @Transactional
     public void get3() {
+        accountRoleRepository.deleteAll();
         accountRepository.deleteAll();
         roleRepository.deleteAll();
-        accountRoleRepository.deleteAll();
 
         Account account = Account.builder().username("nam").build();
         account.getRoles().add(
@@ -101,9 +106,9 @@ public class TestController {
 
     @GetMapping("/run4")
     public void get4() {
-        accountRepository.deleteAll();
-        roleRepository.deleteAll();
         accountRoleRepository.deleteAll();
+        roleRepository.deleteAll();
+        accountRepository.deleteAll();
 
         AccountRole accountRole = AccountRole.builder()
                 .account(
@@ -118,16 +123,17 @@ public class TestController {
     }
 
     @GetMapping("/run5")
+    @Transactional
     public void get5() {
+        accountRoleRepository.deleteAll();
         accountRepository.deleteAll();
         roleRepository.deleteAll();
-        accountRoleRepository.deleteAll();
 
         Account account = Account.builder().username("nam").build();
         Role role = Role.builder().name("admin").build();
 
-        accountRepository.save(account);
-        roleRepository.save(role);
+        account = accountRepository.save(account);
+        role = roleRepository.save(role);
 
         AccountRole accountRole = AccountRole.builder()
                 .id(
@@ -150,8 +156,8 @@ public class TestController {
     @GetMapping("/run6")
     @Transactional
     public void get6() {
-        accountRepository.deleteAll();
         accountRoleRepository.deleteAll();
+        accountRepository.deleteAll();
 
         Account account = Account.builder().username("nam").build();
         List<UUID> list = roleRepository.find().map(RoleRepository.IdOnly::id).toList();

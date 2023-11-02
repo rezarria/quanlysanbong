@@ -3,6 +3,7 @@ package io.rezarria.sanbong.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,19 +15,22 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class AccountRole extends Audit {
     @EmbeddedId
     private AccountRoleKey id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId("accountId")
     @JoinColumn(name = "account_id")
-    @JsonIgnoreProperties({"roles", "hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({ "roles", "hibernateLazyInitializer", "handler" })
     private Account account;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId("roleId")
     @JoinColumn(name = "role_id")
-    @JsonIgnoreProperties({"accounts", "hibernateLazyInitializer", "handler"})
-
+    @JsonIgnoreProperties({ "accounts", "hibernateLazyInitializer", "handler" })
     private Role role;
+
+    
 }
