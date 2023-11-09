@@ -1,23 +1,13 @@
 package io.rezarria.sanbong.model;
 
-import java.util.Set;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

@@ -1,36 +1,27 @@
 package io.rezarria.sanbong.api.product;
 
-import java.util.Collection;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
-
 import io.rezarria.sanbong.api.product.FieldDTO.CreateDTO;
 import io.rezarria.sanbong.api.product.FieldDTO.DeleteDTO;
 import io.rezarria.sanbong.model.Field;
-import io.rezarria.sanbong.service.FieldService;
+import io.rezarria.sanbong.service.IService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/field")
 @RequiredArgsConstructor
 public class FieldController {
-    private final FieldService fieldService;
+    private final IService fieldService;
     @Qualifier("jsonPatchObjectMapper")
     private final ObjectMapper objectMapper;
 

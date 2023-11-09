@@ -2,11 +2,7 @@ package io.rezarria.sanbong.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Entity
@@ -23,14 +19,14 @@ public class AccountRole extends Audit {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId("accountId")
     @JoinColumn(name = "account_id")
-    @JsonIgnoreProperties({ "roles", "hibernateLazyInitializer", "handler" })
+    @JsonIgnoreProperties({"roles", "hibernateLazyInitializer", "handler"})
     private Account account;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId("roleId")
     @JoinColumn(name = "role_id")
-    @JsonIgnoreProperties({ "accounts", "hibernateLazyInitializer", "handler" })
+    @JsonIgnoreProperties({"accounts", "hibernateLazyInitializer", "handler"})
     private Role role;
 
-    
+
 }
