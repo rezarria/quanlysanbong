@@ -37,12 +37,10 @@ public class FieldService implements IService<Field> {
         return fieldRepository.findAllByNameIn(names);
     }
 
-    @Override
     public void remove(String name) throws IllegalArgumentException {
         fieldRepository.deleteByName(name);
     }
 
-    @Override
     public void remove(Collection<String> names) {
         fieldRepository.deleteAllByNameIn(names);
     }

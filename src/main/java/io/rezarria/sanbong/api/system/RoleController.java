@@ -27,11 +27,16 @@ public class RoleController {
     @Lazy
     private final ObjectMapper objectMapper;
 
+    @GetMapping("size")
+    public ResponseEntity<Long> getSize() {
+        return ResponseEntity.ok(roleService.getSize());
+    }
+
     @GetMapping(produces = "application/json")
     public ResponseEntity<?> getAll(@RequestParam("id") Optional<UUID> id) throws Exception {
         if (id.isPresent())
-            return ResponseEntity.ok(roleService.getById(id.get()));
-        return ResponseEntity.ok(roleService.getAll().toList());
+            return ResponseEntity.ok(roleService.get(id.get()));
+        return ResponseEntity.ok(roleService.getAll());
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
@@ -41,14 +46,14 @@ public class RoleController {
 
     @DeleteMapping
     public ResponseEntity<?> delete(@RequestBody Collection<UUID> ids) {
-        roleService.deleteAll(ids);
+        roleService.removeIn(ids);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping
     public ResponseEntity<?> patch(@RequestBody PatchDTO data)
             throws IllegalArgumentException, JsonPatchException, JsonProcessingException {
-        Role role = roleService.getById(data.id);
+        Role role = roleService.get(data.id);
         if (role.getLastModifiedDate().equals(data.getTime())) {
             JsonNode nodePatched = data.patch.apply(objectMapper.convertValue(role, JsonNode.class));
             role = objectMapper.treeToValue(nodePatched, Role.class);

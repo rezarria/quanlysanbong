@@ -47,7 +47,7 @@ public class SecurityService {
     }
 
     public Account register(String username, String password) {
-        return accountService.register(username, password, roleService.getAll());
+        return accountService.register(username, password, roleService.getAll().stream());
     }
 
     @Nullable

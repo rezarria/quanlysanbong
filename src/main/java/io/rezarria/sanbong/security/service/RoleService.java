@@ -2,10 +2,12 @@ package io.rezarria.sanbong.security.service;
 
 import io.rezarria.sanbong.model.Role;
 import io.rezarria.sanbong.repository.RoleRepository;
+import io.rezarria.sanbong.service.IService;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -14,20 +16,11 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class RoleService {
+public class RoleService implements IService<Role> {
     @Lazy
     private final RoleRepository roleRepository;
     @Lazy
     private final EntityManager entityManager;
-
-    @Transactional
-    public Stream<Role> getAll() {
-        return roleRepository.findAll().stream();
-    }
-
-    public Role getById(UUID id) {
-        return roleRepository.getReferenceById(id);
-    }
 
     public Role add(String name) {
         Role role = new Role();
@@ -35,14 +28,13 @@ public class RoleService {
         return roleRepository.save(role);
     }
 
-    public void deleteAll(Collection<UUID> ids) {
-        var list = roleRepository.findAllById(ids);
-        roleRepository.deleteAll(roleRepository.saveAll(list));
+    @Override
+    public JpaRepository<Role, UUID> getRepo() {
+        return roleRepository;
     }
 
-    @Transactional
-    public Role update(Role role) {
-        return entityManager.merge(role);
+    @Override
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
-
 }

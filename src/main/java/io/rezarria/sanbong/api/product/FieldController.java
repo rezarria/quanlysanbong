@@ -7,7 +7,9 @@ import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import io.rezarria.sanbong.api.product.FieldDTO.CreateDTO;
 import io.rezarria.sanbong.api.product.FieldDTO.DeleteDTO;
+import io.rezarria.sanbong.file.FileService;
 import io.rezarria.sanbong.model.Field;
+import io.rezarria.sanbong.service.FieldService;
 import io.rezarria.sanbong.service.IService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,7 +23,7 @@ import java.util.UUID;
 @RequestMapping("/api/field")
 @RequiredArgsConstructor
 public class FieldController {
-    private final IService fieldService;
+    private final FieldService fieldService;
     @Qualifier("jsonPatchObjectMapper")
     private final ObjectMapper objectMapper;
 

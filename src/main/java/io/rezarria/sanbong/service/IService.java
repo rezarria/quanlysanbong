@@ -37,9 +37,13 @@ public interface IService<T> {
         getRepo().deleteById(id);
     }
 
-    void remove(String name) throws IllegalArgumentException;
+    default void removeIn(Iterable<UUID> ids) {
+        getRepo().deleteAllById(ids);
+    }
 
-    void remove(Collection<String> names);
+    default long getSize() {
+        return getRepo().count();
+    }
 
     default T update(T entity) {
         return getEntityManager().merge(entity);
