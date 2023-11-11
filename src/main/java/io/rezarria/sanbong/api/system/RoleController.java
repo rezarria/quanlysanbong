@@ -7,12 +7,16 @@ import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import io.rezarria.sanbong.model.Role;
 import io.rezarria.sanbong.security.service.RoleService;
+import jakarta.transaction.Transactional;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Optional;
@@ -36,7 +40,9 @@ public class RoleController {
     public ResponseEntity<?> getAll(@RequestParam("id") Optional<UUID> id) throws Exception {
         if (id.isPresent())
             return ResponseEntity.ok(roleService.get(id.get()));
-        return ResponseEntity.ok(roleService.getAll());
+        var path = Paths.get("");
+        Resource r = UrlResource.from(path.toUri());
+        return ResponseEntity.ok(r);
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
@@ -51,6 +57,7 @@ public class RoleController {
     }
 
     @PatchMapping
+    @Transactional
     public ResponseEntity<?> patch(@RequestBody PatchDTO data)
             throws IllegalArgumentException, JsonPatchException, JsonProcessingException {
         Role role = roleService.get(data.id);

@@ -4,15 +4,12 @@ import io.rezarria.sanbong.model.Role;
 import io.rezarria.sanbong.repository.RoleRepository;
 import io.rezarria.sanbong.service.IService;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
