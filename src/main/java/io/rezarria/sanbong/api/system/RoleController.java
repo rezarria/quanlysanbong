@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,12 +38,13 @@ public class RoleController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<?> getAll(@RequestParam("id") Optional<UUID> id) throws Exception {
+    public ResponseEntity<?> getAll(@RequestParam("id") Optional<UUID> id, @RequestParam("limit") Optional<Integer> limit) throws Exception {
         if (id.isPresent())
             return ResponseEntity.ok(roleService.get(id.get()));
-        var path = Paths.get("");
-        Resource r = UrlResource.from(path.toUri());
-        return ResponseEntity.ok(r);
+        if (limit.isPresent()) {
+            return ResponseEntity.ok(roleService.getRepo().findAll(Pageable.ofSize(limit.get())).get());
+        }
+        return ResponseEntity.ok(roleService.getAll());
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")

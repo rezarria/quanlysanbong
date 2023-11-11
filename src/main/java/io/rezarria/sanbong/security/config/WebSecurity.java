@@ -24,7 +24,7 @@ public class WebSecurity {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**").allowedMethods("PATCH", "GET", "POST", "DELETE", "OPTIONS", "HEAD").allowedOrigins("http://localhost:3000");
+                registry.addMapping("/api/**").allowedOrigins("http://localhost:3000");
             }
         };
     }
@@ -36,8 +36,6 @@ public class WebSecurity {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> registry
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
-                        .requestMatchers("/api/security/checkInfo").permitAll()
-                        .requestMatchers("/api/**").permitAll()
                         .anyRequest().permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(cfg -> cfg.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

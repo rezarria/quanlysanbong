@@ -46,7 +46,7 @@ public class JwtFilter extends OncePerRequestFilter {
             if (StringUtils.hasText(bearerToken)) {
                 return bearerToken;
             }
-        } catch (NullPointerException ignored) {
+        } catch (Exception ignored) {
             return null;
         }
         return null;
