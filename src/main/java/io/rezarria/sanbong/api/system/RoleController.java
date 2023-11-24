@@ -1,27 +1,30 @@
 package io.rezarria.sanbong.api.system;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.fge.jsonpatch.JsonPatch;
-import com.github.fge.jsonpatch.JsonPatchException;
-import io.rezarria.sanbong.model.Role;
-import io.rezarria.sanbong.security.service.RoleService;
-import jakarta.transaction.Transactional;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.nio.file.Paths;
-import java.time.Instant;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.rezarria.sanbong.dto.PatchDTO;
+import io.rezarria.sanbong.model.Role;
+import io.rezarria.sanbong.security.service.RoleService;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
 @RestController
 @RequestMapping("/api/role")
@@ -38,7 +41,8 @@ public class RoleController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<?> getAll(@RequestParam("id") Optional<UUID> id, @RequestParam("limit") Optional<Integer> limit) throws Exception {
+    public ResponseEntity<?> getAll(@RequestParam("id") Optional<UUID> id,
+            @RequestParam("limit") Optional<Integer> limit) throws Exception {
         if (id.isPresent())
             return ResponseEntity.ok(roleService.get(id.get()));
         if (limit.isPresent()) {
@@ -60,23 +64,16 @@ public class RoleController {
 
     @PatchMapping
     @Transactional
-    public ResponseEntity<?> patch(@RequestBody PatchDTO data)
-            throws IllegalArgumentException, JsonPatchException, JsonProcessingException {
-        Role role = roleService.get(data.id);
+    @SneakyThrows
+    public ResponseEntity<?> patch(@RequestBody PatchDTO data) {
+        Role role = roleService.get(data.getId());
         if (role.getLastModifiedDate().equals(data.getTime())) {
-            JsonNode nodePatched = data.patch.apply(objectMapper.convertValue(role, JsonNode.class));
+            JsonNode nodePatched = data.getPatch().apply(objectMapper.convertValue(role, JsonNode.class));
             role = objectMapper.treeToValue(nodePatched, Role.class);
             role = roleService.update(role);
             return ResponseEntity.ok(role);
         }
         return ResponseEntity.notFound().build();
-    }
-
-    @Data
-    public static class PatchDTO {
-        private UUID id;
-        private JsonPatch patch;
-        private Instant time;
     }
 
     public record CreateDTO(String name) {

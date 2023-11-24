@@ -1,22 +1,29 @@
 package io.rezarria.sanbong.security.service;
 
-import io.rezarria.sanbong.model.User;
-import io.rezarria.sanbong.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import io.rezarria.sanbong.model.User;
+import io.rezarria.sanbong.repository.UserRepository;
+import io.rezarria.sanbong.service.IService;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements IService<User> {
     private final UserRepository userRepository;
+    private final EntityManager entityManager;
 
-    public List<User> getAll() {
-        return userRepository.findAll();
+    @Override
+    public JpaRepository<User, UUID> getRepo() {
+        return userRepository;
     }
 
-    public void create(User user) {
-        userRepository.save(user);
+    @Override
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
 }

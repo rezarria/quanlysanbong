@@ -1,17 +1,19 @@
 package io.rezarria.sanbong.file;
 
+import java.nio.file.Path;
+import java.util.UUID;
+import java.util.stream.Stream;
+
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Path;
-import java.util.stream.Stream;
-
 public interface IFileService {
-    default void store(MultipartFile file) {
-        store(file, file.getOriginalFilename());
+    default FileInfo store(MultipartFile file) {
+        var newName = UUID.randomUUID().toString();
+        return store(file, newName);
     }
 
-    void store(MultipartFile file, String... path);
+    FileInfo store(MultipartFile file, String... path);
 
     Stream<Path> loadAll();
 

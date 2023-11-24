@@ -1,21 +1,30 @@
 package io.rezarria.sanbong.api.product;
 
+import java.util.Collection;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
-import io.rezarria.sanbong.api.product.FieldDTO.CreateDTO;
-import io.rezarria.sanbong.api.product.FieldDTO.DeleteDTO;
+
+import io.rezarria.sanbong.dto.DeleteDTO;
+import io.rezarria.sanbong.dto.FieldCreateDTO;
 import io.rezarria.sanbong.model.Field;
 import io.rezarria.sanbong.service.FieldService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Collection;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/field")
@@ -31,14 +40,14 @@ public class FieldController {
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Field> create(@RequestBody CreateDTO dto) {
+    public ResponseEntity<Field> create(@RequestBody FieldCreateDTO dto) {
         fieldService.create(dto.name(), dto.picture(), dto.description());
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> delete(@RequestBody DeleteDTO dto) {
-        fieldService.remove(dto.getId());
+        fieldService.remove(dto.id());
         return ResponseEntity.ok().build();
     }
 

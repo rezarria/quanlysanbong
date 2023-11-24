@@ -1,15 +1,20 @@
 package io.rezarria.sanbong.api.system;
 
-import io.rezarria.sanbong.api.system.securityDTO.LoginDTO;
-import io.rezarria.sanbong.api.system.securityDTO.RegisterDTO;
-import io.rezarria.sanbong.security.service.SecurityService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import io.rezarria.sanbong.dto.LoginDTO;
+import io.rezarria.sanbong.dto.RegisterDTO;
+import io.rezarria.sanbong.security.service.SecurityService;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/security")

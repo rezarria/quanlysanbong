@@ -1,8 +1,5 @@
 package io.rezarria.sanbong.security.config;
 
-import io.rezarria.sanbong.security.jwt.JwtFilter;
-import io.rezarria.sanbong.security.jwt.JwtUtils;
-import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -15,6 +12,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import io.rezarria.sanbong.security.jwt.JwtFilter;
+import io.rezarria.sanbong.security.jwt.JwtUtils;
+import jakarta.servlet.DispatcherType;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurity {
@@ -24,7 +25,7 @@ public class WebSecurity {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**").allowedOrigins("http://localhost:3000");
+                registry.addMapping("/api/**").allowedOrigins("http://localhost:3000/").allowedMethods("PATCH", "GET", "POST", "OPTION");
             }
         };
     }

@@ -1,11 +1,13 @@
 package io.rezarria.sanbong.service;
 
-import jakarta.persistence.EntityManager;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 public interface IService<T> {
 
@@ -17,9 +19,13 @@ public interface IService<T> {
         return getRepo().findAll();
     }
 
+    @Transactional
+
     default T create(T entity) {
         return getRepo().save(entity);
     }
+
+    @Transactional
 
     default Iterable<T> createMany(Iterable<T> entity) {
         return getRepo().saveAll(entity);
@@ -45,6 +51,7 @@ public interface IService<T> {
         return getRepo().count();
     }
 
+    @Transactional
     default T update(T entity) {
         return getEntityManager().merge(entity);
     }
