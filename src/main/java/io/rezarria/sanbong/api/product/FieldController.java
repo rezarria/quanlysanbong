@@ -47,7 +47,7 @@ public class FieldController {
 
     @DeleteMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> delete(@RequestBody DeleteDTO dto) {
-        fieldService.remove(dto.id());
+        fieldService.removeIn(dto.id());
         return ResponseEntity.ok().build();
     }
 

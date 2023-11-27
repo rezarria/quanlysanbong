@@ -25,14 +25,15 @@ public class WebSecurity {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**").allowedOrigins("http://localhost:3000/").allowedMethods("PATCH", "GET", "POST", "OPTION");
+                registry.addMapping("/api/**").allowedOrigins("http://localhost:3000/").allowedMethods("PATCH", "GET",
+                        "POST", "DELETE", "OPTION");
             }
         };
     }
 
     @Bean
     public SecurityFilterChain webFilterChain(HttpSecurity http, DaoAuthenticationProvider authenticationProvider,
-                                              JwtUtils jwtUtil) throws Exception {
+            JwtUtils jwtUtil) throws Exception {
         return http
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry -> registry

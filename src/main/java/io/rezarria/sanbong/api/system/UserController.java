@@ -3,6 +3,7 @@ package io.rezarria.sanbong.api.system;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,8 @@ public class UserController {
     private final ObjectMapper objectMapper;
 
     @GetMapping(produces = "application/json", name = "/{id}")
-    public ResponseEntity<?> getAll(@PathVariable @RequestParam Optional<UUID> id, @RequestParam Map<String, List<String>> query) {
+    public ResponseEntity<?> getAll(@PathVariable @RequestParam Optional<UUID> id,
+            @RequestParam Map<String, List<String>> query) {
         if (id.isPresent()) {
             return ResponseEntity.ok(userService.get(id.get()));
         }
@@ -70,9 +72,9 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping(consumes = "application/json-patch+json", produces = "application/json")
-    public ResponseEntity<?> delete(@RequestBody DeleteDTO dto) {
-        userService.remove(dto.id());
+    @DeleteMapping(consumes = "application/json", produces = "application/json")
+    public ResponseEntity<?> delete(@RequestBody Set<UUID> ids) {
+        userService.removeIn(ids);
         return ResponseEntity.ok().build();
     }
 
