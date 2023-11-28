@@ -1,16 +1,5 @@
 package io.rezarria.sanbong.security.service;
 
-import io.rezarria.sanbong.model.Account;
-import io.rezarria.sanbong.model.AccountRole;
-import io.rezarria.sanbong.model.Role;
-import io.rezarria.sanbong.repository.AccountRepository;
-import jakarta.annotation.Nullable;
-import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -18,9 +7,23 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import io.rezarria.sanbong.model.Account;
+import io.rezarria.sanbong.model.AccountRole;
+import io.rezarria.sanbong.model.Role;
+import io.rezarria.sanbong.repository.AccountRepository;
+import io.rezarria.sanbong.service.IService;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
+
 @Service
 @RequiredArgsConstructor
-public class AccountService {
+public class AccountService implements IService {
     @Lazy
     private final PasswordEncoder passwordEncoder;
     @Lazy
@@ -69,8 +72,19 @@ public class AccountService {
         Account account = new Account();
         account.setUsername(username);
         account.setPassword(passwordEncoder.encode(password));
-        account.setRoles(roles.stream().map(AccountRole.builder()::role).map(AccountRole.AccountRoleBuilder::build).collect(Collectors.toSet()));
+        account.setRoles(roles.stream().map(AccountRole.builder()::role).map(AccountRole.AccountRoleBuilder::build)
+                .collect(Collectors.toSet()));
         return account;
+    }
+
+    @Override
+    public JpaRepository getRepo() {
+      return accountRepository;
+    }
+
+    @Override
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
 
 }
