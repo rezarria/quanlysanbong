@@ -30,6 +30,16 @@ public class AccountService implements IService<Account> {
     @Lazy
     private final EntityManager entityManager;
 
+    public boolean changePassword(UUID id, String oldPassword, String newPassword) {
+        var account = accountRepository.findById(id).orElseThrow();
+        if (!passwordEncoder.matches(oldPassword, account.getPassword())) {
+            return false;
+        }
+        account.setPassword(passwordEncoder.encode(newPassword));
+        accountRepository.save(account);
+        return true;
+    }
+
     public Optional<Account> getAccountByUsername(String username) {
         return accountRepository.findByUsername(username);
     }

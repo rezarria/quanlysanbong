@@ -3,10 +3,12 @@ package io.rezarria.sanbong.service;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.transaction.Transactional;
 
 public interface IService<T> {
@@ -17,6 +19,14 @@ public interface IService<T> {
 
     default List<T> getAll() {
         return getRepo().findAll();
+    }
+
+    default <P> Stream<P> getAllProjection(Class<P> classType, Class<T> rootClassType) {
+        var criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<P> query = criteriaBuilder.createQuery(classType);
+        var root = query.from(rootClassType);
+        query.select(criteriaBuilder.construct(classType, root));
+        return getEntityManager().createQuery(query).getResultStream();
     }
 
     @Transactional

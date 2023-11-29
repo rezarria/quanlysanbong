@@ -1,16 +1,19 @@
 package io.rezarria.sanbong.repository;
 
-import io.rezarria.sanbong.model.Role;
+import java.util.UUID;
+import java.util.stream.Stream;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.UUID;
-import java.util.stream.Stream;
+import io.rezarria.sanbong.model.Role;
 
 public interface RoleRepository extends JpaRepository<Role, UUID> {
 
     @Query("select r from Role r")
     Stream<IdOnly> find();
+
+    <T> Stream<T> findAllByNameContaining(String name);
 
     interface IdOnly {
         UUID id();

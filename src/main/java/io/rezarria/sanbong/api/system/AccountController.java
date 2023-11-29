@@ -1,11 +1,18 @@
 package io.rezarria.sanbong.api.system;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.util.Streamable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,12 +24,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 
+import io.rezarria.sanbong.dto.ChangePasswordDTO;
 import io.rezarria.sanbong.model.Account;
+import io.rezarria.sanbong.model.AccountRole;
+import io.rezarria.sanbong.model.AccountRoleKey;
 import io.rezarria.sanbong.repository.AccountRepository;
 import io.rezarria.sanbong.security.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -46,20 +57,54 @@ public class AccountController {
         return ResponseEntity.ok(accountService.getSize());
     }
 
+    interface GetDTO {
+        UUID getId();
+
+        String getUsername();
+
+        @Value("#{target.roles.![id.roleId]}")
+        List<UUID> getRoles();
+    }
+
     @GetMapping(produces = "application/json")
-    public ResponseEntity<Collection<Account>> find(@RequestParam("current") Optional<Integer> current,
-            @RequestParam("pageSize") Optional<Integer> pageSize) {
-        if (current.isPresent() && pageSize.isPresent()) {
-            var page = accountRepository.findAll(Pageable.ofSize(pageSize.get()).withPage(current.get()));
-            return ResponseEntity.ok(page.stream().toList());
+    public ResponseEntity<?> find(@RequestParam("id") Optional<UUID> id,
+            @RequestParam("limit") Optional<Integer> limit) {
+        if (id.isPresent())
+            return ResponseEntity.ok(accountService.getById(id.get())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        if (limit.isPresent()) {
+            return ResponseEntity.ok(accountService.getRepo().findAll(Pageable.ofSize(limit.get())).get());
         }
-        return ResponseEntity.ok(accountService.getAll());
+        Streamable<GetDTO> data = ((AccountRepository) accountService.getRepo()).findAllStream(GetDTO.class);
+        return ResponseEntity.ok(data.stream());
+    }
+
+    @PostMapping(consumes = "application/json")
+    @RequestMapping("changePassword")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO dto) {
+        try {
+            if (accountService.changePassword(dto.id(), dto.oldPassword(), dto.newPassword()))
+                return ResponseEntity.ok().build();
+            else
+                return ResponseEntity.noContent().build();
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<Account> create(@RequestBody CreateDTO dto) {
-        return ResponseEntity.ok(accountService
-                .add(Account.builder().username(dto.username).password(passwordEncoder.encode(dto.password)).build()));
+
+        var account = accountService
+                .create(Account.builder().username(dto.username)
+                        .password(passwordEncoder.encode(dto.password))
+                        .build());
+        Set<AccountRole> roles = dto.roles.stream()
+                .map(i -> AccountRole.builder()
+                        .id(AccountRoleKey.builder().roleId(i).accountId(account.getId()).build()).build())
+                .collect(Collectors.toSet());
+        account.setRoles(roles);
+        return ResponseEntity.ok(accountService.update(account));
     }
 
     @SneakyThrows

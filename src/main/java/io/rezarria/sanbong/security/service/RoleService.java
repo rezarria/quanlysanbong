@@ -1,15 +1,17 @@
 package io.rezarria.sanbong.security.service;
 
+import java.util.UUID;
+import java.util.stream.Stream;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
+
 import io.rezarria.sanbong.model.Role;
 import io.rezarria.sanbong.repository.RoleRepository;
 import io.rezarria.sanbong.service.IService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +30,10 @@ public class RoleService implements IService<Role> {
     @Override
     public JpaRepository<Role, UUID> getRepo() {
         return roleRepository;
+    }
+
+    public <T> Stream<T> findAllByName(String name) {
+        return roleRepository.findAllByNameContaining(name);
     }
 
     @Override

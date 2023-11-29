@@ -3,6 +3,7 @@ package io.rezarria.sanbong.api.system;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.rezarria.sanbong.dto.PatchDTO;
+import io.rezarria.sanbong.dto.RolePostDTO;
+import io.rezarria.sanbong.mapper.RoleMapper;
 import io.rezarria.sanbong.model.Role;
 import io.rezarria.sanbong.security.service.RoleService;
 import jakarta.transaction.Transactional;
@@ -34,15 +37,29 @@ public class RoleController {
     private final RoleService roleService;
     @Lazy
     private final ObjectMapper objectMapper;
+    @Lazy
+    private final RoleMapper roleMapper;
 
     @GetMapping("size")
     public ResponseEntity<Long> getSize() {
         return ResponseEntity.ok(roleService.getSize());
     }
 
+    public interface GetDTO {
+        UUID id();
+
+        String name();
+
+        String displayName();
+    }
+
     @GetMapping(produces = "application/json")
     public ResponseEntity<?> getAll(@RequestParam("id") Optional<UUID> id,
-            @RequestParam("limit") Optional<Integer> limit) throws Exception {
+            @RequestParam("limit") Optional<Integer> limit, @RequestParam("name") Optional<String> name) {
+        if (name.isPresent()) {
+            Stream<GetDTO> data = roleService.findAllByName(name.get());
+            return ResponseEntity.ok(data);
+        }
         if (id.isPresent())
             return ResponseEntity.ok(roleService.get(id.get()));
         if (limit.isPresent()) {
@@ -52,8 +69,8 @@ public class RoleController {
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> create(@RequestBody CreateDTO dto) {
-        return ResponseEntity.ok(roleService.add(dto.name));
+    public ResponseEntity<?> create(@RequestBody RolePostDTO dto) {
+        return ResponseEntity.ok(roleService.create(roleMapper.rolePostDTOToRole(dto)));
     }
 
     @DeleteMapping

@@ -1,5 +1,16 @@
 package io.rezarria.sanbong.security.service;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.lang.Nullable;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+
 import io.jsonwebtoken.Claims;
 import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.RegisterTemplate;
@@ -8,16 +19,6 @@ import io.rezarria.sanbong.model.User;
 import io.rezarria.sanbong.security.Details;
 import io.rezarria.sanbong.security.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.lang.Nullable;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,9 +39,9 @@ public class SecurityService {
         Optional<Account> result = accountService.getAccountByUsername(username);
         Account account = result.orElseThrow();
         Details details = new Details();
-//        if (account.getUser() != null) {
-//            details.setUserId(account.getUser().getId());
-//        }
+        // if (account.getUser() != null) {
+        // details.setUserId(account.getUser().getId());
+        // }
         details.setAccountId(account.getId());
         ((AbstractAuthenticationToken) auth).setDetails(details);
         return jwtUtils.createToken(auth);
@@ -53,7 +54,8 @@ public class SecurityService {
     @Nullable
     public Account register(RegisterDTO dto) {
         RegisterTemplate template = registerTemplateService.getNewest().orElseThrow();
-        Account account = accountService.make(dto.username, dto.password, template.getRoles().stream().map(RegisterTemplateRole::getRole));
+        Account account = accountService.make(dto.username, dto.password,
+                template.getRoles().stream().map(RegisterTemplateRole::getRole));
         account.setActive(template.isActive());
         User user = new User();
         user.setAvatar(dto.avatar);
