@@ -14,4 +14,6 @@ public interface AccountRepository extends JpaRepository<Account, UUID> {
 
     @Query("select u from Account u LEFT JOIN AccountRole r ON u.id = r.id.accountId")
     <T> Streamable<T> findAllStream(Class<T> type);
+
+    <T> Streamable<T> findAllByUsernameContaining(String name, Class<T> classType);
 }

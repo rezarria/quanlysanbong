@@ -32,7 +32,7 @@ public class Account extends BaseEntity {
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Set<AccountRole> roles;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {}, orphanRemoval = false, optional = true)
+    @OneToOne(fetch = FetchType.EAGER, cascade = {}, orphanRemoval = false, optional = true)
     @JsonIgnoreProperties("account")
     @EqualsAndHashCode.Exclude
     private User user;

@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import org.springframework.data.util.Streamable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,7 @@ import io.rezarria.sanbong.dto.PatchDTO;
 import io.rezarria.sanbong.dto.UserPostDTO;
 import io.rezarria.sanbong.mapper.UserMapper;
 import io.rezarria.sanbong.model.User;
+import io.rezarria.sanbong.repository.UserRepository;
 import io.rezarria.sanbong.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -39,7 +41,11 @@ public class UserController {
 
     @GetMapping(produces = "application/json", name = "/{id}")
     public ResponseEntity<?> getAll(@PathVariable @RequestParam Optional<UUID> id,
-            @RequestParam Map<String, List<String>> query) {
+            @RequestParam Optional<String> name) {
+        if (name.isPresent()) {
+            Streamable<User> data = ((UserRepository) userService.getRepo()).findAllByNameContaining(name.get(), User.class);
+            return ResponseEntity.ok(data.stream());
+        }
         if (id.isPresent()) {
             return ResponseEntity.ok(userService.get(id.get()));
         }

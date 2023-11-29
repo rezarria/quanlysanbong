@@ -34,6 +34,7 @@ import io.rezarria.sanbong.dto.ChangePasswordDTO;
 import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.AccountRole;
 import io.rezarria.sanbong.model.AccountRoleKey;
+import io.rezarria.sanbong.model.User;
 import io.rezarria.sanbong.repository.AccountRepository;
 import io.rezarria.sanbong.security.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -64,6 +65,8 @@ public class AccountController {
 
         @Value("#{target.roles.![id.roleId]}")
         List<UUID> getRoles();
+
+        User getUser();
     }
 
     @GetMapping(produces = "application/json")
@@ -75,7 +78,8 @@ public class AccountController {
         if (limit.isPresent()) {
             return ResponseEntity.ok(accountService.getRepo().findAll(Pageable.ofSize(limit.get())).get());
         }
-        Streamable<GetDTO> data = ((AccountRepository) accountService.getRepo()).findAllStream(GetDTO.class);
+        Streamable<GetDTO> data = ((AccountRepository) accountService.getRepo()).findAllByUsernameContaining("",
+                GetDTO.class);
         return ResponseEntity.ok(data.stream());
     }
 
