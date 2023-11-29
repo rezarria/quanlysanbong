@@ -1,7 +1,6 @@
 package io.rezarria.sanbong.security.service;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -23,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService implements IService {
+public class AccountService implements IService<Account> {
     @Lazy
     private final PasswordEncoder passwordEncoder;
     @Lazy
@@ -43,16 +42,8 @@ public class AccountService implements IService {
         return accountRepository.save(account);
     }
 
-    public Account update(Account account) {
-        return entityManager.merge(account);
-    }
-
     public void delete(Collection<UUID> ids) {
         accountRepository.deleteAllById(ids);
-    }
-
-    public List<Account> getAll() {
-        return accountRepository.findAll();
     }
 
     @Nullable
@@ -78,8 +69,8 @@ public class AccountService implements IService {
     }
 
     @Override
-    public JpaRepository getRepo() {
-      return accountRepository;
+    public JpaRepository<Account, UUID> getRepo() {
+        return accountRepository;
     }
 
     @Override
