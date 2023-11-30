@@ -1,12 +1,23 @@
 package io.rezarria.sanbong.model;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import java.util.Set;
+
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -22,8 +33,8 @@ public class Field extends BaseEntity {
     @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, orphanRemoval = false)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<FieldPrice> FieldPrices;
-    @OneToOne
+    private Set<FieldPrice> fieldPrices;
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, fetch = FetchType.LAZY)
     private FieldPrice fieldPrice;
     @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, orphanRemoval = false)
     @EqualsAndHashCode.Exclude
@@ -35,6 +46,6 @@ public class Field extends BaseEntity {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JsonUnwrapped
-    private Set<FieldUseHistory> FieldUseHistories;
+    private Set<FieldUseHistory> fieldUseHistories;
 
 }

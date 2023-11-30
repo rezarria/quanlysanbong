@@ -39,9 +39,9 @@ public class SecurityService {
         Optional<Account> result = accountService.getAccountByUsername(username);
         Account account = result.orElseThrow();
         Details details = new Details();
-        // if (account.getUser() != null) {
-        // details.setUserId(account.getUser().getId());
-        // }
+        if (account.getUser() != null) {
+            details.setUserId(account.getUser().getId());
+        }
         details.setAccountId(account.getId());
         ((AbstractAuthenticationToken) auth).setDetails(details);
         return jwtUtils.createToken(auth);
