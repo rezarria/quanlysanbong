@@ -42,14 +42,14 @@ public class FieldUseHistory extends BaseEntity {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JoinColumn(name = "field_detail_d")
-    private FieldDetail fieldDetail;
+    private FieldDetail detail;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {}, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JoinColumn(name = "field_price_id")
-    private FieldPrice fieldPrice;
+    private FieldPrice price;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;

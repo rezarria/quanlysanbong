@@ -2,9 +2,9 @@ package io.rezarria.sanbong.api.system;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.util.Streamable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,19 +46,24 @@ public class FieldController {
 
     }
 
+    @GetMapping("size")
+    public ResponseEntity<Long> getSize() {
+        return ResponseEntity.ok(fieldService.getSize());
+    }
+
     @GetMapping(produces = "application/json", name = "/{id}")
     public ResponseEntity<?> getAll(@PathVariable @RequestParam Optional<UUID> id,
             @RequestParam Optional<String> name) {
         if (name.isPresent()) {
-            Stream<GetDTO> data = ((FieldRepository) fieldService.getRepo()).findAllByNameContaining(name.get(),
+            Streamable<GetDTO> data = ((FieldRepository) fieldService.getRepo()).findAllByNameContaining(name.get(),
                     GetDTO.class);
             return ResponseEntity.ok(data);
         }
         if (id.isPresent()) {
             return ResponseEntity.ok(fieldService.get(id.get()));
         }
-        Stream<GetDTO> data = ((FieldRepository) fieldService.getRepo()).findAllStream(GetDTO.class);
-        return ResponseEntity.ok(data);
+        Streamable<GetDTO> data = ((FieldRepository) fieldService.getRepo()).findAllStream(GetDTO.class);
+        return ResponseEntity.ok(data.stream().toList());
     }
 
     @PostMapping(consumes = "application/json")

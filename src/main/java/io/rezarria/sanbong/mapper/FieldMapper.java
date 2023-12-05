@@ -14,12 +14,12 @@ public abstract class FieldMapper {
     @Mapping(target = "lastModifiedBy", ignore = true)
     @Mapping(target = "lastModifiedDate", ignore = true)
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "fieldDetail", ignore = true)
-    @Mapping(target = "fieldDetails", ignore = true)
-    @Mapping(target = "fieldPrices", ignore = true)
-    @Mapping(target = "fieldUseHistories", ignore = true)
+    @Mapping(target = "detail", ignore = true)
+    @Mapping(target = "details", ignore = true)
+    @Mapping(target = "prices", ignore = true)
+    @Mapping(target = "usedHistories", ignore = true)
     @Mapping(target = "picture", ignore = true)
-    @Mapping(target = "fieldPrice", source = "price")
+    @Mapping(target = "price", source = "price")
     public abstract Field fieldDTOtoField(FieldPost dto);
 
     FieldPrice mapFieldPrice(Double price) {

@@ -6,10 +6,10 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.transaction.Transactional;
 
 public interface IService<T> {
 
@@ -17,10 +17,12 @@ public interface IService<T> {
 
     EntityManager getEntityManager();
 
+    @Transactional(readOnly = true)
     default List<T> getAll() {
         return getRepo().findAll();
     }
 
+    @Transactional(readOnly = true)
     default <P> Stream<P> getAllProjection(Class<P> classType, Class<T> rootClassType) {
         var criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<P> query = criteriaBuilder.createQuery(classType);
@@ -29,22 +31,22 @@ public interface IService<T> {
         return getEntityManager().createQuery(query).getResultStream();
     }
 
-    @Transactional
-
+    @Transactional(readOnly = true)
     default T create(T entity) {
         return getRepo().save(entity);
     }
 
-    @Transactional
-
+    @Transactional(readOnly = true)
     default Iterable<T> createMany(Iterable<T> entity) {
         return getRepo().saveAll(entity);
     }
 
+    @Transactional(readOnly = true)
     default T get(UUID id) {
         return getRepo().getReferenceById(id);
     }
 
+    @Transactional(readOnly = true)
     default List<T> getMany(Collection<UUID> ids) {
         return getRepo().findAllById(ids);
     }

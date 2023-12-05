@@ -22,8 +22,8 @@ public class FieldDetail extends BaseEntity {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Field field;
-    @OneToMany(mappedBy = "fieldDetail", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
+    @OneToMany(mappedBy = "detail", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<FieldUseHistory> fieldUseHistories;
+    private Set<FieldUseHistory> usedHistories;
 }
