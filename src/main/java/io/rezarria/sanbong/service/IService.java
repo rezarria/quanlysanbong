@@ -31,7 +31,7 @@ public interface IService<T> {
         return getEntityManager().createQuery(query).getResultStream();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = false)
     default T create(T entity) {
         return getRepo().save(entity);
     }

@@ -1,9 +1,11 @@
 package io.rezarria.sanbong.api.system;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Streamable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,6 +46,10 @@ public class FieldController {
 
         String getName();
 
+        @Value("#{target.pictures.![url]}")
+        List<String> getPictures();
+
+        String getDescription();
     }
 
     @GetMapping("size")
@@ -60,7 +66,8 @@ public class FieldController {
             return ResponseEntity.ok(data);
         }
         if (id.isPresent()) {
-            return ResponseEntity.ok(fieldService.get(id.get()));
+            return ResponseEntity
+                    .ok(((FieldRepository) fieldService.getRepo()).findByIdProject(id.get(), GetDTO.class).get());
         }
         Streamable<GetDTO> data = ((FieldRepository) fieldService.getRepo()).findAllStream(GetDTO.class);
         return ResponseEntity.ok(data.stream().toList());
@@ -75,7 +82,7 @@ public class FieldController {
 
     @DeleteMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> delete(@RequestBody DeleteDTO dto) {
-        fieldService.removeIn(dto.id());
+        fieldService.removeIn(dto.ids());
         return ResponseEntity.ok().build();
     }
 

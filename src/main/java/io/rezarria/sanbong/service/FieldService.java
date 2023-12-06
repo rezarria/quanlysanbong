@@ -1,16 +1,17 @@
 package io.rezarria.sanbong.service;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
+
 import io.rezarria.sanbong.model.Field;
 import io.rezarria.sanbong.repository.FieldRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Service;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
 
 @Service
 @Transactional
@@ -27,10 +28,6 @@ public class FieldService implements IService<Field> {
     @Override
     public EntityManager getEntityManager() {
         return entityManager;
-    }
-
-    public Field create(String name, String picture, String description) throws IllegalArgumentException {
-        return create(Field.builder().name(name).description(description).picture(picture).build());
     }
 
     public List<Field> getManyByName(Collection<String> names) {

@@ -2,9 +2,9 @@ package io.rezarria.sanbong.model;
 
 import java.util.Set;
 
-import org.modelmapper.internal.bytebuddy.dynamic.TypeResolutionStrategy.Lazy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import jakarta.persistence.CascadeType;
@@ -38,7 +38,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class Field extends BaseEntity {
     private String name;
-    private String picture;
+    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("field")
+    private Set<FieldPicture> pictures;
     private String description;
     @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
