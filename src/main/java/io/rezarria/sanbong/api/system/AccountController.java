@@ -60,20 +60,11 @@ public class AccountController {
     interface GetDTO {
         UUID getId();
 
-        String getUsername();
+        @Value("#{target.user.id}")
+        String getUserId();
 
         @Value("#{target.roles.![id.roleId]}")
-        List<UUID> getRoles();
-
-        UserDTO getUser();
-    }
-
-    interface UserDTO {
-        UUID getId();
-
-        String getAvatar();
-
-        String getName();
+        List<UUID> getRoleIds();
     }
 
     @GetMapping(produces = "application/json")
@@ -140,6 +131,19 @@ public class AccountController {
     }
 
     public record CreateDTO(String username, String password, Collection<UUID> roles) {
+    }
+
+    /**
+     * InnerAccountController
+     */
+    public record UpdateModelDTO(UUID id, Optional<Set<UUID>> roleIds, Optional<String> title, Optional<UUID> userIds) {
+    }
+
+    public ResponseEntity<?> update(@RequestBody UpdateModelDTO dto) {
+        var account = accountService.getById(dto.id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return ResponseEntity.ok().build();
     }
 
 }
