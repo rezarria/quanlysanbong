@@ -50,6 +50,10 @@ public class FieldController {
         List<String> getPictures();
 
         String getDescription();
+
+        @Value("#{target.price.price}")
+
+        double getPrice();
     }
 
     @GetMapping("size")

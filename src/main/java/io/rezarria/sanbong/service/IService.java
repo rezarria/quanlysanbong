@@ -11,14 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaQuery;
 
-public interface IService<T> {
+public interface IService<T extends JpaRepository<OBJ, UUID>, OBJ> {
 
-    JpaRepository<T, UUID> getRepo();
+    T getRepo();
 
     EntityManager getEntityManager();
 
     @Transactional(readOnly = true)
-    default List<T> getAll() {
+    default List<OBJ> getAll() {
         return getRepo().findAll();
     }
 
@@ -32,22 +32,22 @@ public interface IService<T> {
     }
 
     @Transactional(readOnly = false)
-    default T create(T entity) {
+    default OBJ create(OBJ entity) {
         return getRepo().save(entity);
     }
 
     @Transactional(readOnly = true)
-    default Iterable<T> createMany(Iterable<T> entity) {
+    default Iterable<OBJ> createMany(Iterable<OBJ> entity) {
         return getRepo().saveAll(entity);
     }
 
     @Transactional(readOnly = true)
-    default T get(UUID id) {
+    default OBJ get(UUID id) {
         return getRepo().getReferenceById(id);
     }
 
     @Transactional(readOnly = true)
-    default List<T> getMany(Collection<UUID> ids) {
+    default List<OBJ> getMany(Collection<UUID> ids) {
         return getRepo().findAllById(ids);
     }
 
@@ -64,7 +64,7 @@ public interface IService<T> {
     }
 
     @Transactional
-    default T update(T entity) {
+    default OBJ update(OBJ entity) {
         return getEntityManager().merge(entity);
     }
 

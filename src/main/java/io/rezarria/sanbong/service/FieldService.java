@@ -2,9 +2,7 @@ package io.rezarria.sanbong.service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import io.rezarria.sanbong.model.Field;
@@ -16,12 +14,12 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class FieldService implements IService<Field> {
+public class FieldService implements IService<FieldRepository, Field> {
     private final FieldRepository fieldRepository;
     private final EntityManager entityManager;
 
     @Override
-    public JpaRepository<Field, UUID> getRepo() {
+    public FieldRepository getRepo() {
         return fieldRepository;
     }
 

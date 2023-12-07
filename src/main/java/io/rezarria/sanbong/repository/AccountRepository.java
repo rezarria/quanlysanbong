@@ -1,8 +1,10 @@
 package io.rezarria.sanbong.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.util.Streamable;
@@ -14,6 +16,12 @@ public interface AccountRepository extends JpaRepository<Account, UUID> {
 
     @Query("select u from Account u LEFT JOIN AccountRole r ON u.id = r.id.accountId")
     <T> Streamable<T> findAllStream(Class<T> type);
+
+    @Query("select u from Account u where u.id = ?1")
+    <T> Optional<T> findByIdProjection(UUID id, Class<T> classType);
+
+    @Query("select u from Account u")
+    <T> List<T> findAllProjection(Pageable pageable, Class<T> classType);
 
     <T> Streamable<T> findAllByUsernameContaining(String name, Class<T> classType);
 }

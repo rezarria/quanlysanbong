@@ -1,8 +1,5 @@
 package io.rezarria.sanbong.security.service;
 
-import java.util.UUID;
-
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import io.rezarria.sanbong.model.User;
@@ -13,12 +10,12 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements IService<User> {
+public class UserService implements IService<UserRepository, User> {
     private final UserRepository userRepository;
     private final EntityManager entityManager;
 
     @Override
-    public JpaRepository<User, UUID> getRepo() {
+    public UserRepository getRepo() {
         return userRepository;
     }
 

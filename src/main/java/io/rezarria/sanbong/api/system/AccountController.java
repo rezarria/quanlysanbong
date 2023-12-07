@@ -34,7 +34,6 @@ import io.rezarria.sanbong.dto.ChangePasswordDTO;
 import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.AccountRole;
 import io.rezarria.sanbong.model.AccountRoleKey;
-import io.rezarria.sanbong.model.User;
 import io.rezarria.sanbong.repository.AccountRepository;
 import io.rezarria.sanbong.security.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -66,19 +65,31 @@ public class AccountController {
         @Value("#{target.roles.![id.roleId]}")
         List<UUID> getRoles();
 
-        User getUser();
+        UserDTO getUser();
+    }
+
+    interface UserDTO {
+        UUID getId();
+
+        String getAvatar();
+
+        String getName();
     }
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<?> find(@RequestParam("id") Optional<UUID> id,
             @RequestParam("limit") Optional<Integer> limit) {
-        if (id.isPresent())
-            return ResponseEntity.ok(accountService.getById(id.get())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
-        if (limit.isPresent()) {
-            return ResponseEntity.ok(accountService.getRepo().findAll(Pageable.ofSize(limit.get())).get());
+        if (id.isPresent()) {
+            var account = accountService.getRepo().findByIdProjection(id.get(), GetDTO.class)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            return ResponseEntity.ok(account);
         }
-        Streamable<GetDTO> data = ((AccountRepository) accountService.getRepo()).findAllByUsernameContaining("",
+        if (limit.isPresent()) {
+            return ResponseEntity
+                    .ok(accountService.getRepo().findAllProjection(Pageable.ofSize(limit.get()), GetDTO.class)
+                            .stream());
+        }
+        Streamable<GetDTO> data = accountService.getRepo().findAllByUsernameContaining("",
                 GetDTO.class);
         return ResponseEntity.ok(data.stream());
     }

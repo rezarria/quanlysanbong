@@ -1,7 +1,5 @@
 package io.rezarria.sanbong.api.system;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -43,7 +41,8 @@ public class UserController {
     public ResponseEntity<?> getAll(@PathVariable @RequestParam Optional<UUID> id,
             @RequestParam Optional<String> name) {
         if (name.isPresent()) {
-            Streamable<User> data = ((UserRepository) userService.getRepo()).findAllByNameContaining(name.get(), User.class);
+            Streamable<User> data = ((UserRepository) userService.getRepo()).findAllByNameContaining(name.get(),
+                    User.class);
             return ResponseEntity.ok(data.stream());
         }
         if (id.isPresent()) {

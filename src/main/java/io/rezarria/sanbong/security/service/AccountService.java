@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService implements IService<Account> {
+public class AccountService implements IService<AccountRepository, Account> {
     @Lazy
     private final PasswordEncoder passwordEncoder;
     @Lazy
@@ -79,7 +78,7 @@ public class AccountService implements IService<Account> {
     }
 
     @Override
-    public JpaRepository<Account, UUID> getRepo() {
+    public AccountRepository getRepo() {
         return accountRepository;
     }
 
