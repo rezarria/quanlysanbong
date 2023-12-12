@@ -15,5 +15,6 @@ public interface UserMapper {
     @Mapping(target = "lastModifiedDate", ignore = true)
     @Mapping(target = "data", ignore = true)
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "organization", ignore = true)
     User userPostDTOToUser(UserPostDTO dto);
 }

@@ -1,6 +1,8 @@
 package io.rezarria.sanbong.dto;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import lombok.Data;
 
@@ -10,4 +12,5 @@ public class FieldPost {
     private List<String> pictures;
     private String description;
     private double price;
+    private Optional<UUID> organizationId;
 }

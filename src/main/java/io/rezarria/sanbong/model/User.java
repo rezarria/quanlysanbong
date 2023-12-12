@@ -1,19 +1,28 @@
 package io.rezarria.sanbong.model;
 
+import java.util.Date;
+
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
+
 import io.rezarria.sanbong.converter.JsonNodeConverter;
-import jakarta.persistence.*;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
-import java.util.Date;
-
 
 @Data
 @Entity
@@ -36,4 +45,7 @@ public class User extends BaseEntity {
     @JdbcTypeCode(SqlTypes.JSON)
     @Convert(converter = JsonNodeConverter.class)
     protected JsonNode data;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    private Organization organization;
 }

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
@@ -36,4 +37,7 @@ public class Account extends BaseEntity {
     @JsonIgnoreProperties("account")
     @EqualsAndHashCode.Exclude
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    private Organization organization;
 }
