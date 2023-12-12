@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import io.rezarria.sanbong.converter.JsonNodeConverter;
 import jakarta.persistence.Convert;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Inheritance;
@@ -27,6 +29,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor

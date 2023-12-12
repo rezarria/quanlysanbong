@@ -28,7 +28,7 @@ public class Organization extends BaseEntity {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("organization")
-    private List<Field> fields;
+    private List<Product> products;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("organization")

@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import io.rezarria.sanbong.dto.FieldPost;
 import io.rezarria.sanbong.model.Field;
-import io.rezarria.sanbong.model.FieldPicture;
 import io.rezarria.sanbong.model.FieldPrice;
 import io.rezarria.sanbong.model.Organization;
 import io.rezarria.sanbong.repository.OrganizationRepository;

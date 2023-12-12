@@ -1,7 +1,5 @@
 package io.rezarria.sanbong.model;
 
-import org.modelmapper.internal.bytebuddy.dynamic.TypeResolutionStrategy.Lazy;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;

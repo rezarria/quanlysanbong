@@ -4,14 +4,13 @@ import java.util.Set;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToMany;
@@ -37,18 +36,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Field extends BaseEntity {
-    private String name;
-    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonIgnoreProperties("field")
-    private Set<FieldPicture> pictures;
-    private String description;
-    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Set<FieldPrice> prices;
-    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, fetch = FetchType.LAZY)
-    private FieldPrice price;
+@DiscriminatorValue("Field")
+public class Field extends Product {
     @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -60,6 +49,4 @@ public class Field extends BaseEntity {
     @ToString.Exclude
     @JsonUnwrapped
     private Set<FieldUseHistory> usedHistories;
-    @ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.REFRESH)
-    private Organization organization;
 }
