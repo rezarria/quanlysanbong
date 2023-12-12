@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -27,15 +28,16 @@ import lombok.experimental.SuperBuilder;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "product_type", discriminatorType = DiscriminatorType.STRING)
 public class Product extends BaseEntity {
-    private String name;
-    private String description;
+    protected String name;
+    protected String description;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    private List<ProductPrice> prices;
-    @OneToOne(optional = true, fetch = FetchType.EAGER)
-    private ProductPrice price;
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<ProductImage> images;
-    @ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.REFRESH)
-    private Organization organization;
+    protected List<ProductPrice> prices;
 
+    @OneToOne(optional = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "price_id", unique = true, nullable = true, updatable = true)
+    protected ProductPrice price;
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "product")
+    protected List<ProductImage> images;
+    @ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.REFRESH)
+    protected Organization organization;
 }

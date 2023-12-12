@@ -1,7 +1,6 @@
 package io.rezarria.sanbong.model;
 
 import java.util.List;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -26,15 +25,15 @@ public class Organization extends BaseEntity {
     private String address;
     private String image;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "organization")
     @JsonIgnoreProperties("organization")
     private List<Product> products;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "organization")
     @JsonIgnoreProperties("organization")
-    private Set<Account> accounts;
+    private List<Account> accounts;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "organization")
     @JsonIgnoreProperties("organization")
-    private Set<User> users;
+    private List<User> users;
 }

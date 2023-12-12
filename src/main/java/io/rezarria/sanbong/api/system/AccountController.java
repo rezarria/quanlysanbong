@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 
+import io.rezarria.sanbong.dto.AccountGetUpdateDTO;
 import io.rezarria.sanbong.dto.ChangePasswordDTO;
 import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.AccountRole;
@@ -60,11 +61,13 @@ public class AccountController {
     interface GetDTO {
         UUID getId();
 
-        @Value("#{target.user.id}")
-        String getUserId();
+        @Value("#{target.user != null ? target.user.id : null}")
+        Optional<String> getUserId();
 
         @Value("#{target.roles.![id.roleId]}")
         List<UUID> getRoleIds();
+
+        String getUsername();
     }
 
     @GetMapping(produces = "application/json")
@@ -111,6 +114,12 @@ public class AccountController {
                 .collect(Collectors.toSet());
         account.setRoles(roles);
         return ResponseEntity.ok(accountService.update(account));
+    }
+
+    @GetMapping("/beforeUpdate")
+    public ResponseEntity<AccountGetUpdateDTO> getDataBeforeUpdate(@RequestParam UUID id) {
+        var account = accountService.getRepo().findByIdProjection(id, AccountGetUpdateDTO.class).orElseThrow();
+        return ResponseEntity.ok(account);
     }
 
     @SneakyThrows

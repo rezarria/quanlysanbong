@@ -1,12 +1,22 @@
 package io.rezarria.sanbong.model;
 
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import java.util.Date;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.Date;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -49,7 +59,7 @@ public class FieldUseHistory extends BaseEntity {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JoinColumn(name = "field_price_id")
-    private FieldPrice price;
+    private ProductPrice price;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
