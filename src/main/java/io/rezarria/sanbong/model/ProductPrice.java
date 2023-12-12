@@ -19,6 +19,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class ProductPrice extends BaseEntity {
     private double price;
+    private String description;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Product product;
 }
