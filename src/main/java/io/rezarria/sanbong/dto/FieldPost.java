@@ -1,7 +1,6 @@
 package io.rezarria.sanbong.dto;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import jakarta.annotation.Nullable;
@@ -11,7 +10,7 @@ import lombok.Data;
 public class FieldPost {
     private String name;
     @Nullable
-    private List<String> pictures;
+    private Set<String> images;
     @Nullable
     private String description;
     @Nullable

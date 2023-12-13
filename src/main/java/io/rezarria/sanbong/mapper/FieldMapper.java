@@ -1,13 +1,17 @@
 package io.rezarria.sanbong.mapper;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,7 +39,7 @@ public abstract class FieldMapper {
     @Mapping(target = "prices", ignore = true)
     @Mapping(target = "usedHistories", ignore = true)
     @Mapping(target = "price", source = "price", qualifiedByName = "mapPrice")
-    @Mapping(target = "images", source = "pictures", qualifiedByName = "mapPictures")
+    @Mapping(target = "images", source = "images", qualifiedByName = "mapPictures")
     @Mapping(target = "description", source = "description")
     @Mapping(target = "organization", source = "organizationId", qualifiedByName = "mapOrganizationId")
     public abstract Field fieldDTOtoField(FieldPost dto);
@@ -45,12 +49,12 @@ public abstract class FieldMapper {
     }
 
     @Named("mapPictures")
-    protected List<ProductImage> mapPictures(@Nullable List<String> pictures) {
+    protected Set<ProductImage> mapPictures(@Nullable Set<String> pictures) {
         if (pictures == null)
-            return new ArrayList<>();
+            return new HashSet<>();
         return pictures.stream()
                 .map(url -> ProductImage.builder().path(url).build())
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     @Named("mapPrice")
