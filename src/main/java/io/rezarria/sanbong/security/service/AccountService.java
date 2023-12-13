@@ -2,6 +2,7 @@ package io.rezarria.sanbong.security.service;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -10,10 +11,13 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import io.rezarria.sanbong.dto.update.AccountUpdateDTO;
 import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.AccountRole;
+import io.rezarria.sanbong.model.AccountRoleKey;
 import io.rezarria.sanbong.model.Role;
 import io.rezarria.sanbong.repository.AccountRepository;
+import io.rezarria.sanbong.repository.RoleRepository;
 import io.rezarria.sanbong.service.IService;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
@@ -28,6 +32,8 @@ public class AccountService implements IService<AccountRepository, Account> {
     private final AccountRepository accountRepository;
     @Lazy
     private final EntityManager entityManager;
+    @Lazy
+    private final RoleRepository roleRepository;
 
     public boolean changePassword(UUID id, String oldPassword, String newPassword) {
         var account = accountRepository.findById(id).orElseThrow();
@@ -85,6 +91,26 @@ public class AccountService implements IService<AccountRepository, Account> {
     @Override
     public EntityManager getEntityManager() {
         return entityManager;
+    }
+
+    @Nullable
+    public Account patch(AccountUpdateDTO dto) {
+        var account = accountRepository.findById(dto.id()).orElse(null);
+        if (account != null && account.getRoles().stream()
+                .map(AccountRole::getId)
+                .map(AccountRoleKey::getRoleId)
+                .collect(Collectors.toSet())
+                .equals(dto.roleIds())) {
+            var accountRoles = account.getRoles();
+            accountRoles.removeIf(i -> !dto.roleIds().contains(i.getId().getRoleId()));
+            Set<UUID> accountRoleIds = accountRoles.stream().map(AccountRole::getId).map(AccountRoleKey::getRoleId)
+                    .collect(Collectors.toSet());
+            var newRoleIds = dto.roleIds().stream().filter(accountRoleIds::contains).toList();
+            var newRoles = roleRepository.findAllById(newRoleIds).stream()
+                    .map(i -> AccountRole.builder().role(i).build()).toList();
+            accountRoles.addAll(newRoles);
+        }
+        return account;
     }
 
 }

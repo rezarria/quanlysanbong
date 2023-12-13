@@ -35,7 +35,6 @@ public class Account extends BaseEntity {
 
     @OneToOne(fetch = FetchType.EAGER, cascade = {}, orphanRemoval = false, optional = true)
     @JsonIgnoreProperties("account")
-    @EqualsAndHashCode.Exclude
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)

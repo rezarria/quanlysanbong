@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import io.rezarria.sanbong.model.Role;
 
-public interface RoleRepository extends JpaRepository<Role, UUID> {
+public interface RoleRepository extends JpaRepository<Role, UUID>, CustomRepository {
 
     @Query("select r from Role r")
     Stream<IdOnly> find();
@@ -17,5 +17,9 @@ public interface RoleRepository extends JpaRepository<Role, UUID> {
 
     interface IdOnly {
         UUID id();
+    }
+
+    default boolean areIdsExist(Iterable<UUID> ids) {
+        return areIdsExist(ids, Role.class);
     }
 }

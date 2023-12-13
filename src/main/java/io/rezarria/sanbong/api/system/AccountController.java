@@ -30,8 +30,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 
-import io.rezarria.sanbong.dto.AccountGetUpdateDTO;
 import io.rezarria.sanbong.dto.ChangePasswordDTO;
+import io.rezarria.sanbong.dto.update.AccountUpdateDTO;
+import io.rezarria.sanbong.dto.update.AccountUpdateDTOMapper;
 import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.AccountRole;
 import io.rezarria.sanbong.model.AccountRoleKey;
@@ -53,6 +54,9 @@ public class AccountController {
     @Lazy
     private final AccountRepository accountRepository;
 
+    @Lazy
+    private final AccountUpdateDTOMapper accountUpdateDTOMapper;
+
     @GetMapping("size")
     public ResponseEntity<Long> getSize() {
         return ResponseEntity.ok(accountService.getSize());
@@ -62,7 +66,7 @@ public class AccountController {
         UUID getId();
 
         @Value("#{target.user != null ? target.user.id : null}")
-        Optional<String> getUserId();
+        String getUserId();
 
         @Value("#{target.roles.![id.roleId]}")
         List<UUID> getRoleIds();
@@ -117,18 +121,25 @@ public class AccountController {
     }
 
     @GetMapping("/beforeUpdate")
-    public ResponseEntity<AccountGetUpdateDTO> getDataBeforeUpdate(@RequestParam UUID id) {
-        var account = accountService.getRepo().findByIdProjection(id, AccountGetUpdateDTO.class).orElseThrow();
-        return ResponseEntity.ok(account);
+    public ResponseEntity<?> getDataBeforeUpdate(@RequestParam UUID id) {
+        var data = accountService.getRepo().findByIdForUpdate(id);
+        if (data.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(data.get());
+    }
+
+    record UpdateDTO(UUID id, JsonPatch patch) {
     }
 
     @SneakyThrows
     @PatchMapping(consumes = "application/json-patch+json", produces = "application/json")
     @Transactional()
-    public ResponseEntity<Account> update(@RequestParam UUID id, @RequestBody JsonPatch patch) {
-        Account account = accountService.getById(id).orElseThrow();
-        JsonNode nodePatched = patch.apply(objectMapper.convertValue(account, JsonNode.class));
-        Account accountPatched = objectMapper.treeToValue(nodePatched, Account.class);
+    public ResponseEntity<Account> update(@RequestBody UpdateDTO dto) {
+        var account = accountService.getRepo().findByIdForUpdate(dto.id).orElseThrow();
+        JsonNode nodePatched = dto.patch.apply(objectMapper.convertValue(account, JsonNode.class));
+        var accountPatchedDTO = objectMapper.treeToValue(nodePatched, AccountUpdateDTO.class);
+        var accountPatched = accountService.get(dto.id);
+        accountUpdateDTOMapper.patch(accountPatchedDTO, accountPatched);
         accountPatched = accountService.update(accountPatched);
         return ResponseEntity.ok(accountPatched);
     }

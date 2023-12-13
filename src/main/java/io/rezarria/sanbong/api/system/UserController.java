@@ -37,6 +37,11 @@ public class UserController {
     private final UserMapper mapper;
     private final ObjectMapper objectMapper;
 
+    @GetMapping("getName")
+    public ResponseEntity<?> getName(@RequestParam UUID id) {
+        return ResponseEntity.ok(userService.getRepo().findById(id).orElseThrow().getName());
+    }
+
     @GetMapping(produces = "application/json", name = "/{id}")
     public ResponseEntity<?> getAll(@PathVariable @RequestParam Optional<UUID> id,
             @RequestParam Optional<String> name) {
