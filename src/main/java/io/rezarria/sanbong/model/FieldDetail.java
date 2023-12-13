@@ -10,7 +10,8 @@ import org.hibernate.type.SqlTypes;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
 @Entity
 @SuperBuilder
 @AllArgsConstructor
