@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Streamable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -53,7 +55,7 @@ public class FieldController {
 
         @Value("#{target.price != null ? target.price.price : null}")
 
-        Optional<Double> getPrice();
+        Double getPrice();
     }
 
     @GetMapping("size")
@@ -61,7 +63,7 @@ public class FieldController {
         return ResponseEntity.ok(fieldService.getSize());
     }
 
-    @GetMapping(produces = "application/json", name = "/{id}")
+    @GetMapping(produces = "application/json")
     public ResponseEntity<?> getAll(@PathVariable @RequestParam Optional<UUID> id,
             @RequestParam Optional<String> name) {
         if (name.isPresent()) {
@@ -71,9 +73,9 @@ public class FieldController {
         }
         if (id.isPresent()) {
             return ResponseEntity
-                    .ok(((FieldRepository) fieldService.getRepo()).findByIdProject(id.get(), GetDTO.class).get());
+                    .ok(fieldService.getRepo().findByIdProject(id.get(), GetDTO.class).orElseThrow());
         }
-        Streamable<GetDTO> data = ((FieldRepository) fieldService.getRepo()).findAllStream(GetDTO.class);
+        Streamable<GetDTO> data = fieldService.getRepo().findAllStream(GetDTO.class);
         return ResponseEntity.ok(data.stream().toList());
     }
 
@@ -100,4 +102,11 @@ public class FieldController {
         return ResponseEntity.ok(fieldPatched);
     }
 
+    @GetMapping("/beforeUpdate")
+    public ResponseEntity<?> getDataBeforeUpdate(@RequestParam UUID id) {
+        var data = fieldService.getRepo().findByIdForUpdate(id);
+        if (data.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(data.get());
+    }
 }
