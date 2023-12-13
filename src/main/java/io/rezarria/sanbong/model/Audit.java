@@ -16,7 +16,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @Data
@@ -29,13 +31,19 @@ public class Audit {
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @OnDelete(action = OnDeleteAction.SET_NULL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     protected Account createdBy;
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @OnDelete(action = OnDeleteAction.SET_NULL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     protected Account lastModifiedBy;
     @CreatedDate
+    @ToString.Exclude
     protected Instant createdDate;
     @LastModifiedDate
+    @ToString.Exclude
     protected Instant lastModifiedDate;
 }

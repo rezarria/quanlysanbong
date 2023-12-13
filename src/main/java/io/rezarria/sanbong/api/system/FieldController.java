@@ -1,38 +1,31 @@
 package io.rezarria.sanbong.api.system;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.util.Streamable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
-
 import io.rezarria.sanbong.dto.DeleteDTO;
 import io.rezarria.sanbong.dto.FieldPost;
+import io.rezarria.sanbong.dto.PatchDTO;
+import io.rezarria.sanbong.dto.update.FieldUpdateDTO;
+import io.rezarria.sanbong.dto.update.FieldUpdateDTOMapper;
 import io.rezarria.sanbong.mapper.FieldMapper;
 import io.rezarria.sanbong.model.Field;
 import io.rezarria.sanbong.repository.FieldRepository;
 import io.rezarria.sanbong.service.FieldService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.util.Streamable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/field")
@@ -43,18 +36,22 @@ public class FieldController {
     @Qualifier("jsonPatchObjectMapper")
     private final ObjectMapper objectMapper;
 
+    private final FieldUpdateDTOMapper fieldUpdateDTOMapper;
+
     interface GetDTO {
         UUID getId();
 
         String getName();
 
-        @Value("#{target.images.![url]}")
+        @Value("#{target.images.![path]}")
         List<String> getPictures();
+
+        @Value("#{target.prices != null ? target.prices.![price] : null}")
+        List<Double> getPrices();
 
         String getDescription();
 
         @Value("#{target.price != null ? target.price.price : null}")
-
         Double getPrice();
     }
 
@@ -83,6 +80,10 @@ public class FieldController {
     public ResponseEntity<?> create(@RequestBody FieldPost dto) {
         var field = fieldMapper.fieldDTOtoField(dto);
         fieldService.create(field);
+        if (field.getPrice() != null) {
+            field.getPrice().setProduct(field);
+            fieldService.update(field);
+        }
         return ResponseEntity.ok().build();
     }
 
@@ -93,13 +94,17 @@ public class FieldController {
     }
 
     @PatchMapping(consumes = "application/json-patch+json")
-    public ResponseEntity<Field> update(@RequestParam UUID id, @RequestBody JsonPatch patch)
+    @Transactional()
+    public ResponseEntity<Field> update(@RequestBody PatchDTO dto)
             throws IllegalArgumentException, JsonPatchException, JsonProcessingException {
-        Field field = fieldService.get(id);
-        JsonNode nodePatched = patch.apply(objectMapper.convertValue(field, JsonNode.class));
-        Field fieldPatched = objectMapper.treeToValue(nodePatched, Field.class);
-        fieldPatched = fieldService.update(fieldPatched);
-        return ResponseEntity.ok(fieldPatched);
+
+        var currentDTO = fieldService.getRepo().findByIdForUpdate(dto.getId()).orElseThrow();
+        JsonNode nodePatched = dto.getPatch().apply(objectMapper.convertValue(currentDTO, JsonNode.class));
+        var fieldPatched = objectMapper.treeToValue(nodePatched, FieldUpdateDTO.class);
+        Field field = fieldService.get(dto.getId());
+        fieldUpdateDTOMapper.patch(fieldPatched, field);
+        fieldService.update(field);
+        return ResponseEntity.ok(field);
     }
 
     @GetMapping("/beforeUpdate")
