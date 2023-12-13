@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import jakarta.persistence.CascadeType;
@@ -33,8 +34,7 @@ import lombok.experimental.SuperBuilder;
         @NamedAttributeNode("usedHistories")
 })
 @EqualsAndHashCode(callSuper = true)
-@Getter
-@Setter
+@Data
 @EntityListeners(AuditingEntityListener.class)
 @Entity
 @SuperBuilder
@@ -43,14 +43,15 @@ import lombok.experimental.SuperBuilder;
 @DiscriminatorValue("Field")
 public class Field extends Product {
     @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<FieldDetail> details;
     @OneToOne
     private FieldDetail detail;
     @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JsonUnwrapped
     private Set<FieldUseHistory> usedHistories;
 }

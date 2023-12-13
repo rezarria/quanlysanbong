@@ -2,6 +2,8 @@ package io.rezarria.sanbong.model;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,8 +17,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-@Getter
-@Setter
+@Data
 @Entity
 @SuperBuilder()
 @NoArgsConstructor
@@ -25,6 +26,7 @@ import lombok.experimental.SuperBuilder;
 @DiscriminatorValue("Customer")
 public class Customer extends User {
     @OneToMany(mappedBy = "customer", cascade = {}, fetch = FetchType.LAZY, orphanRemoval = false)
+    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<FieldUseHistory> fieldUseHistories;

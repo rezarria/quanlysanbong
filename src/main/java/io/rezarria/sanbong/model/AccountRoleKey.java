@@ -13,8 +13,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Embeddable
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

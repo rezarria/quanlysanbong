@@ -37,7 +37,9 @@ public abstract class FieldUpdateDTOMapper {
 
     public void patch(FieldUpdateDTO src, @MappingTarget Field data) {
         if (data.getPrice() == null || src.getPrice() != data.getPrice().getPrice()) {
-            ProductPrice price = ProductPrice.builder().product(data).build();
+            ProductPrice price = ProductPrice.builder().price(src.getPrice())
+                    .product(Field.builder().id(data.getId()).build()).build();
+            entityManager.persist(price);
             data.getPrices().add(price);
         }
         // if (src.images != null) {

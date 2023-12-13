@@ -1,5 +1,6 @@
 package io.rezarria.sanbong.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,8 +11,7 @@ import org.hibernate.type.SqlTypes;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
-@Getter
-@Setter
+@Data
 @Entity
 @SuperBuilder
 @AllArgsConstructor
@@ -20,10 +20,12 @@ public class FieldDetail extends BaseEntity {
     @JdbcTypeCode(SqlTypes.JSON)
     private JsonNode data;
     @ManyToOne
+    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Field field;
     @OneToMany(mappedBy = "detail", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
+    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<FieldUseHistory> usedHistories;

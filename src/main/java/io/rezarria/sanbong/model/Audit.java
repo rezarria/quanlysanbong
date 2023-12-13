@@ -10,6 +10,8 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
@@ -23,8 +25,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-@Getter
-@Setter
+@Data
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
 @SuperBuilder
@@ -34,19 +35,19 @@ public class Audit {
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     protected Account createdBy;
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     protected Account lastModifiedBy;
     @CreatedDate
-    @ToString.Exclude
     protected Instant createdDate;
     @LastModifiedDate
-    @ToString.Exclude
     protected Instant lastModifiedDate;
 }

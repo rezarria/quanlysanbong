@@ -12,10 +12,12 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Getter
-@Setter
+@Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,6 +26,7 @@ public class ProductPrice extends BaseEntity {
     private String description;
     @ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = { CascadeType.DETACH, CascadeType.REFRESH })
     @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Product product;

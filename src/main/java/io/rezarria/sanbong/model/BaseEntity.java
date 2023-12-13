@@ -15,8 +15,7 @@ import lombok.experimental.SuperBuilder;
 import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
-@Getter
-@Setter
+@Data
 @MappedSuperclass
 @SuperBuilder
 @AllArgsConstructor

@@ -5,6 +5,7 @@ import java.util.Date;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -26,10 +27,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
@@ -45,7 +46,9 @@ public class User extends BaseEntity {
     protected Date dob;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {}, orphanRemoval = false, optional = true)
-    @JsonIgnoreProperties("user")
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     protected Account account;
 
     @JdbcTypeCode(SqlTypes.JSON)
@@ -53,5 +56,8 @@ public class User extends BaseEntity {
     protected JsonNode data;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Organization organization;
 }

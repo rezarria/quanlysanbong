@@ -7,8 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("ConsumerProduct")

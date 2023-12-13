@@ -13,6 +13,9 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,20 +34,29 @@ public class Product extends BaseEntity {
     protected String description;
     @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     protected Set<ProductPrice> prices = new HashSet<>();
+
     @OneToOne(optional = true, fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,
             CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH })
     @JoinColumn(name = "price_id", unique = true, nullable = true, updatable = true)
     @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     protected ProductPrice price;
     @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
+    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     protected Set<ProductImage> images = new HashSet<>();
     @ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.REFRESH)
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     protected Organization organization;
 }
