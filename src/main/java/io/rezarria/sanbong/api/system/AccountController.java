@@ -30,12 +30,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 
+import io.micrometer.common.lang.Nullable;
 import io.rezarria.sanbong.dto.ChangePasswordDTO;
 import io.rezarria.sanbong.dto.update.AccountUpdateDTO;
 import io.rezarria.sanbong.dto.update.AccountUpdateDTOMapper;
 import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.AccountRole;
 import io.rezarria.sanbong.model.AccountRoleKey;
+import io.rezarria.sanbong.model.User;
 import io.rezarria.sanbong.repository.AccountRepository;
 import io.rezarria.sanbong.security.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -116,6 +118,9 @@ public class AccountController {
                 .map(i -> AccountRole.builder()
                         .id(AccountRoleKey.builder().roleId(i).accountId(account.getId()).build()).build())
                 .collect(Collectors.toSet());
+        if (dto.user != null) {
+            account.setUser(User.builder().id(dto.user).build());
+        }
         account.setRoles(roles);
         return ResponseEntity.ok(accountService.update(account));
     }
@@ -150,7 +155,7 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
-    public record CreateDTO(String username, String password, Collection<UUID> roles) {
+    public record CreateDTO(String username, String password, @Nullable UUID user, Collection<UUID> roles) {
     }
 
     /**
