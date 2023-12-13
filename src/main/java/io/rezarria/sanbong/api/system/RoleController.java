@@ -53,6 +53,14 @@ public class RoleController {
         String displayName();
     }
 
+    @GetMapping("getName")
+    public ResponseEntity<?> getName(@RequestParam Collection<UUID> id) {
+        if (id.isEmpty())
+            return ResponseEntity.ok(new UUID[0]);
+        var data = roleService.getMany(id).stream().map(Role::getName).toList();
+        return ResponseEntity.ok(data);
+    }
+
     @GetMapping(produces = "application/json")
     public ResponseEntity<?> getAll(@RequestParam("id") Optional<UUID> id,
             @RequestParam("limit") Optional<Integer> limit, @RequestParam("name") Optional<String> name) {

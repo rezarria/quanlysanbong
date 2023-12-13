@@ -46,14 +46,14 @@ public class FieldController {
 
         String getName();
 
-        @Value("#{target.pictures.![url]}")
+        @Value("#{target.images.![url]}")
         List<String> getPictures();
 
         String getDescription();
 
-        @Value("#{target.price.price}")
+        @Value("#{target.price != null ? target.price.price : null}")
 
-        double getPrice();
+        Optional<Double> getPrice();
     }
 
     @GetMapping("size")

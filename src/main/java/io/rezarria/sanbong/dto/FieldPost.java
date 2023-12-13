@@ -4,13 +4,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import jakarta.annotation.Nullable;
 import lombok.Data;
 
 @Data
 public class FieldPost {
     private String name;
+    @Nullable
     private List<String> pictures;
+    @Nullable
     private String description;
-    private double price;
-    private Optional<UUID> organizationId;
+    @Nullable
+    private Double price;
+    private UUID organizationId;
 }
