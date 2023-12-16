@@ -13,6 +13,8 @@ import io.rezarria.sanbong.mapper.FieldMapper;
 import io.rezarria.sanbong.model.Field;
 import io.rezarria.sanbong.repository.FieldRepository;
 import io.rezarria.sanbong.service.FieldService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +32,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/field")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearer-jwt")
 public class FieldController {
     private final FieldService fieldService;
     private final FieldMapper fieldMapper;
@@ -56,6 +59,8 @@ public class FieldController {
     }
 
     @GetMapping("size")
+    @SecurityRequirements(value = { @SecurityRequirement(name = "bearer-jwt") })
+
     public ResponseEntity<Long> getSize() {
         return ResponseEntity.ok(fieldService.getSize());
     }

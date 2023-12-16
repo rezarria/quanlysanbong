@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import io.rezarria.sanbong.dto.LoginDTO;
 import io.rezarria.sanbong.dto.RegisterDTO;
 import io.rezarria.sanbong.security.service.SecurityService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/security")
+@SecurityRequirement(name = "bearer-jwt")
 @RequiredArgsConstructor
 public class SecurityController {
     private final SecurityService securityService;
