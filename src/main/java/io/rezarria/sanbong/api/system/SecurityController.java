@@ -31,9 +31,13 @@ public class SecurityController {
 
     @PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> login(@RequestBody LoginDTO dto) {
-        Map<String, String> json = new HashMap<>();
-        json.put("jwt", securityService.login(dto.getUsername(), dto.getPassword()));
-        return ResponseEntity.ok(json);
+        return ResponseEntity.ok(securityService.login(dto.getUsername(), dto.getPassword()));
+    }
+
+    @PostMapping(path = "refesh", produces = "application/json")
+    public ResponseEntity<?> refesh(@RequestBody String token) {
+        securityService.refresh(token);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping(path = "/checkInfo", produces = "application/json")

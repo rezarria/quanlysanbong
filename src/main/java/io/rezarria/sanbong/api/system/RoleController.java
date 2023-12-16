@@ -25,6 +25,7 @@ import io.rezarria.sanbong.dto.RolePostDTO;
 import io.rezarria.sanbong.mapper.RoleMapper;
 import io.rezarria.sanbong.model.Role;
 import io.rezarria.sanbong.security.service.RoleService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -32,6 +33,7 @@ import lombok.SneakyThrows;
 @RestController
 @RequestMapping("/api/role")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearer-jwt")
 public class RoleController {
     @Lazy
     private final RoleService roleService;
@@ -57,7 +59,7 @@ public class RoleController {
     public ResponseEntity<?> getName(@RequestParam Collection<UUID> id) {
         if (id.isEmpty())
             return ResponseEntity.ok(new UUID[0]);
-        var data = roleService.getMany(id).stream().map(Role::getName).toList();
+        var data = roleService.getMany(id).stream().map(Role::getDisplayName).toList();
         return ResponseEntity.ok(data);
     }
 

@@ -34,10 +34,11 @@ public abstract class AccountUpdateDTOMapper {
         roles.removeIf(i -> !src.roleIds().contains(i.getId().getRoleId()));
         var currentroleIds = dis.getRoles().stream().map(AccountRole::getId).map(AccountRoleKey::getRoleId)
                 .collect(Collectors.toSet());
-        var newRoleIds = src.roleIds().stream().filter(i -> !currentroleIds.contains(i));
-        roles.addAll(
-                newRoleIds.map(i -> AccountRole.builder().role(
-                        Role.builder().id(i).build()).build()).toList());
+        var newRoleIds = src.roleIds().stream().filter(i -> !currentroleIds.contains(i))
+                .map(i -> AccountRole.builder().id(AccountRoleKey.builder().roleId(i).accountId(dis.getId()).build())
+                        .build())
+                .toList();
+        roles.addAll(newRoleIds);
     }
 
     @Named("toUser")

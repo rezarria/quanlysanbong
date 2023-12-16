@@ -34,7 +34,6 @@ public class AccountRole extends Audit {
     @MapsId("account_id")
     @JoinColumn(name = "account_id")
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Account account;
 
@@ -42,7 +41,6 @@ public class AccountRole extends Audit {
     @MapsId("role_id")
     @JoinColumn(name = "role_id")
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Role role;
 

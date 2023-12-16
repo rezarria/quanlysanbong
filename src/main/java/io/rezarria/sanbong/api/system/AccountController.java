@@ -40,12 +40,14 @@ import io.rezarria.sanbong.model.AccountRoleKey;
 import io.rezarria.sanbong.model.User;
 import io.rezarria.sanbong.repository.AccountRepository;
 import io.rezarria.sanbong.security.service.AccountService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/account")
+@SecurityRequirement(name = "bearer-jwt")
 public class AccountController {
     @Lazy
     private final ObjectMapper objectMapper;

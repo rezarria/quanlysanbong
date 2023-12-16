@@ -25,12 +25,14 @@ import io.rezarria.sanbong.mapper.UserMapper;
 import io.rezarria.sanbong.model.User;
 import io.rezarria.sanbong.repository.UserRepository;
 import io.rezarria.sanbong.security.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearer-jwt")
 public class UserController {
 
     private final UserService userService;
@@ -46,7 +48,7 @@ public class UserController {
     public ResponseEntity<?> getAll(@PathVariable @RequestParam Optional<UUID> id,
             @RequestParam Optional<String> name) {
         if (name.isPresent()) {
-            Streamable<User> data = ((UserRepository) userService.getRepo()).findAllByNameContaining(name.get(),
+            Streamable<User> data = userService.getRepo().findAllByNameContaining(name.get(),
                     User.class);
             return ResponseEntity.ok(data.stream());
         }

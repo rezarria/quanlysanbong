@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
@@ -36,7 +37,8 @@ public class JwtUtils {
 
     @PostConstruct
     public void init() {
-        String secret = Base64.getEncoder().encodeToString(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8));
+        String secret = Base64.getEncoder()
+                .encodeToString(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8));
         secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
@@ -65,9 +67,11 @@ public class JwtUtils {
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
         Object authoritiesClaim = claims.get(AUTHORITIES_KEY);
-        Collection<? extends GrantedAuthority> authorities = null == authoritiesClaim ? AuthorityUtils.NO_AUTHORITIES : AuthorityUtils.commaSeparatedStringToAuthorityList(authoritiesClaim.toString());
+        Collection<? extends GrantedAuthority> authorities = null == authoritiesClaim ? AuthorityUtils.NO_AUTHORITIES
+                : AuthorityUtils.commaSeparatedStringToAuthorityList(authoritiesClaim.toString());
         User principal = new User(claims.getSubject(), "", authorities);
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, token,
+                authorities);
         auth.setDetails(Details.from(claims));
         return auth;
     }
@@ -81,7 +85,7 @@ public class JwtUtils {
         }
     }
 
-    public Claims refresh(String token) {
+    public Claims decode(String token) {
         return refresh(token, jwtProperties.getValidityInMS());
     }
 
@@ -96,6 +100,47 @@ public class JwtUtils {
         } catch (Exception e) {
             throw new RuntimeException("Token quá cũ");
         }
+    }
+
+    public String refreshToken(String refreshToken) {
+        try {
+            Claims claims = Jwts.parser().decryptWith(secretKey).build().parseSignedClaims(refreshToken).getPayload();
+
+            String username = claims.getSubject();
+            Collection<? extends GrantedAuthority> authorities = AuthorityUtils
+                    .commaSeparatedStringToAuthorityList(claims.get(AUTHORITIES_KEY).toString());
+
+            Instant now = Instant.now();
+            Instant validity = now.plusMillis(jwtProperties.getValidityInMS()).plusSeconds(60L * 60L);
+
+            return Jwts.builder()
+                    .subject(username)
+                    .claim(AUTHORITIES_KEY,
+                            authorities.stream().map(GrantedAuthority::getAuthority).collect(joining(",")))
+                    .issuedAt(Date.from(now))
+                    .expiration(Date.from(validity))
+                    .signWith(secretKey, SIG.HS256)
+                    .compact();
+
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new JwtException("Invalid refresh token", e);
+        }
+    }
+
+    public String createRefreshToken(Authentication authentication) {
+        String username = authentication.getName();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+        Instant now = Instant.now();
+        Instant validity = now.plusMillis(jwtProperties.getRefreshInMS()).plusSeconds(60L * 60L);
+
+        return Jwts.builder()
+                .subject(username)
+                .claim(AUTHORITIES_KEY, authorities.stream().map(GrantedAuthority::getAuthority).collect(joining(",")))
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(validity))
+                .signWith(secretKey, SIG.HS256)
+                .compact();
     }
 
 }
