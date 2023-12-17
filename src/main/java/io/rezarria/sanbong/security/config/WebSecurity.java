@@ -39,7 +39,10 @@ public class WebSecurity implements WebMvcConfigurer {
                 .authorizeHttpRequests(registry -> registry
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "api/security/login").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll().requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/security/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/security/register").permitAll()
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(cfg -> cfg.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

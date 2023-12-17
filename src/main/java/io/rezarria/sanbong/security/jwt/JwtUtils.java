@@ -1,5 +1,22 @@
 package io.rezarria.sanbong.security.jwt;
 
+import static java.util.stream.Collectors.joining;
+
+import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.Date;
+
+import javax.crypto.SecretKey;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Component;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtException;
@@ -9,21 +26,6 @@ import io.jsonwebtoken.security.Keys;
 import io.rezarria.sanbong.security.Details;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Component;
-
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
-import java.time.Instant;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.Date;
-
-import static java.util.stream.Collectors.joining;
 
 @Component
 @RequiredArgsConstructor
@@ -78,27 +80,21 @@ public class JwtUtils {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().verifyWith(secretKey).build().isSigned(token);
-            return true;
+            return Jwts.parser().verifyWith(secretKey).build().isSigned(token);
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
     }
 
     public Claims decode(String token) {
-        return refresh(token, jwtProperties.getValidityInMS());
+        return refresh(token, jwtProperties.getValidityInMS() / 1000);
     }
 
     public Claims refresh(String token, long seconds) {
         try {
-            return Jwts.parser()
-                    .verifyWith(secretKey)
-                    .clockSkewSeconds(seconds)
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
+            return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
         } catch (Exception e) {
-            throw new RuntimeException("Token quá cũ");
+            throw e;
         }
     }
 
@@ -130,11 +126,16 @@ public class JwtUtils {
     public String createRefreshToken(Authentication authentication) {
         String username = authentication.getName();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
+        JwtBuilder builder = Jwts.builder();
+        JwtBuilder.BuilderClaims claims = builder.claims();
+        if (!authorities.isEmpty()) {
+            claims.add(AUTHORITIES_KEY, authorities.stream().map(GrantedAuthority::getAuthority).collect(joining(",")));
+        }
+        Details details = (Details) authentication.getDetails();
+        details.addToClaims(claims);
         Instant now = Instant.now();
         Instant validity = now.plusMillis(jwtProperties.getRefreshInMS()).plusSeconds(60L * 60L);
-
-        return Jwts.builder()
+        return builder
                 .subject(username)
                 .claim(AUTHORITIES_KEY, authorities.stream().map(GrantedAuthority::getAuthority).collect(joining(",")))
                 .issuedAt(Date.from(now))

@@ -1,16 +1,15 @@
 package io.rezarria.sanbong.security;
 
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
+
 public class Details {
-    private final Map<String, String> map;
+    public final Map<String, String> map;
 
     public Details() {
         map = new LinkedHashMap<>();
@@ -18,7 +17,8 @@ public class Details {
 
     public static Details from(Claims claims) {
         Details details = new Details();
-        claims.entrySet().stream().filter(e -> e.getKey().startsWith("details__")).forEach(e -> details.set(e.getKey().substring(9), (String) e.getValue()));
+        claims.entrySet().stream().filter(e -> e.getKey().startsWith("details__"))
+                .forEach(e -> details.set(e.getKey().substring(9), (String) e.getValue()));
         return details;
     }
 
@@ -43,7 +43,7 @@ public class Details {
     }
 
     public void setUserId(UUID userId) {
-        map.put("userId", userId.toString().replaceAll("-", ""));
+        map.put("userId", userId.toString());
     }
 
     public UUID getAccountId() {
@@ -51,7 +51,7 @@ public class Details {
     }
 
     public void setAccountId(UUID accountId) {
-        map.put("accountId", accountId.toString().replaceAll("-", ""));
+        map.put("accountId", accountId.toString());
     }
 
 }

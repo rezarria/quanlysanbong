@@ -10,7 +10,6 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +40,7 @@ public class SecurityService {
     /**
      * JwtAndRefreshRecord
      */
-    public record JwtAndRefreshRecord(String jwt, String Refresh) {
+    public record JwtAndRefreshRecord(String jwt, String refresh) {
     }
 
     public JwtAndRefreshRecord login(String username, String password) {

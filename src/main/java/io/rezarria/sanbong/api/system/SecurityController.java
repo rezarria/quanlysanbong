@@ -1,8 +1,5 @@
 package io.rezarria.sanbong.api.system;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,8 +33,7 @@ public class SecurityController {
 
     @PostMapping(path = "refesh", produces = "application/json")
     public ResponseEntity<?> refesh(@RequestBody String token) {
-        securityService.refresh(token);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(securityService.refresh(token));
     }
 
     @GetMapping(path = "/checkInfo", produces = "application/json")

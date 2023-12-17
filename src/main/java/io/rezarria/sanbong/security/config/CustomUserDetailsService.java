@@ -1,11 +1,5 @@
 package io.rezarria.sanbong.security.config;
 
-import io.rezarria.sanbong.model.Account;
-import io.rezarria.sanbong.model.AccountRole;
-import io.rezarria.sanbong.model.Role;
-import io.rezarria.sanbong.repository.AccountRepository;
-import io.rezarria.sanbong.repository.RoleRepository;
-
 import java.util.UUID;
 
 import org.springframework.context.annotation.Bean;
@@ -13,13 +7,22 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import io.rezarria.sanbong.model.Account;
+import io.rezarria.sanbong.model.AccountRole;
+import io.rezarria.sanbong.repository.AccountRepository;
+import io.rezarria.sanbong.repository.RoleRepository;
 
 @Configuration
 public class CustomUserDetailsService {
 
     public interface CustomUserDetails extends UserDetailsService {
         public UserDetails loadUserByAccountId(UUID accountId);
+    }
+
+    @Bean
+    UserDetailsService customUserDetails(CustomUserDetails userDetails) {
+        return userDetails;
     }
 
     @Bean
