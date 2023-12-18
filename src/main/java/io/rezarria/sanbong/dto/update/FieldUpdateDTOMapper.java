@@ -1,11 +1,5 @@
 package io.rezarria.sanbong.dto.update;
 
-import java.util.UUID;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,11 +7,10 @@ import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import io.rezarria.sanbong.model.Field;
-import io.rezarria.sanbong.model.ProductImage;
 import io.rezarria.sanbong.model.ProductPrice;
 import io.rezarria.sanbong.repository.FieldRepository;
 import io.rezarria.sanbong.repository.ProductPriceRepository;
-import jakarta.annotation.Nullable;
+import jakarta.persistence.EntityManager;
 
 @Mapper(componentModel = "spring")
 public abstract class FieldUpdateDTOMapper {
