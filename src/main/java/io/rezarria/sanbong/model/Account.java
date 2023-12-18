@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -34,14 +33,12 @@ public class Account extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH }, orphanRemoval = false, mappedBy = "account")
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @Builder.Default
     private Set<AccountRole> roles = new HashSet<>();
 
     @OneToOne(fetch = FetchType.EAGER, cascade = {}, orphanRemoval = false, optional = true)
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private User user;
 

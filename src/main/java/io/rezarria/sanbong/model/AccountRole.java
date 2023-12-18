@@ -29,21 +29,17 @@ public class AccountRole extends Audit {
     @EmbeddedId
     private AccountRoleKey id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.PERSIST })
-    @MapsId("account_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE })
+    @MapsId("accountId")
     @JoinColumn(name = "account_id")
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Account account;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.PERSIST })
-    @MapsId("role_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH, CascadeType.DETACH, CascadeType.MERGE })
+    @MapsId("roleId")
     @JoinColumn(name = "role_id")
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Role role;
 

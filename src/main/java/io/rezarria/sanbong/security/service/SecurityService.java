@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
 import io.rezarria.sanbong.model.Account;
-import io.rezarria.sanbong.model.RegisterTemplate;
-import io.rezarria.sanbong.model.RegisterTemplateRole;
 import io.rezarria.sanbong.model.User;
 import io.rezarria.sanbong.security.Details;
 import io.rezarria.sanbong.security.config.CustomUserDetailsService.CustomUserDetails;
@@ -57,16 +55,19 @@ public class SecurityService {
         return new JwtAndRefreshRecord(jwtUtils.createToken(auth), jwtUtils.createRefreshToken(auth));
     }
 
-    public Account register(String username, String password) {
-
-        return accountService.register(username, password, roleService.getAll().stream());
+    public Account register(String username, String password) throws Exception {
+        var account = accountService.register(username, password);
+        if (account == null)
+            throw new RuntimeException("Tạo tài khoản thất bại");
+        var user = User.builder().build();
+        account.setUser(user);
+        accountService.update(account);
+        return account;
     }
 
     @Nullable
     public Account register(RegisterDTO dto) throws Exception {
-        RegisterTemplate template = registerTemplateService.getNewest().orElseThrow();
-        var account = accountService.register(dto.username, dto.password,
-                template.getRoles().stream().map(i -> i.getRole()));
+        var account = accountService.register(dto.username, dto.password);
         if (account == null)
             throw new Exception("tạo tài khoản thất bại");
         User user = new User();
@@ -74,7 +75,7 @@ public class SecurityService {
         user.setName(dto.name);
         user.setDob(dto.dob);
         account.setUser(user);
-        return accountService.add(account);
+        return accountService.update(account);
     }
 
     public JwtAndRefreshRecord refresh(String token) {

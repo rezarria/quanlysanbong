@@ -43,7 +43,7 @@ public class SecurityController {
     }
 
     @PostMapping(path = "/register", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> register(@RequestBody RegisterDTO dto) {
+    public ResponseEntity<?> register(@RequestBody RegisterDTO dto) throws Exception {
         return ResponseEntity.ok(securityService.register(dto.getUsername(), dto.getPassword()));
     }
 

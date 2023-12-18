@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +14,6 @@ import io.rezarria.sanbong.dto.update.AccountUpdateDTO;
 import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.AccountRole;
 import io.rezarria.sanbong.model.AccountRoleKey;
-import io.rezarria.sanbong.model.Role;
 import io.rezarria.sanbong.repository.AccountRepository;
 import io.rezarria.sanbong.repository.RoleRepository;
 import io.rezarria.sanbong.service.IService;
@@ -62,28 +60,14 @@ public class AccountService implements IService<AccountRepository, Account> {
     }
 
     @Nullable
-    public Account register(String username, String password, Set<Role> roles) {
-        return register(username, password, roles.stream());
-    }
-
-    @Nullable
-    public Account register(String username, String password, Stream<Role> roles) {
-        try {
-            var account = Account
-                    .builder()
-                    .username(username)
-                    .password(passwordEncoder.encode(password))
-                    .active(true)
-                    .build();
-            account = accountRepository.save(account);
-            account.getRoles()
-                    .addAll(roles
-                            .map(role -> AccountRole.builder().role(role).build())
-                            .collect(Collectors.toSet()));
-            return accountRepository.save(account);
-        } catch (Exception e) {
-            return null;
-        }
+    public Account register(String username, String password) {
+        var account = Account
+                .builder()
+                .username(username)
+                .password(passwordEncoder.encode(password))
+                .active(true)
+                .build();
+        return accountRepository.save(account);
     }
 
     @Override
