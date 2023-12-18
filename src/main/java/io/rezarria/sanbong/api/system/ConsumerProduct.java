@@ -27,11 +27,9 @@ import com.github.fge.jsonpatch.JsonPatchException;
 
 import io.rezarria.sanbong.dto.PatchDTO;
 import io.rezarria.sanbong.dto.delete.DeleteDTO;
-import io.rezarria.sanbong.dto.post.FieldPost;
+import io.rezarria.sanbong.dto.post.ConsumerProductPost;
 import io.rezarria.sanbong.dto.update.consumer_product.ConsumerProductUpdateDTO;
 import io.rezarria.sanbong.dto.update.consumer_product.ConsumerProductUpdateDTOMapper;
-import io.rezarria.sanbong.dto.update.product.ProductUpdateDTO;
-import io.rezarria.sanbong.dto.update.product.ProductUpdateDTOMapper;
 import io.rezarria.sanbong.mapper.ConsumerProductMapper;
 import io.rezarria.sanbong.service.ConsumerProductService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -89,7 +87,7 @@ public class ConsumerProduct {
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<?> create(@RequestBody FieldPost dto) {
+    public ResponseEntity<?> create(@RequestBody ConsumerProductPost dto) {
         var product = mapper.fieldDTOtoField(dto);
         consumerProductService.create(product);
         if (product.getPrice() != null) {
