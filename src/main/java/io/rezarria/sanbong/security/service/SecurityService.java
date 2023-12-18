@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Claims;
 import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.AccountRole;
+import io.rezarria.sanbong.model.AccountRoleKey;
 import io.rezarria.sanbong.model.User;
 import io.rezarria.sanbong.security.Details;
 import io.rezarria.sanbong.security.config.CustomUserDetailsService.CustomUserDetails;
@@ -61,7 +62,11 @@ public class SecurityService {
         if (account == null)
             throw new RuntimeException("Tạo tài khoản thất bại");
         var roles = roleService.getAll().stream()
-                .map(role -> AccountRole.builder().account(account).role(role).build()).toList();
+                .map(role -> AccountRole.builder().id(AccountRoleKey.builder()
+                        .roleId(role.getId())
+                        .build()).account(account).role(role)
+                        .build())
+                .toList();
         account.getRoles().addAll(roles);
         var user = User.builder().build();
         account.setUser(user);
