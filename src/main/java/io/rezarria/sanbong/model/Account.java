@@ -1,5 +1,6 @@
 package io.rezarria.sanbong.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -30,11 +32,12 @@ public class Account extends BaseEntity {
     private String password;
     private boolean active;
     @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REMOVE }, orphanRemoval = false, mappedBy = "account")
+            CascadeType.DETACH, CascadeType.REFRESH }, orphanRemoval = false, mappedBy = "account")
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Set<AccountRole> roles;
+    @Builder.Default
+    private Set<AccountRole> roles = new HashSet<>();
 
     @OneToOne(fetch = FetchType.EAGER, cascade = {}, orphanRemoval = false, optional = true)
     @JsonIgnore

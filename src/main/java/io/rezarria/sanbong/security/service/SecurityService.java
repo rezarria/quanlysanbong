@@ -63,11 +63,12 @@ public class SecurityService {
     }
 
     @Nullable
-    public Account register(RegisterDTO dto) {
+    public Account register(RegisterDTO dto) throws Exception {
         RegisterTemplate template = registerTemplateService.getNewest().orElseThrow();
-        Account account = accountService.make(dto.username, dto.password,
-                template.getRoles().stream().map(RegisterTemplateRole::getRole));
-        account.setActive(template.isActive());
+        var account = accountService.register(dto.username, dto.password,
+                template.getRoles().stream().map(i -> i.getRole()));
+        if (account == null)
+            throw new Exception("tạo tài khoản thất bại");
         User user = new User();
         user.setAvatar(dto.avatar);
         user.setName(dto.name);

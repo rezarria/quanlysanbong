@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.rezarria.sanbong.dto.LoginDTO;
 import io.rezarria.sanbong.dto.RegisterDTO;
 import io.rezarria.sanbong.security.service.SecurityService;
+import io.rezarria.sanbong.security.service.SecurityService.JwtAndRefreshRecord;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 
@@ -31,8 +32,8 @@ public class SecurityController {
         return ResponseEntity.ok(securityService.login(dto.getUsername(), dto.getPassword()));
     }
 
-    @PostMapping(path = "refesh", produces = "application/json")
-    public ResponseEntity<?> refesh(@RequestBody String token) {
+    @PostMapping(path = "/refesh", produces = "application/json")
+    public ResponseEntity<JwtAndRefreshRecord> refesh(@RequestBody String token) {
         return ResponseEntity.ok(securityService.refresh(token));
     }
 

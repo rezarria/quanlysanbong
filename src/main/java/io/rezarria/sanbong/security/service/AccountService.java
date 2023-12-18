@@ -62,25 +62,28 @@ public class AccountService implements IService<AccountRepository, Account> {
     }
 
     @Nullable
+    public Account register(String username, String password, Set<Role> roles) {
+        return register(username, password, roles.stream());
+    }
+
+    @Nullable
     public Account register(String username, String password, Stream<Role> roles) {
         try {
-            return accountRepository.save(make(username, password, roles));
+            var account = Account
+                    .builder()
+                    .username(username)
+                    .password(passwordEncoder.encode(password))
+                    .active(true)
+                    .build();
+            account = accountRepository.save(account);
+            account.getRoles()
+                    .addAll(roles
+                            .map(role -> AccountRole.builder().role(role).build())
+                            .collect(Collectors.toSet()));
+            return accountRepository.save(account);
         } catch (Exception e) {
             return null;
         }
-    }
-
-    public Account make(String username, String password, Stream<Role> roles) {
-        return make(username, password, roles.toList());
-    }
-
-    public Account make(String username, String password, Collection<Role> roles) {
-        Account account = new Account();
-        account.setUsername(username);
-        account.setPassword(passwordEncoder.encode(password));
-        account.setRoles(roles.stream().map(AccountRole.builder()::role).map(AccountRole.AccountRoleBuilder::build)
-                .collect(Collectors.toSet()));
-        return account;
     }
 
     @Override
