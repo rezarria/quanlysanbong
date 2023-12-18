@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import io.rezarria.sanbong.dto.update.AccountUpdateDTO;
+import io.rezarria.sanbong.dto.update.account.AccountUpdateDTO;
 import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.AccountRole;
 import io.rezarria.sanbong.model.AccountRoleKey;

@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.util.Streamable;
 
-import io.rezarria.sanbong.dto.update.FieldUpdateDTO;
+import io.rezarria.sanbong.dto.update.field.FieldUpdateDTO;
 import io.rezarria.sanbong.model.Field;
 
 public interface FieldRepository extends JpaRepository<Field, UUID> {

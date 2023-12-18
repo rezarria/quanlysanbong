@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.rezarria.sanbong.dto.PatchDTO;
-import io.rezarria.sanbong.dto.RolePostDTO;
+import io.rezarria.sanbong.dto.post.RolePostDTO;
 import io.rezarria.sanbong.mapper.RoleMapper;
 import io.rezarria.sanbong.model.Role;
 import io.rezarria.sanbong.security.service.RoleService;

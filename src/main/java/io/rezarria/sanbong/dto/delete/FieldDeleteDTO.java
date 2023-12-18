@@ -1,4 +1,4 @@
-package io.rezarria.sanbong.dto;
+package io.rezarria.sanbong.dto.delete;
 
 import java.util.UUID;
 

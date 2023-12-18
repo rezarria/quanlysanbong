@@ -32,8 +32,8 @@ import com.github.fge.jsonpatch.JsonPatch;
 
 import io.micrometer.common.lang.Nullable;
 import io.rezarria.sanbong.dto.ChangePasswordDTO;
-import io.rezarria.sanbong.dto.update.AccountUpdateDTO;
-import io.rezarria.sanbong.dto.update.AccountUpdateDTOMapper;
+import io.rezarria.sanbong.dto.update.account.AccountUpdateDTO;
+import io.rezarria.sanbong.dto.update.account.AccountUpdateDTOMapper;
 import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.AccountRole;
 import io.rezarria.sanbong.model.AccountRoleKey;

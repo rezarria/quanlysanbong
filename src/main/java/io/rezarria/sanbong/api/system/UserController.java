@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.rezarria.sanbong.dto.PatchDTO;
-import io.rezarria.sanbong.dto.UserPostDTO;
+import io.rezarria.sanbong.dto.post.UserPostDTO;
 import io.rezarria.sanbong.mapper.UserMapper;
 import io.rezarria.sanbong.model.User;
 import io.rezarria.sanbong.repository.UserRepository;

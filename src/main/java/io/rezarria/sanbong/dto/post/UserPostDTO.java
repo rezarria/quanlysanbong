@@ -1,4 +1,4 @@
-package io.rezarria.sanbong.dto;
+package io.rezarria.sanbong.dto.post;
 
 import java.util.Date;
 import java.util.UUID;

@@ -3,7 +3,7 @@ package io.rezarria.sanbong.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import io.rezarria.sanbong.dto.RolePostDTO;
+import io.rezarria.sanbong.dto.post.RolePostDTO;
 import io.rezarria.sanbong.model.Role;
 
 @Mapper(componentModel = "spring")

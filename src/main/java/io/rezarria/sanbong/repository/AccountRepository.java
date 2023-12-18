@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.util.Streamable;
 
-import io.rezarria.sanbong.dto.update.AccountUpdateDTO;
+import io.rezarria.sanbong.dto.update.account.AccountUpdateDTO;
 import io.rezarria.sanbong.model.Account;
 
 public interface AccountRepository extends JpaRepository<Account, UUID>, CustomRepository {
