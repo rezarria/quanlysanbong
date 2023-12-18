@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -31,14 +32,19 @@ public class Account extends BaseEntity {
     private String password;
     private boolean active;
     @OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH }, orphanRemoval = false, mappedBy = "account")
+            CascadeType.DETACH, CascadeType.REFRESH }, orphanRemoval = false)
+    @JoinColumn(name = "account_id")
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @Builder.Default
     private Set<AccountRole> roles = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = {}, orphanRemoval = false, optional = true)
+    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
+            CascadeType.REFRESH }, orphanRemoval = false, optional = true)
+    @JoinColumn(name = "user_id")
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private User user;
 
