@@ -23,6 +23,7 @@ public abstract class ProductMapper {
     @Autowired
     private OrganizationRepository repository;
 
+    @Named("mapDTOToProduct")
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "lastModifiedBy", ignore = true)
@@ -33,8 +34,9 @@ public abstract class ProductMapper {
     @Mapping(target = "images", source = "images", qualifiedByName = "mapImages")
     @Mapping(target = "description", source = "description")
     @Mapping(target = "organization", source = "organizationId", qualifiedByName = "mapOrganizationId")
-    public abstract Product fieldDTOtoField(ProductPost dto);
+    public abstract Product convert(ProductPost dto);
 
+    @Named("mapFieldPrice")
     ProductPrice mapFieldPrice(Double price) {
         return ProductPrice.builder().price(price).build();
     }

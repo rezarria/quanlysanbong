@@ -1,15 +1,16 @@
 package io.rezarria.sanbong.mapper;
 
-import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import io.rezarria.sanbong.dto.post.ConsumerProductPost;
+import io.rezarria.sanbong.mapper.config.ProductUpdateDTOConfig;
 import io.rezarria.sanbong.model.ConsumerProduct;
 
-@Mapper(componentModel = "spring", uses = { ProductMapper.class })
+@Mapper(componentModel = "spring", config = ProductUpdateDTOConfig.class, uses = {
+        ProductMapper.class })
 public abstract class ConsumerProductMapper {
-    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "price", source = "price", qualifiedByName = "mapPrice")
     @Mapping(target = "images", source = "images", qualifiedByName = "mapImages")
-    public abstract ConsumerProduct fieldDTOtoField(ConsumerProductPost dto);
+    public abstract ConsumerProduct convert(ConsumerProductPost dto);
 }

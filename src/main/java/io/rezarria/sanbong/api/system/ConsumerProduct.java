@@ -88,7 +88,7 @@ public class ConsumerProduct {
 
     @PostMapping(consumes = "application/json")
     public ResponseEntity<?> create(@RequestBody ConsumerProductPost dto) {
-        var product = mapper.fieldDTOtoField(dto);
+        var product = mapper.convert(dto);
         consumerProductService.create(product);
         if (product.getPrice() != null) {
             product.getPrice().setProduct(product);
