@@ -27,6 +27,8 @@ import lombok.experimental.SuperBuilder;
 public class Organization extends BaseEntity {
     private String name;
     private String address;
+    private String email;
+    private String phone;
     private String image;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "organization")
