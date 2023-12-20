@@ -37,8 +37,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping(name = "/api/consumerProduct")
 @RequiredArgsConstructor
+@RequestMapping(name = "/api/consumer_product")
 @SecurityRequirement(name = "bearer-jwt")
 public class ConsumerProduct {
     private final ConsumerProductService consumerProductService;
