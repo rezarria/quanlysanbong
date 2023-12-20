@@ -24,11 +24,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.rezarria.sanbong.api.system.AccountController.UpdateDTO;
 import io.rezarria.sanbong.dto.post.OrganizationPostDTO;
-import io.rezarria.sanbong.dto.update.account.AccountUpdateDTO;
 import io.rezarria.sanbong.dto.update.organization.OrganizationUpdateDTO;
 import io.rezarria.sanbong.dto.update.organization.OrganizationUpdateDTOMapper;
 import io.rezarria.sanbong.mapper.OrganizationMapper;
-import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.service.OrganizationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;

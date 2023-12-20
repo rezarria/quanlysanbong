@@ -36,18 +36,21 @@ public class WebSecurity implements WebMvcConfigurer {
             JwtUtils jwtUtil) throws Exception {
         return http
                 .formLogin(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(registry -> registry
-                        .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/swagger-ui/**").permitAll().requestMatchers("/swagger-ui/**").permitAll()
-                        .requestMatchers("/v3/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/security/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/security/register").permitAll()
-                        .anyRequest().authenticated())
+                .anonymous(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(cfg -> cfg.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests(registry -> registry
+                        .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/**").permitAll()
+                        .requestMatchers("/api/files/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/security/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/security/register").permitAll()
+                        .anyRequest().authenticated())
                 .build();
     }
 

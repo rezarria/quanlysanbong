@@ -1,12 +1,13 @@
 package io.rezarria.sanbong.security.jwt;
 
-import static java.util.stream.Collectors.joining;
-
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
 
@@ -23,7 +24,9 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.Jwts.SIG;
 import io.jsonwebtoken.security.Keys;
-import io.rezarria.sanbong.security.Details;
+import io.rezarria.sanbong.security.AccountIdInfoAuthority;
+import io.rezarria.sanbong.security.InfoAuthority;
+import io.rezarria.sanbong.security.UserIdInfoAuthority;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
@@ -44,20 +47,30 @@ public class JwtUtils {
         secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
+    private void assginClaims(Collection<? extends GrantedAuthority> authorities, JwtBuilder.BuilderClaims claims) {
+        var roles = new ArrayList<GrantedAuthority>();
+        var others = new ArrayList<InfoAuthority>();
+        authorities.forEach(a -> {
+            if (a.getAuthority().startsWith("ROLE_"))
+                roles.add(a);
+            else
+                others.add(new InfoAuthority(a.getAuthority()));
+        });
+        claims.add(AUTHORITIES_KEY,
+                roles.stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(",")));
+        others.forEach(a -> {
+            claims.add(a.getKey(), a.getValue());
+        });
+    }
+
     public String createToken(Authentication authentication) {
 
         String username = authentication.getName();
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         JwtBuilder builder = Jwts.builder();
         JwtBuilder.BuilderClaims claims = builder.claims();
-        if (!authorities.isEmpty()) {
-            claims.add(AUTHORITIES_KEY, authorities.stream().map(GrantedAuthority::getAuthority).collect(joining(",")));
-        }
-        Details details = (Details) authentication.getDetails();
-        details.addToClaims(claims);
+        assginClaims(authentication.getAuthorities(), claims);
         Date now = new Date();
         Date validity = new Date(now.getTime() + jwtProperties.getValidityInMS());
-
         return builder
                 .subject(username)
                 .issuedAt(now)
@@ -68,14 +81,21 @@ public class JwtUtils {
 
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
+        return getAuthentication(claims);
+    }
+
+    public Authentication getAuthentication(Claims claims) {
         Object authoritiesClaim = claims.get(AUTHORITIES_KEY);
-        Collection<? extends GrantedAuthority> authorities = null == authoritiesClaim ? AuthorityUtils.NO_AUTHORITIES
+        Collection<GrantedAuthority> authorities = null == authoritiesClaim ? AuthorityUtils.NO_AUTHORITIES
                 : AuthorityUtils.commaSeparatedStringToAuthorityList(authoritiesClaim.toString());
+        var accountId = UUID.fromString(claims.get(AccountIdInfoAuthority.NAME, String.class));
+        var userId = UUID.fromString(claims.get(UserIdInfoAuthority.NAME, String.class));
+        if (accountId != null)
+            authorities.add(new AccountIdInfoAuthority(accountId));
+        if (userId != null)
+            authorities.add(new UserIdInfoAuthority(accountId));
         User principal = new User(claims.getSubject(), "", authorities);
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, token,
-                authorities);
-        auth.setDetails(Details.from(claims));
-        return auth;
+        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
     public boolean validateToken(String token) {
@@ -100,19 +120,20 @@ public class JwtUtils {
 
     public String refreshToken(String refreshToken) {
         try {
-            Claims claims = Jwts.parser().decryptWith(secretKey).build().parseSignedClaims(refreshToken).getPayload();
+            var builder = Jwts.builder();
+            var claims = builder.claims();
 
-            String username = claims.getSubject();
-            Collection<? extends GrantedAuthority> authorities = AuthorityUtils
-                    .commaSeparatedStringToAuthorityList(claims.get(AUTHORITIES_KEY).toString());
+            Claims payload = Jwts.parser().decryptWith(secretKey).build().parseSignedClaims(refreshToken).getPayload();
+
+            claims.add(AUTHORITIES_KEY, payload.get(AUTHORITIES_KEY, String.class));
+            claims.add(AccountIdInfoAuthority.NAME, payload.get(AccountIdInfoAuthority.NAME, String.class));
+            claims.add(UserIdInfoAuthority.NAME, payload.get(UserIdInfoAuthority.NAME, String.class));
 
             Instant now = Instant.now();
             Instant validity = now.plusMillis(jwtProperties.getValidityInMS()).plusSeconds(60L * 60L);
 
-            return Jwts.builder()
-                    .subject(username)
-                    .claim(AUTHORITIES_KEY,
-                            authorities.stream().map(GrantedAuthority::getAuthority).collect(joining(",")))
+            return builder
+                    .subject(payload.getSubject())
                     .issuedAt(Date.from(now))
                     .expiration(Date.from(validity))
                     .signWith(secretKey, SIG.HS256)
@@ -125,19 +146,14 @@ public class JwtUtils {
 
     public String createRefreshToken(Authentication authentication) {
         String username = authentication.getName();
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        JwtBuilder builder = Jwts.builder();
-        JwtBuilder.BuilderClaims claims = builder.claims();
-        if (!authorities.isEmpty()) {
-            claims.add(AUTHORITIES_KEY, authorities.stream().map(GrantedAuthority::getAuthority).collect(joining(",")));
-        }
-        Details details = (Details) authentication.getDetails();
-        details.addToClaims(claims);
-        Instant now = Instant.now();
-        Instant validity = now.plusMillis(jwtProperties.getRefreshInMS()).plusSeconds(60L * 60L);
+        var authorities = authentication.getAuthorities();
+        var builder = Jwts.builder();
+        var claims = builder.claims();
+        assginClaims(authorities, claims);
+        var now = Instant.now();
+        var validity = now.plusMillis(jwtProperties.getRefreshInMS()).plusSeconds(60L * 60L * 3L);
         return builder
                 .subject(username)
-                .claim(AUTHORITIES_KEY, authorities.stream().map(GrantedAuthority::getAuthority).collect(joining(",")))
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(validity))
                 .signWith(secretKey, SIG.HS256)
