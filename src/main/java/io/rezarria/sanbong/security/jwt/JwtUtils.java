@@ -34,7 +34,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtUtils {
 
-    private static final String AUTHORITIES_KEY = "roles";
+    public static final String AUTHORITIES_KEY = "roles";
 
     private final JwtProperties jwtProperties;
 

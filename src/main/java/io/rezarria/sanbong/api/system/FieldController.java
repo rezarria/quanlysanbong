@@ -33,7 +33,6 @@ import io.rezarria.sanbong.dto.update.field.FieldUpdateDTO;
 import io.rezarria.sanbong.dto.update.field.FieldUpdateDTOMapper;
 import io.rezarria.sanbong.mapper.FieldMapper;
 import io.rezarria.sanbong.model.Field;
-import io.rezarria.sanbong.repository.FieldRepository;
 import io.rezarria.sanbong.service.FieldService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
@@ -79,7 +78,7 @@ public class FieldController {
     public ResponseEntity<?> getAll(@PathVariable @RequestParam Optional<UUID> id,
             @RequestParam Optional<String> name) {
         if (name.isPresent()) {
-            Streamable<GetDTO> data = ((FieldRepository) fieldService.getRepo()).findAllByNameContaining(name.get(),
+            Streamable<GetDTO> data = fieldService.getRepo().findAllByNameContaining(name.get(),
                     GetDTO.class);
             return ResponseEntity.ok(data);
         }

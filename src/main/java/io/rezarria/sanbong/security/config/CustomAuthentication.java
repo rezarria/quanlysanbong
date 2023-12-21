@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-public class Authentication {
+public class CustomAuthentication {
     @Bean
     public DaoAuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder,
             UserDetailsService userDetailsService) {

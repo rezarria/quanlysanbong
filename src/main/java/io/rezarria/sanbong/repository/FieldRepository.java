@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.util.Streamable;
@@ -17,6 +16,8 @@ public interface FieldRepository extends JpaRepository<Field, UUID> {
     void deleteByName(String name);
 
     List<Field> findAllByNameIn(Collection<String> name);
+
+    List<Field> findAllByOrganizationId(UUID id);
 
     void deleteAllByNameIn(Collection<String> name);
 

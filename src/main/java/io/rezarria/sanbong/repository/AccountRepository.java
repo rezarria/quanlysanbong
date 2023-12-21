@@ -11,6 +11,7 @@ import org.springframework.data.util.Streamable;
 
 import io.rezarria.sanbong.dto.update.account.AccountUpdateDTO;
 import io.rezarria.sanbong.model.Account;
+import io.rezarria.sanbong.model.Field;
 
 public interface AccountRepository extends JpaRepository<Account, UUID>, CustomRepository {
     Optional<Account> findByUsername(String username);
@@ -36,4 +37,7 @@ public interface AccountRepository extends JpaRepository<Account, UUID>, CustomR
     }
 
     <T> Streamable<T> findAllByUsernameContaining(String name, Class<T> classType);
+
+    @Query("select f from Account u inner join Organization o on o.id = u.organization.id inner join Field f on f.organization.id = o.id where u = :id")
+    List<Field> getFieldsById(UUID id);
 }

@@ -2,14 +2,18 @@ package io.rezarria.sanbong.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
+import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.stereotype.Service;
 
 import io.rezarria.sanbong.model.Field;
 import io.rezarria.sanbong.repository.FieldRepository;
+import io.rezarria.sanbong.security.component.Auth;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
 @Service
 @Transactional
@@ -17,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class FieldService implements IService<FieldRepository, Field> {
     private final FieldRepository fieldRepository;
     private final EntityManager entityManager;
+    private final Auth auth;
 
     @Override
     public FieldRepository getRepo() {
@@ -32,6 +37,10 @@ public class FieldService implements IService<FieldRepository, Field> {
         return fieldRepository.findAllByNameIn(names);
     }
 
+    public List<Field> getFieldsByOrganizationId(UUID id) {
+        return fieldRepository.findAllByOrganizationId(id);
+    }
+
     public void remove(String name) throws IllegalArgumentException {
         fieldRepository.deleteByName(name);
     }
@@ -39,4 +48,14 @@ public class FieldService implements IService<FieldRepository, Field> {
     public void remove(Collection<String> names) {
         fieldRepository.deleteAllByNameIn(names);
     }
+
+    @SneakyThrows
+    public <T> List<T> getFieldsByName(String name, Class<T> classType) {
+        if (auth.isLogin()) {
+            return null;
+        } else {
+            throw new PermissionDeniedDataAccessException("field", null);
+        }
+    }
+
 }
