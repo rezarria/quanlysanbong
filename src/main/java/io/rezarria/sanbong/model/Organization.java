@@ -20,13 +20,6 @@ public class Organization extends BaseEntity {
     private String phone;
     private String image;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "organization_id")
-    @JsonIgnore
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private List<Field> fileds;
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "organization")
     @JsonIgnore
     @EqualsAndHashCode.Exclude
