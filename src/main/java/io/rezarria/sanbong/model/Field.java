@@ -24,14 +24,14 @@ import java.util.Set;
 @NoArgsConstructor
 @DiscriminatorValue("Field")
 public class Field extends Product {
-    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<FieldDetail> details;
     @OneToOne
     private FieldDetail detail;
-    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

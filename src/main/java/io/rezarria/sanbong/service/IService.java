@@ -30,7 +30,7 @@ public interface IService<T extends JpaRepository<OBJ, UUID>, OBJ> {
         return getEntityManager().createQuery(query).getResultStream();
     }
 
-    @Transactional(readOnly = false)
+    @Transactional()
     default OBJ create(OBJ entity) {
         return getRepo().save(entity);
     }

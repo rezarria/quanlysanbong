@@ -34,18 +34,6 @@ public abstract class FieldUpdateDTOMapper {
             entityManager.persist(price);
             data.getPrices().add(price);
         }
-        // if (src.images != null) {
-        // var imageList = data.getImages();
-        // imageList.removeIf(i -> !src.images.contains(i.getPath()));
-        // var pathList = imageList.stream().map(ProductImage::getPath).toList();
-        // var newImageList = src.images.stream().filter(i ->
-        // !pathList.contains(i)).toList();
-        // if (!newImageList.isEmpty()) {
-        // imageList.addAll(
-        // newImageList.stream().map(i ->
-        // ProductImage.builder().path(i).product(data).build()).toList());
-        // }
-        // }
         convert(src, data);
     }
 

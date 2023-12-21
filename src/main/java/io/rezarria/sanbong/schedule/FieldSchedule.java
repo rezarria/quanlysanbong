@@ -1,5 +1,6 @@
 package io.rezarria.sanbong.schedule;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -14,25 +15,18 @@ import java.util.concurrent.ScheduledFuture;
 public class FieldSchedule {
     private final ThreadPoolTaskScheduler scheduler;
     private ScheduledFuture<?> scheduledTask;
+    @Getter
     private long fixedRate = 600000;
+    @Getter
     private Instant lastExecutionTime;
-    private Duration executionDuration;
 
     @Scheduled(fixedRateString = "${my.scheduled.fixed-rate:600000}")
     public void runTask() {
         Instant currentExecutionTime = Instant.now();
         if (lastExecutionTime != null) {
-            executionDuration = Duration.between(lastExecutionTime, currentExecutionTime);
+            Duration executionDuration = Duration.between(lastExecutionTime, currentExecutionTime);
         }
         lastExecutionTime = currentExecutionTime;
-    }
-
-    public Instant getLastExecutionTime() {
-        return lastExecutionTime;
-    }
-
-    public long getFixedRate() {
-        return fixedRate;
     }
 
     public void setFixedRate(long fixedRate) {

@@ -19,7 +19,7 @@ import java.util.Set;
 public class Role extends BaseEntity {
     private String name;
     private String displayName;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id")
     @Builder.Default
     @JsonIgnore
@@ -27,7 +27,7 @@ public class Role extends BaseEntity {
     @ToString.Exclude
     private Set<AccountRole> accounts = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false, mappedBy = "role")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "role")
     @Builder.Default
     @JsonIgnore
     @EqualsAndHashCode.Exclude

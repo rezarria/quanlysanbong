@@ -10,8 +10,6 @@ import java.util.UUID;
 public interface OrganizationRepository extends JpaRepository<Organization, UUID> {
     default Optional<OrganizationUpdateDTO> findByIdForUpdate(UUID id) {
         var account = findById(id);
-        if (account.isEmpty())
-            return Optional.empty();
-        return Optional.of(OrganizationUpdateDTO.create(account.get()));
+        return account.map(OrganizationUpdateDTO::create);
     }
 }

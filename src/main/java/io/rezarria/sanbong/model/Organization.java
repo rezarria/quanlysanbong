@@ -1,7 +1,10 @@
 package io.rezarria.sanbong.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

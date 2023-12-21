@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import java.util.Set;
 
@@ -17,14 +15,14 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FieldDetail extends BaseEntity {
-    @JdbcTypeCode(SqlTypes.JSON)
+    @Transient
     private JsonNode data;
     @ManyToOne
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Field field;
-    @OneToMany(mappedBy = "detail", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
+    @OneToMany(mappedBy = "detail", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

@@ -7,7 +7,7 @@ import java.util.UUID;
 public class UserIdInfoAuthority implements GrantedAuthority {
 
     public static final String NAME = "UserId".toUpperCase();
-    private InfoAuthority info;
+    private final InfoAuthority info;
 
     public UserIdInfoAuthority(UUID id) {
         info = new InfoAuthority(NAME, id.toString());

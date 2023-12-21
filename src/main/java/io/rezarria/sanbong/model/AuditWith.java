@@ -8,10 +8,4 @@ import lombok.Setter;
 @Setter
 @Embeddable
 public class AuditWith<T> {
-    // @OneToMany(mappedBy = "createdBy", fetch = FetchType.LAZY, orphanRemoval =
-    // false)
-    // private List<T> creates;
-    // @OneToMany(mappedBy = "lastModifiedBy", fetch = FetchType.LAZY, orphanRemoval
-    // = false)
-    // private List<T> modifies;
 }

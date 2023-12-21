@@ -18,7 +18,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("Customer")
 public class Customer extends User {
-    @OneToMany(mappedBy = "customer", cascade = {}, fetch = FetchType.LAZY, orphanRemoval = false)
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

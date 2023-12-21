@@ -20,7 +20,7 @@ public class Account extends BaseEntity {
     private String password;
     private boolean active;
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH}, orphanRemoval = false)
+            CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "account_id")
     @JsonIgnore
     @EqualsAndHashCode.Exclude
@@ -29,14 +29,14 @@ public class Account extends BaseEntity {
     private Set<AccountRole> roles = new HashSet<>();
 
     @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
-            CascadeType.REFRESH}, orphanRemoval = false, optional = true)
+            CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

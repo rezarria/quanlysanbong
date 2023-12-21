@@ -5,12 +5,11 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Objects;
 
+@Getter
 public class InfoAuthority implements GrantedAuthority {
-    @Getter
-    private String key;
+    private final String key;
 
-    @Getter
-    private String value;
+    private final String value;
 
     public InfoAuthority(String key, String value) {
         Objects.requireNonNull(key, "Key cannot be null");

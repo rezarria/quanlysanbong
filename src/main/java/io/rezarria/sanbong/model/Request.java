@@ -34,13 +34,13 @@ public class Request extends BaseEntity {
     @ToString.Exclude
     private Customer customer;
     @Nullable
-    @ManyToOne(optional = true)
+    @ManyToOne()
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Field field;
     @Nullable
-    @ManyToOne(optional = true)
+    @ManyToOne()
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

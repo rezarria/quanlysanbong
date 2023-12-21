@@ -26,9 +26,7 @@ public interface AccountRepository extends JpaRepository<Account, UUID>, CustomR
 
     default Optional<AccountUpdateDTO> findByIdForUpdate(UUID id) {
         var account = findById(id);
-        if (account.isEmpty())
-            return Optional.empty();
-        return Optional.of(AccountUpdateDTO.create(account.get()));
+        return account.map(AccountUpdateDTO::create);
     }
 
     default boolean areIdsExist(Iterable<UUID> ids) {

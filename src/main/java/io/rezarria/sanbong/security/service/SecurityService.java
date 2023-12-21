@@ -39,7 +39,7 @@ public class SecurityService {
         return new JwtAndRefreshRecord(jwtUtils.createToken(auth), jwtUtils.createRefreshToken(auth));
     }
 
-    public Account register(String username, String password) throws Exception {
+    public Account register(String username, String password) {
         var account = accountService.register(username, password);
         if (account == null)
             throw new RuntimeException("Tạo tài khoản thất bại");

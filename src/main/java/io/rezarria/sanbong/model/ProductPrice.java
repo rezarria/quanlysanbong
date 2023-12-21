@@ -19,7 +19,7 @@ import org.hibernate.annotations.OnDeleteAction;
 public class ProductPrice extends BaseEntity {
     private double price;
     private String description;
-    @ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JsonIgnore
     @EqualsAndHashCode.Exclude

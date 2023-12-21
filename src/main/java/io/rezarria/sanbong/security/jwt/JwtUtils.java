@@ -52,9 +52,7 @@ public class JwtUtils {
         });
         claims.add(AUTHORITIES_KEY,
                 roles.stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(",")));
-        others.forEach(a -> {
-            claims.add(a.getKey(), a.getValue());
-        });
+        others.forEach(a -> claims.add(a.getKey(), a.getValue()));
     }
 
     public String createToken(Authentication authentication) {
@@ -84,10 +82,8 @@ public class JwtUtils {
                 : AuthorityUtils.commaSeparatedStringToAuthorityList(authoritiesClaim.toString());
         var accountId = UUID.fromString(claims.get(AccountIdInfoAuthority.NAME, String.class));
         var userId = UUID.fromString(claims.get(UserIdInfoAuthority.NAME, String.class));
-        if (accountId != null)
-            authorities.add(new AccountIdInfoAuthority(accountId));
-        if (userId != null)
-            authorities.add(new UserIdInfoAuthority(accountId));
+        authorities.add(new AccountIdInfoAuthority(accountId));
+        authorities.add(new UserIdInfoAuthority(accountId));
         User principal = new User(claims.getSubject(), "", authorities);
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
@@ -105,11 +101,7 @@ public class JwtUtils {
     }
 
     public Claims refresh(String token, long seconds) {
-        try {
-            return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
-        } catch (Exception e) {
-            throw e;
-        }
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
     }
 
     public String refreshToken(String refreshToken) {

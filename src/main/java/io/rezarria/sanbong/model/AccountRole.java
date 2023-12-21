@@ -35,15 +35,4 @@ public class AccountRole extends Audit {
     @EqualsAndHashCode.Exclude
     private Role role;
 
-    // @PrePersist
-    // public void prePersist() {
-    // if (id == null) {
-    // var builder = AccountRoleKey.builder();
-    // if (account != null)
-    // builder.accountId(account.getId());
-    // if (role != null)
-    // builder.roleId(role.getId());
-    // id = builder.build();
-    // }
-    // }
 }

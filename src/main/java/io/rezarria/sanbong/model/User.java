@@ -26,7 +26,7 @@ public class User extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     protected Date dob;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {}, orphanRemoval = false, optional = true)
+    @OneToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
@@ -37,7 +37,7 @@ public class User extends BaseEntity {
     @Convert(converter = JsonNodeConverter.class)
     protected JsonNode data;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

@@ -67,6 +67,6 @@ public class CustomUserDetailsService {
     }
 
     public interface CustomUserDetails extends UserDetailsService {
-        public UserDetails loadUserByAccountId(UUID accountId);
+        UserDetails loadUserByAccountId(UUID accountId);
     }
 }

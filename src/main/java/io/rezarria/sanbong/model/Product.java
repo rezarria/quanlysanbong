@@ -29,10 +29,10 @@ public class Product extends BaseEntity {
     @ToString.Exclude
     protected Set<ProductPrice> prices = new HashSet<>();
 
-    @OneToOne(optional = true, fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,
             CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "price_id", unique = true, nullable = true, updatable = true)
+    @JoinColumn(name = "price_id", unique = true)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JsonIgnore
     @EqualsAndHashCode.Exclude
@@ -44,7 +44,7 @@ public class Product extends BaseEntity {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     protected Set<ProductImage> images = new HashSet<>();
-    @ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.REFRESH)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

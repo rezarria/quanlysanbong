@@ -41,9 +41,7 @@ public interface FieldRepository extends JpaRepository<Field, UUID> {
 
     default Optional<FieldUpdateDTO> findByIdForUpdate(UUID id) {
         var field = findById(id);
-        if (field.isEmpty())
-            return Optional.empty();
-        return Optional.of(FieldUpdateDTO.create(field.get()));
+        return field.map(FieldUpdateDTO::create);
     }
 
     <T> Streamable<T> findAllByNameContaining(String name, Class<T> typeClass);

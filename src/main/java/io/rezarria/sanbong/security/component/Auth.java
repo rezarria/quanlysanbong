@@ -35,10 +35,10 @@ public class Auth {
             claims = authentication.getAuthorities();
             var account = claims.stream().filter(AccountIdInfoAuthority::check).map(AccountIdInfoAuthority::new)
                     .findFirst();
-            accountId = account.isPresent() ? account.get().getValue() : null;
+            accountId = account.map(AccountIdInfoAuthority::getValue).orElse(null);
             var user = claims.stream().filter(UserIdInfoAuthority::check).map(UserIdInfoAuthority::new)
                     .findFirst();
-            userId = user.isPresent() ? user.get().getValue() : null;
+            userId = user.map(UserIdInfoAuthority::getValue).orElse(null);
             roles = claims.stream().filter(i -> i.getAuthority().startsWith("ROLE_"))
                     .map(i -> {
                         String str = i.getAuthority();
@@ -49,7 +49,7 @@ public class Auth {
     }
 
     public Optional<String> get(String name) {
-        return claims.stream().filter(c -> c.getAuthority().startsWith(name)).map(GrantedAuthority::getAuthority)
+        return claims.stream().map(GrantedAuthority::getAuthority).filter(authority -> authority.startsWith(name))
                 .findFirst();
     }
 

@@ -20,8 +20,6 @@ public interface ConsumerProductRepository extends JpaRepository<ConsumerProduct
 
     default Optional<ProductUpdateDTO> findByIdForUpdate(UUID id) {
         var product = findById(id);
-        if (product.isEmpty())
-            return Optional.empty();
-        return Optional.of(ProductUpdateDTO.create(product.get()));
+        return product.map(ProductUpdateDTO::create);
     }
 }

@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class AccountIdInfoAuthority implements GrantedAuthority {
     public static final String NAME = "AccountId".toUpperCase();
-    private InfoAuthority info;
+    private final InfoAuthority info;
 
     public AccountIdInfoAuthority(UUID value) {
         info = new InfoAuthority(NAME, value.toString());

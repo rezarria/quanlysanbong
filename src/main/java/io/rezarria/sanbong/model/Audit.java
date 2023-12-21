@@ -25,14 +25,14 @@ import java.time.Instant;
 @NoArgsConstructor
 public class Audit {
     @CreatedBy
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     protected Account createdBy;
     @LastModifiedBy
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JsonIgnore
     @EqualsAndHashCode.Exclude
