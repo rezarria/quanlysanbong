@@ -1,19 +1,13 @@
 package io.rezarria.sanbong.api.system;
 
-import java.util.Collection;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import io.rezarria.sanbong.file.FileService;
 import io.rezarria.sanbong.response.FileResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/files")
@@ -25,7 +19,7 @@ public class FileController {
     @GetMapping("/download")
     public ResponseEntity<?> download(@RequestParam String file) {
         var resource = fileService.loadAsResource(file);
-        return ResponseEntity.ok().header("Content-Type", "image/webp" )
+        return ResponseEntity.ok().header("Content-Type", "image/webp")
                 .body(resource);
     }
 

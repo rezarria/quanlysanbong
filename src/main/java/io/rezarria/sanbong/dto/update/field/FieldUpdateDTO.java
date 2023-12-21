@@ -1,31 +1,29 @@
 package io.rezarria.sanbong.dto.update.field;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import jakarta.annotation.Nullable;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
 import io.rezarria.sanbong.model.Field;
 import io.rezarria.sanbong.model.ProductImage;
+import jakarta.annotation.Nullable;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class FieldUpdateDTO {
+    @Nullable
+    List<String> images;
     private UUID id;
     @Nullable
     private String name;
     private double price;
     @Nullable
     private String description;
-    @Nullable
-    List<String> images;
 
     public static FieldUpdateDTO create(Field field) {
         var builder = FieldUpdateDTO.builder();

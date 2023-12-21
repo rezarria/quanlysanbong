@@ -1,35 +1,8 @@
 package io.rezarria.sanbong.api.system;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.util.Streamable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
-
 import io.micrometer.common.lang.Nullable;
 import io.rezarria.sanbong.dto.ChangePasswordDTO;
 import io.rezarria.sanbong.dto.update.account.AccountUpdateDTO;
@@ -43,6 +16,19 @@ import io.rezarria.sanbong.security.service.AccountService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.util.Streamable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -66,21 +52,9 @@ public class AccountController {
         return ResponseEntity.ok(accountService.getSize());
     }
 
-    interface GetDTO {
-        UUID getId();
-
-        @Value("#{target.user != null ? target.user.id : null}")
-        String getUserId();
-
-        @Value("#{target.roles.![id.roleId]}")
-        List<UUID> getRoleIds();
-
-        String getUsername();
-    }
-
     @GetMapping(produces = "application/json")
     public ResponseEntity<?> find(@RequestParam Optional<UUID> id,
-            @RequestParam Optional<Integer> limit) {
+                                  @RequestParam Optional<Integer> limit) {
         if (id.isPresent()) {
             var account = accountService.getRepo().findByIdProjection(id.get(), GetDTO.class)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -135,9 +109,6 @@ public class AccountController {
         return ResponseEntity.ok(data.get());
     }
 
-    record UpdateDTO(UUID id, JsonPatch patch) {
-    }
-
     @SneakyThrows
     @PatchMapping(consumes = "application/json-patch+json", produces = "application/json")
     @Transactional()
@@ -157,6 +128,28 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
+    public ResponseEntity<?> update(@RequestBody UpdateModelDTO dto) {
+        var account = accountService.getById(dto.id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return ResponseEntity.ok().build();
+    }
+
+    interface GetDTO {
+        UUID getId();
+
+        @Value("#{target.user != null ? target.user.id : null}")
+        String getUserId();
+
+        @Value("#{target.roles.![id.roleId]}")
+        List<UUID> getRoleIds();
+
+        String getUsername();
+    }
+
+    record UpdateDTO(UUID id, JsonPatch patch) {
+    }
+
     public record CreateDTO(String username, String password, @Nullable UUID user, Collection<UUID> roles) {
     }
 
@@ -164,13 +157,6 @@ public class AccountController {
      * InnerAccountController
      */
     public record UpdateModelDTO(UUID id, Optional<Set<UUID>> roleIds, Optional<String> title, Optional<UUID> userIds) {
-    }
-
-    public ResponseEntity<?> update(@RequestBody UpdateModelDTO dto) {
-        var account = accountService.getById(dto.id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        return ResponseEntity.ok().build();
     }
 
 }

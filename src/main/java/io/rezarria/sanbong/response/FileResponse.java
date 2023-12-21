@@ -1,7 +1,6 @@
 package io.rezarria.sanbong.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Builder;
 import lombok.Data;
 

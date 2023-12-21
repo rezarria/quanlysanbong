@@ -1,11 +1,11 @@
 package io.rezarria.sanbong.file;
 
+import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.nio.file.Path;
 import java.util.UUID;
 import java.util.stream.Stream;
-
-import org.springframework.core.io.Resource;
-import org.springframework.web.multipart.MultipartFile;
 
 public interface IFileService {
     default FileInfo store(MultipartFile file) {

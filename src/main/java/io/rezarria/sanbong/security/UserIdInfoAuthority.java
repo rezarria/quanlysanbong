@@ -1,20 +1,16 @@
 package io.rezarria.sanbong.security;
 
-import java.util.UUID;
-
 import org.springframework.security.core.GrantedAuthority;
+
+import java.util.UUID;
 
 public class UserIdInfoAuthority implements GrantedAuthority {
 
-    private InfoAuthority info;
     public static final String NAME = "UserId".toUpperCase();
+    private InfoAuthority info;
 
     public UserIdInfoAuthority(UUID id) {
         info = new InfoAuthority(NAME, id.toString());
-    }
-
-    public UUID getValue() {
-        return UUID.fromString(info.getValue());
     }
 
     public UserIdInfoAuthority(GrantedAuthority authority) {
@@ -25,6 +21,10 @@ public class UserIdInfoAuthority implements GrantedAuthority {
     public static boolean check(GrantedAuthority authority) {
         var r = authority.getAuthority();
         return r.startsWith(NAME + "__[") && r.endsWith("]");
+    }
+
+    public UUID getValue() {
+        return UUID.fromString(info.getValue());
     }
 
     @Override

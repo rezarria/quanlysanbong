@@ -1,5 +1,11 @@
 package io.rezarria.sanbong.security.config;
 
+import io.rezarria.sanbong.security.jwt.JwtFilter;
+import io.rezarria.sanbong.security.jwt.JwtUtils;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,13 +18,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import io.rezarria.sanbong.security.jwt.JwtFilter;
-import io.rezarria.sanbong.security.jwt.JwtUtils;
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.security.SecurityScheme;
-import jakarta.servlet.DispatcherType;
 
 @Configuration
 @EnableWebSecurity
@@ -33,7 +32,7 @@ public class WebSecurity implements WebMvcConfigurer {
 
     @Bean
     public SecurityFilterChain webFilterChain(HttpSecurity http, DaoAuthenticationProvider authenticationProvider,
-            JwtUtils jwtUtil) throws Exception {
+                                              JwtUtils jwtUtil) throws Exception {
         return http
                 .formLogin(AbstractHttpConfigurer::disable)
                 .anonymous(AbstractHttpConfigurer::disable)

@@ -1,12 +1,12 @@
 package io.rezarria.sanbong.security;
 
-import java.util.UUID;
-
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.UUID;
+
 public class AccountIdInfoAuthority implements GrantedAuthority {
-    private InfoAuthority info;
     public static final String NAME = "AccountId".toUpperCase();
+    private InfoAuthority info;
 
     public AccountIdInfoAuthority(UUID value) {
         info = new InfoAuthority(NAME, value.toString());

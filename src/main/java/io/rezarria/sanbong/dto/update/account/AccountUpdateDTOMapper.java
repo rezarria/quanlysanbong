@@ -1,21 +1,16 @@
 package io.rezarria.sanbong.dto.update.account;
 
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.AccountRole;
 import io.rezarria.sanbong.model.AccountRoleKey;
 import io.rezarria.sanbong.model.User;
 import io.rezarria.sanbong.repository.RoleRepository;
+import org.mapstruct.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public abstract class AccountUpdateDTOMapper {

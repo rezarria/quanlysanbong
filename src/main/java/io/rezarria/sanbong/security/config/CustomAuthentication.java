@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class CustomAuthentication {
     @Bean
     public DaoAuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder,
-            UserDetailsService userDetailsService) {
+                                                            UserDetailsService userDetailsService) {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(passwordEncoder);
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder);

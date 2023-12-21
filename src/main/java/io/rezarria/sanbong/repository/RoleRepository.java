@@ -1,12 +1,11 @@
 package io.rezarria.sanbong.repository;
 
-import java.util.UUID;
-import java.util.stream.Stream;
-
+import io.rezarria.sanbong.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import io.rezarria.sanbong.model.Role;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 public interface RoleRepository extends JpaRepository<Role, UUID>, CustomRepository {
 
@@ -15,11 +14,11 @@ public interface RoleRepository extends JpaRepository<Role, UUID>, CustomReposit
 
     <T> Stream<T> findAllByNameContaining(String name);
 
-    interface IdOnly {
-        UUID id();
-    }
-
     default boolean areIdsExist(Iterable<UUID> ids) {
         return areIdsExist(ids, Role.class);
+    }
+
+    interface IdOnly {
+        UUID id();
     }
 }

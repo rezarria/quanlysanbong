@@ -1,12 +1,12 @@
 package io.rezarria.sanbong.dto.update.organization;
 
-import java.util.UUID;
-
 import io.rezarria.sanbong.model.Organization;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.UUID;
 
 @Data
 @Builder

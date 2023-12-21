@@ -1,14 +1,13 @@
 package io.rezarria.sanbong.repository;
 
-import java.util.Optional;
-import java.util.UUID;
-
+import io.rezarria.sanbong.dto.update.product.ProductUpdateDTO;
+import io.rezarria.sanbong.model.ConsumerProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.util.Streamable;
 
-import io.rezarria.sanbong.dto.update.product.ProductUpdateDTO;
-import io.rezarria.sanbong.model.ConsumerProduct;
+import java.util.Optional;
+import java.util.UUID;
 
 public interface ConsumerProductRepository extends JpaRepository<ConsumerProduct, UUID>, CustomRepository {
     @Query("select u from ConsumerProduct u")

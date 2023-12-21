@@ -1,12 +1,11 @@
 package io.rezarria.sanbong.service;
 
-import org.springframework.stereotype.Service;
-
 import io.rezarria.sanbong.model.Organization;
 import io.rezarria.sanbong.repository.OrganizationRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @Transactional

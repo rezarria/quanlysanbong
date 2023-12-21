@@ -1,13 +1,12 @@
 package io.rezarria.sanbong.security.auditor_aware;
 
-import java.util.Optional;
-
+import io.rezarria.sanbong.model.Account;
+import io.rezarria.sanbong.security.AccountIdInfoAuthority;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import io.rezarria.sanbong.model.Account;
-import io.rezarria.sanbong.security.AccountIdInfoAuthority;
+import java.util.Optional;
 
 public class UserAuditorAware implements AuditorAware<Account> {
     @Override

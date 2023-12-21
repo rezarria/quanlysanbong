@@ -1,10 +1,9 @@
 package io.rezarria.sanbong.repository;
 
-import java.util.UUID;
-
+import io.rezarria.sanbong.model.ProductImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import io.rezarria.sanbong.model.ProductImage;
+import java.util.UUID;
 
 public interface ProductImageRepository extends JpaRepository<ProductImage, UUID> {
 

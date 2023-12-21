@@ -1,17 +1,12 @@
 package io.rezarria.sanbong.api.system;
 
-import java.time.Instant;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import io.rezarria.sanbong.schedule.FieldSchedule;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.Instant;
 
 @RestController
 @RequestMapping("/api/fieldSchedule")
@@ -35,13 +30,13 @@ public class FieldScheduleController {
         myScheduledService.resumeTask();
     }
 
-    @PostMapping("/setInterval")
-    public void setInterval(@RequestParam long interval) {
-        myScheduledService.setFixedRate(interval);
-    }
-
     @GetMapping("/getInterval")
     public long getInterval() {
         return myScheduledService.getFixedRate();
+    }
+
+    @PostMapping("/setInterval")
+    public void setInterval(@RequestParam long interval) {
+        myScheduledService.setFixedRate(interval);
     }
 }

@@ -1,13 +1,13 @@
 package io.rezarria.sanbong.dto.update.account;
 
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.AccountRole;
 import io.rezarria.sanbong.model.AccountRoleKey;
 import lombok.Builder;
+
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Builder
 public record AccountUpdateDTO(UUID id, String username, UUID userId, Set<UUID> roleIds) {

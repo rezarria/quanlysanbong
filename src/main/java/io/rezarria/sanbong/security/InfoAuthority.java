@@ -1,10 +1,9 @@
 package io.rezarria.sanbong.security;
 
-import java.util.Objects;
-
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 
-import lombok.Getter;
+import java.util.Objects;
 
 public class InfoAuthority implements GrantedAuthority {
     @Getter

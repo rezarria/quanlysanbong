@@ -1,10 +1,9 @@
 package io.rezarria.sanbong.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-
 import io.rezarria.sanbong.dto.post.UserPostDTO;
 import io.rezarria.sanbong.model.User;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {

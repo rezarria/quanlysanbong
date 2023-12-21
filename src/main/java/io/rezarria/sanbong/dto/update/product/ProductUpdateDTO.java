@@ -1,20 +1,15 @@
 package io.rezarria.sanbong.dto.update.product;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.mapstruct.MappingTarget;
-
-import jakarta.annotation.Nullable;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-import io.rezarria.sanbong.model.Field;
 import io.rezarria.sanbong.model.Product;
 import io.rezarria.sanbong.model.ProductImage;
-import io.rezarria.sanbong.model.ProductPrice;
-import lombok.Builder;
+import jakarta.annotation.Nullable;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
+import java.util.List;
+import java.util.UUID;
 
 @Data
 @SuperBuilder

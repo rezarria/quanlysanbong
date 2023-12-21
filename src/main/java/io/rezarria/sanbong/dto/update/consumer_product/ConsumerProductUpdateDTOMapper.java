@@ -1,11 +1,5 @@
 package io.rezarria.sanbong.dto.update.consumer_product;
 
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import io.rezarria.sanbong.mapper.config.ProductUpdateDTOConfig;
 import io.rezarria.sanbong.model.ConsumerProduct;
 import io.rezarria.sanbong.model.Field;
@@ -13,6 +7,11 @@ import io.rezarria.sanbong.model.ProductPrice;
 import io.rezarria.sanbong.repository.ConsumerProductRepository;
 import io.rezarria.sanbong.repository.ProductPriceRepository;
 import jakarta.persistence.EntityManager;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(componentModel = "spring", config = ProductUpdateDTOConfig.class)
 public abstract class ConsumerProductUpdateDTOMapper {

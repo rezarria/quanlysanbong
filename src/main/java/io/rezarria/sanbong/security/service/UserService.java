@@ -1,12 +1,11 @@
 package io.rezarria.sanbong.security.service;
 
-import org.springframework.stereotype.Service;
-
 import io.rezarria.sanbong.model.User;
 import io.rezarria.sanbong.repository.UserRepository;
 import io.rezarria.sanbong.service.IService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor

@@ -1,8 +1,11 @@
 package io.rezarria.sanbong.security.config;
 
-import java.util.ArrayList;
-import java.util.UUID;
-
+import io.rezarria.sanbong.model.Account;
+import io.rezarria.sanbong.model.AccountRole;
+import io.rezarria.sanbong.repository.AccountRepository;
+import io.rezarria.sanbong.repository.RoleRepository;
+import io.rezarria.sanbong.security.AccountIdInfoAuthority;
+import io.rezarria.sanbong.security.UserIdInfoAuthority;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,19 +14,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import io.rezarria.sanbong.model.Account;
-import io.rezarria.sanbong.model.AccountRole;
-import io.rezarria.sanbong.repository.AccountRepository;
-import io.rezarria.sanbong.repository.RoleRepository;
-import io.rezarria.sanbong.security.AccountIdInfoAuthority;
-import io.rezarria.sanbong.security.UserIdInfoAuthority;
+import java.util.ArrayList;
+import java.util.UUID;
 
 @Configuration
 public class CustomUserDetailsService {
-
-    public interface CustomUserDetails extends UserDetailsService {
-        public UserDetails loadUserByAccountId(UUID accountId);
-    }
 
     @Bean
     UserDetailsService customUserDetails(CustomUserDetails userDetails) {
@@ -69,5 +64,9 @@ public class CustomUserDetailsService {
             }
 
         };
+    }
+
+    public interface CustomUserDetails extends UserDetailsService {
+        public UserDetails loadUserByAccountId(UUID accountId);
     }
 }

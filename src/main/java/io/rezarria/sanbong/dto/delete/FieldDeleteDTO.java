@@ -1,8 +1,8 @@
 package io.rezarria.sanbong.dto.delete;
 
-import java.util.UUID;
-
 import lombok.Data;
+
+import java.util.UUID;
 
 @Data
 public class FieldDeleteDTO {

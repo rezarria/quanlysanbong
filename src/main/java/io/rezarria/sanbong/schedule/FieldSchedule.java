@@ -1,14 +1,13 @@
 package io.rezarria.sanbong.schedule;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.concurrent.ScheduledFuture;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 
-import lombok.RequiredArgsConstructor;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.concurrent.ScheduledFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -32,13 +31,13 @@ public class FieldSchedule {
         return lastExecutionTime;
     }
 
+    public long getFixedRate() {
+        return fixedRate;
+    }
+
     public void setFixedRate(long fixedRate) {
         this.fixedRate = fixedRate;
         updateTask();
-    }
-
-    public long getFixedRate() {
-        return fixedRate;
     }
 
     public void pauseTask() {
