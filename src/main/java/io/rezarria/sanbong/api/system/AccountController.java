@@ -79,8 +79,8 @@ public class AccountController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<?> find(@RequestParam("id") Optional<UUID> id,
-            @RequestParam("limit") Optional<Integer> limit) {
+    public ResponseEntity<?> find(@RequestParam Optional<UUID> id,
+            @RequestParam Optional<Integer> limit) {
         if (id.isPresent()) {
             var account = accountService.getRepo().findByIdProjection(id.get(), GetDTO.class)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

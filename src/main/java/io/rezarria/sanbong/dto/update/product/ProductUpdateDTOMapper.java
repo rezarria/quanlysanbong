@@ -17,10 +17,6 @@ import jakarta.persistence.EntityManager;
 public abstract class ProductUpdateDTOMapper {
 
     @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private ProductPriceRepository productPriceRepository;
-    @Autowired
     private EntityManager entityManager;
 
     @BeanMapping(ignoreByDefault = true)

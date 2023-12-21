@@ -28,7 +28,6 @@ public class SecurityService {
     private final RoleService roleService;
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
-    private final RegisterTemplateService registerTemplateService;
     private final CustomUserDetails userDetailsService;
 
     public List<Account> getAllAccount() {

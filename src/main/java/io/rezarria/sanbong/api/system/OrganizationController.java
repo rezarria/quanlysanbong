@@ -64,8 +64,8 @@ public class OrganizationController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<?> getAll(@RequestParam("id") Optional<UUID> id,
-            @RequestParam("limit") Optional<Integer> limit) {
+    public ResponseEntity<?> getAll(@RequestParam Optional<UUID> id,
+            @RequestParam Optional<Integer> limit) {
         if (id.isPresent())
             return ResponseEntity.ok(service.get(id.get()));
         if (limit.isPresent()) {

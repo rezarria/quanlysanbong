@@ -64,8 +64,8 @@ public class RoleController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<?> getAll(@RequestParam("id") Optional<UUID> id,
-            @RequestParam("limit") Optional<Integer> limit, @RequestParam("name") Optional<String> name) {
+    public ResponseEntity<?> getAll(@RequestParam Optional<UUID> id,
+            @RequestParam Optional<Integer> limit, @RequestParam Optional<String> name) {
         if (name.isPresent()) {
             Stream<GetDTO> data = roleService.findAllByName(name.get());
             return ResponseEntity.ok(data);
