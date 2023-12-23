@@ -15,8 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
-@Scope("prototype")
+
 public class Auth {
     private Authentication authentication;
     @Getter
@@ -28,7 +27,10 @@ public class Auth {
 
     private List<String> roles;
 
-    @PostConstruct
+    public Auth() {
+        init();
+    }
+
     public void init() {
         this.authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
@@ -42,7 +44,7 @@ public class Auth {
             roles = claims.stream().filter(i -> i.getAuthority().startsWith("ROLE_"))
                     .map(i -> {
                         String str = i.getAuthority();
-                        return str.substring(4);
+                        return str.substring(5);
                     })
                     .toList();
         }

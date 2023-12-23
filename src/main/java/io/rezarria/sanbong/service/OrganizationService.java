@@ -7,6 +7,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -18,6 +21,10 @@ public class OrganizationService implements IService<OrganizationRepository, Org
     @Override
     public OrganizationRepository getRepo() {
         return repository;
+    }
+
+    public Optional<Organization> findByAccountId(UUID id) {
+        return repository.findByAccounts_Id(id);
     }
 
     @Override

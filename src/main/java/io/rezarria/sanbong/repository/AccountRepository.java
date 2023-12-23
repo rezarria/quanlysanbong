@@ -3,6 +3,7 @@ package io.rezarria.sanbong.repository;
 import io.rezarria.sanbong.dto.update.account.AccountUpdateDTO;
 import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.Field;
+import io.rezarria.sanbong.model.Organization;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -34,6 +35,9 @@ public interface AccountRepository extends JpaRepository<Account, UUID>, CustomR
     }
 
     <T> Streamable<T> findAllByUsernameContaining(String name, Class<T> classType);
+
+    @Query("select a.organization from Account a  where a.id = ?1")
+    Optional<Organization> getOrganizationIdByAccountId(UUID id);
 
     @Query("select f from Account u inner join Organization o on o.id = u.organization.id inner join Field f on f.organization.id = o.id where u = :id")
     List<Field> getFieldsById(UUID id);

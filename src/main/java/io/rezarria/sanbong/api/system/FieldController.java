@@ -27,6 +27,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/field")
@@ -59,8 +60,8 @@ public class FieldController {
             return ResponseEntity
                     .ok(fieldService.getRepo().findByIdProject(id.get(), GetDTO.class).orElseThrow());
         }
-        Streamable<GetDTO> data = fieldService.getRepo().findAllStream(GetDTO.class);
-        return ResponseEntity.ok(data.stream().toList());
+        Stream<GetDTO> data = fieldService.getStream(GetDTO.class);
+        return ResponseEntity.ok(data);
     }
 
     @PostMapping(consumes = "application/json")

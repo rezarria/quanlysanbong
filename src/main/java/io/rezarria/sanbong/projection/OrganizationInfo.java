@@ -7,14 +7,4 @@ import java.util.UUID;
  */
 public interface OrganizationInfo {
     UUID getId();
-
-    String getName();
-
-    String getAddress();
-
-    String getEmail();
-
-    String getPhone();
-
-    String getImage();
 }

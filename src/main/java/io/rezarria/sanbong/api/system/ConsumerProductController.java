@@ -14,6 +14,7 @@ import io.rezarria.sanbong.service.ConsumerProductService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
@@ -28,9 +29,9 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(name = "/api/consumer_product")
+@RequestMapping(name = "/api/consumerProduct")
 @SecurityRequirement(name = "bearer-jwt")
-public class ConsumerProduct {
+public class ConsumerProductController {
     private final ConsumerProductService consumerProductService;
     private final ConsumerProductMapper mapper;
     private final ObjectMapper objectMapper;
@@ -55,8 +56,7 @@ public class ConsumerProduct {
             return ResponseEntity
                     .ok(consumerProductService.getRepo().findByIdProject(id.get(), GetDTO.class).orElseThrow());
         }
-        Streamable<GetDTO> data = consumerProductService.getRepo().findAllStream(GetDTO.class);
-        return ResponseEntity.ok(data.stream().toList());
+        return ResponseEntity.ok(consumerProductService.getStream(GetDTO.class));
     }
 
     @PostMapping(consumes = "application/json")

@@ -15,5 +15,6 @@ public class ProductPost {
     protected String description;
     @Nullable
     protected Double price;
+    @Nullable
     protected UUID organizationId;
 }
