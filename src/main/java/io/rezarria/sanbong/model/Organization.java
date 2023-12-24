@@ -1,14 +1,13 @@
 package io.rezarria.sanbong.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -40,4 +39,12 @@ public class Organization extends BaseEntity {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<User> users;
+
+    @OneToOne(orphanRemoval = false)
+    @JoinColumn(name = "current_field_unit_setting_id")
+    private FieldUnitSetting currentFieldUnitSetting;
+
+    @OneToMany(mappedBy = "organization", orphanRemoval = false)
+    private Set<FieldUnitSetting> fieldUnitSettings = new LinkedHashSet<>();
+
 }

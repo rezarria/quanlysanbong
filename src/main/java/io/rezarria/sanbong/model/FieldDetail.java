@@ -22,9 +22,4 @@ public class FieldDetail extends BaseEntity {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Field field;
-    @OneToMany(mappedBy = "detail", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Set<FieldUseHistory> usedHistories;
 }

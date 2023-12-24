@@ -12,8 +12,7 @@ import java.util.Set;
         @NamedAttributeNode("details"),
         @NamedAttributeNode("detail"),
         @NamedAttributeNode("prices"),
-        @NamedAttributeNode("price"),
-        @NamedAttributeNode("usedHistories")
+        @NamedAttributeNode("price")
 })
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -31,9 +30,5 @@ public class Field extends Product {
     private Set<FieldDetail> details;
     @OneToOne
     private FieldDetail detail;
-    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Set<FieldUseHistory> usedHistories;
+
 }

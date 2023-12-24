@@ -13,7 +13,6 @@ public abstract class FieldMapper {
     @InheritConfiguration(name = "convert")
     @Mapping(target = "details", ignore = true)
     @Mapping(target = "detail", ignore = true)
-    @Mapping(target = "usedHistories", ignore = true)
     @Mapping(target = "price", source = "price", qualifiedByName = "mapPrice")
     @Mapping(target = "images", source = "images", qualifiedByName = "mapImages")
     public abstract Field convert(FieldPost dto);

@@ -13,9 +13,5 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("Staff")
 public class Staff extends User {
-    @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Set<FieldUseHistory> fieldUseHistories;
+  
 }
