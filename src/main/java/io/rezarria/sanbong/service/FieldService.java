@@ -31,7 +31,7 @@ public class FieldService implements IService<FieldRepository, Field> {
     public Field create(Field entity) {
         Auth auth = new Auth();
         if (auth.isLogin()) {
-            if (!auth.hasRole("ROLE_ADMIN")) {
+            if (!auth.hasRole("SUPER_ADMIN")) {
                 var organization = organizationRepository.findByAccounts_Id(auth.getAccountId()).orElseThrow();
                 entity.setOrganization(organization);
             }
@@ -41,13 +41,15 @@ public class FieldService implements IService<FieldRepository, Field> {
 
     public <T> Page<T> getPage(Pageable pageable, Class<T> type) {
         Auth auth = new Auth();
-        if (auth.hasRole("ROLE_SUPER_ADMIN")) return fieldRepository.findAllCustom(pageable, type);
+        if (auth.hasRole("SUPER_ADMIN"))
+            return fieldRepository.findAllCustom(pageable, type);
         return fieldRepository.findByOrganization_Accounts_Id(auth.getAccountId(), pageable, type);
     }
 
     public <T> Stream<T> getStream(Class<T> type) {
         Auth auth = new Auth();
-        if (auth.hasRole("SUPER_ADMIN")) return fieldRepository.findAllStream(type);
+        if (auth.hasRole("SUPER_ADMIN"))
+            return fieldRepository.findAllStream(type);
         return fieldRepository.findByOrganization_Accounts_Id__Stream(auth.getAccountId(), type);
     }
 
@@ -87,7 +89,9 @@ public class FieldService implements IService<FieldRepository, Field> {
         }
     }
 
-    public enum Status {FREE, PAYING, BUSY, DENY, UNKNOWN}
+    public enum Status {
+        FREE, PAYING, BUSY, DENY, UNKNOWN
+    }
 
     @Builder
     record FieldStatus(UUID id, Status status) {
