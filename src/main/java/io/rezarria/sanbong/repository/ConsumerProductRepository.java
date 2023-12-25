@@ -24,7 +24,6 @@ public interface ConsumerProductRepository extends JpaRepository<ConsumerProduct
     Stream<T> findByOrganization_Accounts_Id(UUID id, Class<T> type);
 
 
-
     default Optional<ProductUpdateDTO> findByIdForUpdate(UUID id) {
         var product = findById(id);
         return product.map(ProductUpdateDTO::create);

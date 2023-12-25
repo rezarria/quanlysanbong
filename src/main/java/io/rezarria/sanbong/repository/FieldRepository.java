@@ -64,6 +64,9 @@ public interface FieldRepository extends JpaRepository<Field, UUID> {
     <T>
     Stream<T> findByOrganization_Accounts_Id__Stream(UUID id, Class<T> type);
 
+    @Query("select f from Field f")
+    <T>
+    Page<T> getFields(Pageable pageable, Class<T> type);
 
 
     <T> Streamable<T> findAllByNameContaining(String name, Class<T> typeClass);

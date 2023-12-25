@@ -9,8 +9,11 @@ import java.util.UUID;
  */
 public interface ConsumerProductGet {
     UUID getId();
+
     String getName();
+
     String getDescription();
+
     @Value("#{target.price != null ? target.price.price : null}")
     Double price();
 }

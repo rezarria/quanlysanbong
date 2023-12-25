@@ -11,23 +11,20 @@ import io.rezarria.sanbong.dto.update.field.FieldUpdateDTO;
 import io.rezarria.sanbong.dto.update.field.FieldUpdateDTOMapper;
 import io.rezarria.sanbong.mapper.FieldMapper;
 import io.rezarria.sanbong.model.Field;
+import io.rezarria.sanbong.projection.FieldGetDTO;
 import io.rezarria.sanbong.service.FieldService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/field")
@@ -52,15 +49,15 @@ public class FieldController {
     public ResponseEntity<?> getAll(@PathVariable @RequestParam Optional<UUID> id,
                                     @RequestParam Optional<String> name) {
         if (name.isPresent()) {
-            Streamable<GetDTO> data = fieldService.getRepo().findAllByNameContaining(name.get(),
-                    GetDTO.class);
+            var data = fieldService.getRepo().findAllByNameContaining(name.get(),
+                    FieldGetDTO.class);
             return ResponseEntity.ok(data);
         }
         if (id.isPresent()) {
             return ResponseEntity
-                    .ok(fieldService.getRepo().findByIdProject(id.get(), GetDTO.class).orElseThrow());
+                    .ok(fieldService.getRepo().findByIdProject(id.get(), FieldGetDTO.class).orElseThrow());
         }
-        Stream<GetDTO> data = fieldService.getStream(GetDTO.class);
+        var data = fieldService.getStream(FieldGetDTO.class);
         return ResponseEntity.ok(data);
     }
 
@@ -103,20 +100,4 @@ public class FieldController {
         return ResponseEntity.ok(data.get());
     }
 
-    interface GetDTO {
-        UUID getId();
-
-        String getName();
-
-        @Value("#{target.images.![path]}")
-        List<String> getPictures();
-
-        @Value("#{target.prices != null ? target.prices.![price] : null}")
-        List<Double> getPrices();
-
-        String getDescription();
-
-        @Value("#{target.price != null ? target.price.price : null}")
-        Double getPrice();
-    }
 }

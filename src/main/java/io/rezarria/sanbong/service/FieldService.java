@@ -46,6 +46,10 @@ public class FieldService implements IService<FieldRepository, Field> {
         return fieldRepository.findByOrganization_Accounts_Id(auth.getAccountId(), pageable, type);
     }
 
+    public <T> Page<T> getPublicPage(Pageable pageable, Class<T> type) {
+        return fieldRepository.getFields(pageable, type);
+    }
+
     public <T> Stream<T> getStream(Class<T> type) {
         Auth auth = new Auth();
         if (auth.hasRole("SUPER_ADMIN"))
@@ -89,16 +93,16 @@ public class FieldService implements IService<FieldRepository, Field> {
         }
     }
 
+    public Stream<Status> getStatus(Iterable<UUID> ids) {
+        return null;
+    }
+
     public enum Status {
         FREE, PAYING, BUSY, DENY, UNKNOWN
     }
 
     @Builder
     record FieldStatus(UUID id, Status status) {
-    }
-
-    public Stream<Status> getStatus(Iterable<UUID> ids) {
-        return null;
     }
 
 }

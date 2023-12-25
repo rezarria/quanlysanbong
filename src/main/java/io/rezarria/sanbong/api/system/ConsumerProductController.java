@@ -14,7 +14,6 @@ import io.rezarria.sanbong.service.ConsumerProductService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;

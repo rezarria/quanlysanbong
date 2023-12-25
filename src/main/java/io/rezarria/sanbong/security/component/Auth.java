@@ -2,13 +2,10 @@ package io.rezarria.sanbong.security.component;
 
 import io.rezarria.sanbong.security.AccountIdInfoAuthority;
 import io.rezarria.sanbong.security.UserIdInfoAuthority;
-import jakarta.annotation.PostConstruct;
 import lombok.Getter;
-import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;

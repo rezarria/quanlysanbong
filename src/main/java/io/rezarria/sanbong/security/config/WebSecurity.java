@@ -28,6 +28,8 @@ public class WebSecurity implements WebMvcConfigurer {
         registry.addMapping("/api/**")
                 .allowedOrigins("http://localhost:3000")
                 .allowedMethods("PATCH", "GET", "POST", "DELETE", "OPTION");
+        registry.addMapping("/public/**")
+                .allowedOrigins("*");
     }
 
     @Bean
@@ -42,10 +44,11 @@ public class WebSecurity implements WebMvcConfigurer {
                 .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(registry -> registry
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/api/**").authenticated()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/**").permitAll()
                         .requestMatchers("/api/files/**").permitAll()
+                        .requestMatchers("/public/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/security/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/security/register").permitAll()
                         .anyRequest().authenticated())
