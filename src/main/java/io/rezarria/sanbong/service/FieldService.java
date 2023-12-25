@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -55,6 +56,10 @@ public class FieldService implements IService<FieldRepository, Field> {
         if (auth.hasRole("SUPER_ADMIN"))
             return fieldRepository.findAllStream(type);
         return fieldRepository.findByOrganization_Accounts_Id__Stream(auth.getAccountId(), type);
+    }
+
+    public <T> Optional<T> findByIdProjection(UUID id, Class<T> type) {
+        return fieldRepository.findByIdProject(id, type);
     }
 
     @Override

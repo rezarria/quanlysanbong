@@ -3,6 +3,7 @@ package io.rezarria.sanbong.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,4 +29,11 @@ public class FieldUnitSetting extends BaseEntity {
     private long duration;
     private long openTime;
     private long closeTime;
+
+    @ManyToOne
+    @JoinColumn(name = "field_id")
+    private Field field;
+
+    @OneToOne(mappedBy = "currentUnitSetting")
+    private Field currentField;
 }

@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @NamedEntityGraph(name = "field-entity-graph", attributeNodes = {
@@ -30,5 +31,12 @@ public class Field extends Product {
     private Set<FieldDetail> details;
     @OneToOne
     private FieldDetail detail;
+
+    @OneToMany(mappedBy = "field", orphanRemoval = true)
+    private Set<FieldUnitSetting> unitSettings = new LinkedHashSet<>();
+
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "current_unit_setting_id")
+    private FieldUnitSetting currentUnitSetting;
 
 }
