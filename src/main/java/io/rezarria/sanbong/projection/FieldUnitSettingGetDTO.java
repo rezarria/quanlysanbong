@@ -14,6 +14,8 @@ public interface FieldUnitSettingGetDTO {
 
     long getDuration();
 
+    long getMinimumDuration();
+
     long getOpenTime();
 
     long getCloseTime();

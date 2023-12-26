@@ -1,8 +1,8 @@
 package io.rezarria.sanbong.dto.post;
 
-import lombok.Data;
-
 import java.util.UUID;
+
+import lombok.Data;
 
 @Data
 public class FieldUnitSettingPostDTO {
@@ -10,10 +10,11 @@ public class FieldUnitSettingPostDTO {
 
     private String unitName;
 
-    private long duration;
+    private int duration;
+    private int minimumDuration;
 
-    private long openTime;
+    private int openTime;
 
-    private long closeTime;
+    private int closeTime;
     private UUID fieldId;
 }

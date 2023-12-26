@@ -1,13 +1,31 @@
 package io.rezarria.sanbong.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @NamedEntityGraph(name = "field-entity-graph", attributeNodes = {
         @NamedAttributeNode("details"),
@@ -30,15 +48,23 @@ public class Field extends Product {
     @ToString.Exclude
     private Set<FieldDetail> details;
     @OneToOne
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private FieldDetail detail;
 
-    @OneToMany(mappedBy = "field", orphanRemoval = true)
+    @OneToMany(mappedBy = "field")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @Builder.Default
     private Set<FieldUnitSetting> unitSettings = new LinkedHashSet<>();
 
-    @OneToOne(orphanRemoval = true)
+    @OneToMany(mappedBy = "field")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @Builder.Default
+    private List<FieldHistory> histories = new LinkedList<>();
+
+    @OneToOne(orphanRemoval = false)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JoinColumn(name = "current_unit_setting_id")

@@ -31,6 +31,12 @@ public class FieldHistory extends BaseEntity {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    @ManyToOne
+    @JoinColumn(name = "unit_setting_id")
+    private FieldUnitSetting unitSetting;
+
+    private int unitSize;
+
     @Column(name = "`from`")
     private Instant from;
 

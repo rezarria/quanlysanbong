@@ -1,14 +1,13 @@
 package io.rezarria.sanbong.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -26,9 +25,10 @@ public class FieldUnitSetting extends BaseEntity {
     private Staff staff;
     private boolean unitStyle;
     private String unitName;
-    private long duration;
-    private long openTime;
-    private long closeTime;
+    private int minimumDuration;
+    private int duration;
+    private int openTime;
+    private int closeTime;
 
     @ManyToOne
     @JoinColumn(name = "field_id")
@@ -36,4 +36,10 @@ public class FieldUnitSetting extends BaseEntity {
 
     @OneToOne(mappedBy = "currentUnitSetting")
     private Field currentField;
+
+    @OneToMany(mappedBy = "unitSetting")
+    @Fetch(FetchMode.SELECT)
+    @Builder.Default
+    private List<FieldHistory> histories = new ArrayList<>();
+
 }
