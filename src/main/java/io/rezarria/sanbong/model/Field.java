@@ -33,9 +33,14 @@ public class Field extends Product {
     private FieldDetail detail;
 
     @OneToMany(mappedBy = "field", orphanRemoval = true)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @Builder.Default
     private Set<FieldUnitSetting> unitSettings = new LinkedHashSet<>();
 
     @OneToOne(orphanRemoval = true)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @JoinColumn(name = "current_unit_setting_id")
     private FieldUnitSetting currentUnitSetting;
 
