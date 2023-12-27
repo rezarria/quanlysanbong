@@ -1,19 +1,19 @@
 package io.rezarria.sanbong.repository;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Stream;
-
+import io.rezarria.sanbong.dto.update.account.AccountUpdateDTO;
+import io.rezarria.sanbong.model.Account;
+import io.rezarria.sanbong.model.Field;
+import io.rezarria.sanbong.model.Organization;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.util.Streamable;
 
-import io.rezarria.sanbong.dto.update.account.AccountUpdateDTO;
-import io.rezarria.sanbong.model.Account;
-import io.rezarria.sanbong.model.Field;
-import io.rezarria.sanbong.model.Organization;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 public interface AccountRepository extends JpaRepository<Account, UUID>, CustomRepository {
     Optional<Account> findByUsername(String username);
@@ -25,9 +25,7 @@ public interface AccountRepository extends JpaRepository<Account, UUID>, CustomR
     <T> Stream<T> findByUsernameContainsAndUserNull(String username, Class<T> type);
 
     @Query("select a from Account a where a.user is null")
-    <T>
-    Stream<T> findByUserNull(Class<T> type);
-
+    <T> Stream<T> findByUserNull(Class<T> type);
 
     @Query("select u from Account u LEFT JOIN AccountRole r ON u.id = r.id.accountId")
     <T> Streamable<T> findAllStream(Class<T> type);
@@ -36,7 +34,7 @@ public interface AccountRepository extends JpaRepository<Account, UUID>, CustomR
     <T> Optional<T> findByIdProjection(UUID id, Class<T> classType);
 
     @Query("select u from Account u")
-    <T> List<T> findAllProjection(Pageable pageable, Class<T> classType);
+    <T> Page<T> findAllProjection(Pageable pageable, Class<T> classType);
 
     default Optional<AccountUpdateDTO> findByIdForUpdate(UUID id) {
         var account = findById(id);

@@ -8,8 +8,10 @@ import io.rezarria.sanbong.mapper.UserMapper;
 import io.rezarria.sanbong.model.User;
 import io.rezarria.sanbong.security.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.util.Streamable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +37,9 @@ public class UserController {
 
     @GetMapping(produces = "application/json", name = "/{id}")
     public ResponseEntity<?> getAll(@PathVariable @RequestParam Optional<UUID> id,
-                                    @RequestParam Optional<String> name) {
+                                    @RequestParam Optional<String> name,
+                                    @RequestParam @Nullable Integer size,
+                                    @RequestParam @Nullable Integer page) {
         if (name.isPresent()) {
             Streamable<User> data = userService.getRepo().findAllByNameContaining(name.get(),
                     User.class);
@@ -44,6 +48,10 @@ public class UserController {
         if (id.isPresent()) {
             return ResponseEntity.ok(userService.get(id.get()));
         }
+        if (size != null && page != null) {
+            return ResponseEntity.ok(userService.getPage(Pageable.ofSize(size).withPage(page), User.class));
+        }
+
         return ResponseEntity.ok(userService.getAll());
     }
 

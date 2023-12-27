@@ -9,6 +9,7 @@ import io.rezarria.sanbong.dto.update.organization.OrganizationUpdateDTOMapper;
 import io.rezarria.sanbong.mapper.OrganizationMapper;
 import io.rezarria.sanbong.service.OrganizationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Lazy;
@@ -44,11 +45,12 @@ public class OrganizationController {
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<?> getAll(@RequestParam Optional<UUID> id,
-                                    @RequestParam Optional<Integer> limit) {
+                                    @RequestParam @Nullable Integer size,
+                                    @RequestParam @Nullable Integer page) {
         if (id.isPresent())
             return ResponseEntity.ok(service.get(id.get()));
-        if (limit.isPresent()) {
-            return ResponseEntity.ok(service.getRepo().findAll(Pageable.ofSize(limit.get())).get());
+        if (size != null && page != null) {
+            return ResponseEntity.ok(service.getRepo().findAll(Pageable.ofSize(size).withPage(page)));
         }
         return ResponseEntity.ok(service.getAll());
     }

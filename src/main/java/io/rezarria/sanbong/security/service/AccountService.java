@@ -1,17 +1,5 @@
 package io.rezarria.sanbong.security.service;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import io.rezarria.sanbong.dto.update.account.AccountUpdateDTO;
 import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.AccountRole;
@@ -22,6 +10,17 @@ import io.rezarria.sanbong.service.IService;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +51,7 @@ public class AccountService implements IService<AccountRepository, Account> {
 
     @Transactional(readOnly = true)
     public <T> Stream<T> findByName(String name, boolean skipUser, Class<T> type) {
-        if(skipUser) return accountRepository.findByUsernameContainsAndUserNull(name,type);
+        if (skipUser) return accountRepository.findByUsernameContainsAndUserNull(name, type);
         return accountRepository.findByCreatedBy_UsernameContains(name, type);
     }
 

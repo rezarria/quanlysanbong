@@ -1,8 +1,11 @@
 package io.rezarria.sanbong.api.public_access;
 
-import java.time.Instant;
-import java.util.UUID;
-
+import io.rezarria.sanbong.projection.FieldGetDTO;
+import io.rezarria.sanbong.service.FieldHistoryService;
+import io.rezarria.sanbong.service.FieldService;
+import jakarta.annotation.Nullable;
+import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import io.rezarria.sanbong.projection.FieldGetDTO;
-import io.rezarria.sanbong.service.FieldHistoryService;
-import io.rezarria.sanbong.service.FieldService;
-import jakarta.annotation.Nullable;
-import lombok.Builder;
-import lombok.RequiredArgsConstructor;
+import java.time.Instant;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,7 +27,7 @@ public class PublicFieldController {
 
     @GetMapping
     public ResponseEntity<?> getFieldList(@RequestParam @Nullable UUID id, @RequestParam @Nullable Integer size,
-            @RequestParam @Nullable Integer page) {
+                                          @RequestParam @Nullable Integer page) {
         if (id != null) {
             return ResponseEntity.ok(fieldService.findByIdProjection(id, FieldGetDTO.class).orElseThrow());
         }
@@ -37,10 +36,6 @@ public class PublicFieldController {
             return ResponseEntity.ok(data);
         }
         throw new ResponseStatusException(HttpStatusCode.valueOf(400));
-    }
-
-    @Builder
-    public record ScheduleDTO(UUID id, Instant from, Instant to) {
     }
 
     @GetMapping("schedule")
@@ -53,5 +48,9 @@ public class PublicFieldController {
             builder.to(i.getTo());
             return builder.build();
         }).toList());
+    }
+
+    @Builder
+    public record ScheduleDTO(UUID id, Instant from, Instant to) {
     }
 }

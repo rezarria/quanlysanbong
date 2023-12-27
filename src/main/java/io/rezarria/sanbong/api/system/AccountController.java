@@ -51,7 +51,8 @@ public class AccountController {
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<?> find(@RequestParam Optional<UUID> id,
-                                  @RequestParam Optional<Integer> limit,
+                                  @RequestParam @Nullable Integer size,
+                                  @RequestParam @Nullable Integer page,
                                   @RequestParam @Nullable String name,
                                   @RequestParam @Nullable Boolean skipUser) {
         if (name != null && !name.isBlank()) {
@@ -65,10 +66,9 @@ public class AccountController {
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
             return ResponseEntity.ok(account);
         }
-        if (limit.isPresent()) {
+        if (size != null && page != null) {
             return ResponseEntity
-                    .ok(accountService.getRepo().findAllProjection(Pageable.ofSize(limit.get()), GetDTO.class)
-                            .stream());
+                    .ok(accountService.getRepo().findAllProjection(Pageable.ofSize(size).withPage(page), GetDTO.class));
         }
         if (skipUser != null && skipUser) {
             return ResponseEntity.ok(accountService.findByUserNull(GetDTO.class));

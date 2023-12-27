@@ -1,10 +1,10 @@
 package io.rezarria.sanbong.dto.post;
 
-import java.util.Date;
-import java.util.UUID;
-
 import jakarta.annotation.Nullable;
 import lombok.Data;
+
+import java.util.Date;
+import java.util.UUID;
 
 @Data
 public class UserPostDTO {

@@ -1,8 +1,8 @@
 package io.rezarria.sanbong.dto.post;
 
-import java.util.UUID;
-
 import lombok.Data;
+
+import java.util.UUID;
 
 @Data
 public class FieldUnitSettingPostDTO {

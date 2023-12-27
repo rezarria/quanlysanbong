@@ -8,6 +8,7 @@ import io.rezarria.sanbong.mapper.RoleMapper;
 import io.rezarria.sanbong.model.Role;
 import io.rezarria.sanbong.security.service.RoleService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.annotation.Nullable;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -47,16 +48,16 @@ public class RoleController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<?> getAll(@RequestParam Optional<UUID> id,
-                                    @RequestParam Optional<Integer> limit, @RequestParam Optional<String> name) {
+    public ResponseEntity<?> getAll(@RequestParam Optional<UUID> id, @RequestParam Optional<String> name,
+                                    @RequestParam @Nullable Integer size, @RequestParam @Nullable Integer page) {
         if (name.isPresent()) {
             Stream<GetDTO> data = roleService.findAllByName(name.get());
             return ResponseEntity.ok(data);
         }
         if (id.isPresent())
             return ResponseEntity.ok(roleService.get(id.get()));
-        if (limit.isPresent()) {
-            return ResponseEntity.ok(roleService.getRepo().findAll(Pageable.ofSize(limit.get())).get());
+        if (size != null && page != null) {
+            return ResponseEntity.ok(roleService.getRepo().findAll(Pageable.ofSize(size).withPage(page)));
         }
         return ResponseEntity.ok(roleService.getAll());
     }

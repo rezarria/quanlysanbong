@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class CustomerService implements IService<CustomerRepository, Customer> {
     private final CustomerRepository repository;
     private final EntityManager entityManager;
+
     @Override
     public CustomerRepository getRepo() {
         return repository;

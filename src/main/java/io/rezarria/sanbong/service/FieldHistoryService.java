@@ -1,18 +1,17 @@
 package io.rezarria.sanbong.service;
 
-import java.time.Instant;
-import java.util.Calendar;
-import java.util.List;
-import java.util.TimeZone;
-import java.util.UUID;
-
-import org.springframework.stereotype.Service;
-
 import io.rezarria.sanbong.model.FieldHistory;
 import io.rezarria.sanbong.repository.FieldHistoryRepository;
 import io.rezarria.sanbong.repository.FieldUnitSettingRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.util.Calendar;
+import java.util.List;
+import java.util.TimeZone;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -36,18 +35,6 @@ public class FieldHistoryService implements IService<FieldHistoryRepository, Fie
         return repository.countByField_IdAndFromLessThanEqualAndToGreaterThanEqual(id, now, now) == 0L;
     }
 
-    public interface SettingProjection {
-        int getOpenTime();
-
-        int getCloseTime();
-    }
-
-    public interface FieldHistoryProjection {
-        Instant getFrom();
-
-        Instant getTo();
-    }
-
     public List<FieldHistory> getSchedule(UUID id) {
         var setting = fieldUnitSettingRepository.findByFields_Id(id, SettingProjection.class).orElseThrow();
         var openTime = setting.getOpenTime();
@@ -62,6 +49,18 @@ public class FieldHistoryService implements IService<FieldHistoryRepository, Fie
         end.set(Calendar.HOUR_OF_DAY, closeTime / 60);
         return repository.findByField_IdAndFromLessThanEqualAndToGreaterThanEqual(id,
                 start.toInstant(), end.toInstant());
+    }
+
+    public interface SettingProjection {
+        int getOpenTime();
+
+        int getCloseTime();
+    }
+
+    public interface FieldHistoryProjection {
+        Instant getFrom();
+
+        Instant getTo();
     }
 
 }
