@@ -42,6 +42,7 @@ public abstract class FieldUpdateDTOMapper {
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "price", source = "price", ignore = true)
     @Mapping(target = "images", source = "images", qualifiedByName = "mapImages")
+    @Mapping(target = "description", source = "description")
     @Mapping(target = "prices", ignore = true)
     public abstract void convert(FieldUpdateDTO src, @MappingTarget Field data);
 

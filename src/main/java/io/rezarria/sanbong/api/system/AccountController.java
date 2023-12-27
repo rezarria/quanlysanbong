@@ -3,7 +3,6 @@ package io.rezarria.sanbong.api.system;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
-import io.micrometer.common.lang.Nullable;
 import io.rezarria.sanbong.dto.ChangePasswordDTO;
 import io.rezarria.sanbong.dto.update.account.AccountUpdateDTO;
 import io.rezarria.sanbong.dto.update.account.AccountUpdateDTOMapper;
@@ -11,9 +10,9 @@ import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.AccountRole;
 import io.rezarria.sanbong.model.AccountRoleKey;
 import io.rezarria.sanbong.model.User;
-import io.rezarria.sanbong.repository.AccountRepository;
 import io.rezarria.sanbong.security.service.AccountService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,8 +40,6 @@ public class AccountController {
     private final AccountService accountService;
     @Lazy
     private final PasswordEncoder passwordEncoder;
-    @Lazy
-    private final AccountRepository accountRepository;
 
     @Lazy
     private final AccountUpdateDTOMapper accountUpdateDTOMapper;
@@ -54,7 +51,15 @@ public class AccountController {
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<?> find(@RequestParam Optional<UUID> id,
-                                  @RequestParam Optional<Integer> limit) {
+                                  @RequestParam Optional<Integer> limit,
+                                  @RequestParam @Nullable String name,
+                                  @RequestParam @Nullable Boolean skipUser) {
+        if (name != null && !name.isBlank()) {
+            if (skipUser == null)
+                return ResponseEntity.ok(accountService.findByName(name, false, GetDTO.class));
+            else
+                return ResponseEntity.ok(accountService.findByName(name, true, GetDTO.class));
+        }
         if (id.isPresent()) {
             var account = accountService.getRepo().findByIdProjection(id.get(), GetDTO.class)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -64,6 +69,9 @@ public class AccountController {
             return ResponseEntity
                     .ok(accountService.getRepo().findAllProjection(Pageable.ofSize(limit.get()), GetDTO.class)
                             .stream());
+        }
+        if (skipUser != null && skipUser) {
+            return ResponseEntity.ok(accountService.findByUserNull(GetDTO.class));
         }
         Streamable<GetDTO> data = accountService.getRepo().findAllByUsernameContaining("",
                 GetDTO.class);
