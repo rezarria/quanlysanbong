@@ -1,14 +1,15 @@
 package io.rezarria.sanbong.service;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaQuery;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaQuery;
 
 public interface IService<T extends JpaRepository<OBJ, UUID>, OBJ> {
 
@@ -22,7 +23,7 @@ public interface IService<T extends JpaRepository<OBJ, UUID>, OBJ> {
     }
 
     @Transactional(readOnly = true)
-    default <P> Stream<P> getAllProjection(Class<P> classType, Class<T> rootClassType) {
+    default <P> Stream<P> getAllProjection(Class<P> classType, Class<OBJ> rootClassType) {
         var criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<P> query = criteriaBuilder.createQuery(classType);
         var root = query.from(rootClassType);
