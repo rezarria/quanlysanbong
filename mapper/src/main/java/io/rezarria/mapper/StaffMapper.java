@@ -1,20 +1,21 @@
-package io.rezarria.sanbong.mapper;
+package io.rezarria.mapper;
 
-import io.micrometer.common.lang.Nullable;
-import io.rezarria.sanbong.dto.post.StaffPostDTO;
-import io.rezarria.sanbong.model.Account;
-import io.rezarria.sanbong.model.AccountRole;
-import io.rezarria.sanbong.model.AccountRoleKey;
-import io.rezarria.sanbong.model.Staff;
-import io.rezarria.sanbong.repository.AccountRepository;
-import io.rezarria.sanbong.repository.RoleRepository;
-import io.rezarria.sanbong.security.service.AccountService;
+import java.util.UUID;
+
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.UUID;
+import io.micrometer.common.lang.Nullable;
+import io.rezarria.dto.post.StaffPostDTO;
+import io.rezarria.model.Account;
+import io.rezarria.model.AccountRole;
+import io.rezarria.model.AccountRoleKey;
+import io.rezarria.model.Staff;
+import io.rezarria.repository.AccountRepository;
+import io.rezarria.repository.RoleRepository;
+import io.rezarria.service.AccountService;
 
 @Mapper(componentModel = "spring")
 public abstract class StaffMapper {

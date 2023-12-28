@@ -1,11 +1,11 @@
-package io.rezarria.sanbong.mapper;
+package io.rezarria.mapper;
 
-import io.rezarria.sanbong.dto.update.FieldUpdateDTO;
-import io.rezarria.sanbong.model.Field;
-import io.rezarria.sanbong.model.ProductImage;
-import io.rezarria.sanbong.model.ProductPrice;
-import io.rezarria.sanbong.repository.FieldRepository;
-import io.rezarria.sanbong.repository.ProductPriceRepository;
+import io.rezarria.dto.update.FieldUpdateDTO;
+import io.rezarria.model.Field;
+import io.rezarria.model.ProductImage;
+import io.rezarria.model.ProductPrice;
+import io.rezarria.repository.FieldRepository;
+import io.rezarria.repository.ProductPriceRepository;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import org.mapstruct.*;

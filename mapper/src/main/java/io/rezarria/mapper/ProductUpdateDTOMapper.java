@@ -1,9 +1,9 @@
-package io.rezarria.sanbong.mapper;
+package io.rezarria.mapper;
 
-import io.rezarria.sanbong.dto.update.ProductUpdateDTO;
-import io.rezarria.sanbong.model.Field;
-import io.rezarria.sanbong.model.Product;
-import io.rezarria.sanbong.model.ProductPrice;
+import io.rezarria.dto.update.ProductUpdateDTO;
+import io.rezarria.model.Field;
+import io.rezarria.model.Product;
+import io.rezarria.model.ProductPrice;
 import jakarta.persistence.EntityManager;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

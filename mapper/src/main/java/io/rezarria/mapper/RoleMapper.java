@@ -1,7 +1,7 @@
-package io.rezarria.sanbong.mapper;
+package io.rezarria.mapper;
 
-import io.rezarria.sanbong.dto.post.RolePostDTO;
-import io.rezarria.sanbong.model.Role;
+import io.rezarria.dto.post.RolePostDTO;
+import io.rezarria.model.Role;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

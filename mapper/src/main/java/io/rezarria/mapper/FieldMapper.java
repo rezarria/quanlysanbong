@@ -1,8 +1,7 @@
-package io.rezarria.sanbong.mapper;
+package io.rezarria.mapper;
 
-import io.rezarria.sanbong.dto.post.FieldPost;
-import io.rezarria.sanbong.mapper.config.ProductUpdateDTOConfig;
-import io.rezarria.sanbong.model.Field;
+import io.rezarria.dto.post.FieldPost;
+import io.rezarria.model.Field;
 import org.mapstruct.InheritConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

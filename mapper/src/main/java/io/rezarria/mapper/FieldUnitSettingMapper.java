@@ -1,9 +1,9 @@
-package io.rezarria.sanbong.mapper;
+package io.rezarria.mapper;
 
-import io.rezarria.sanbong.dto.post.FieldUnitSettingPostDTO;
-import io.rezarria.sanbong.model.Field;
-import io.rezarria.sanbong.model.FieldUnitSetting;
-import io.rezarria.sanbong.repository.FieldRepository;
+import io.rezarria.dto.post.FieldUnitSettingPostDTO;
+import io.rezarria.model.Field;
+import io.rezarria.model.FieldUnitSetting;
+import io.rezarria.repository.FieldRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

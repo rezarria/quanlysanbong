@@ -1,13 +1,14 @@
-package io.rezarria.sanbong.mapper;
+package io.rezarria.mapper;
 
-import io.rezarria.sanbong.dto.update.AccountUpdateDTO;
-import io.rezarria.sanbong.model.Account;
-import io.rezarria.sanbong.model.AccountRole;
-import io.rezarria.sanbong.model.AccountRoleKey;
-import io.rezarria.sanbong.model.User;
-import io.rezarria.sanbong.repository.RoleRepository;
+
+import io.rezarria.dto.update.AccountUpdateDTO;
+import io.rezarria.model.Account;
+import io.rezarria.model.AccountRole;
+import io.rezarria.model.AccountRoleKey;
+import io.rezarria.model.User;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import io.rezarria.repository.RoleRepository;
 
 import java.util.Set;
 import java.util.UUID;

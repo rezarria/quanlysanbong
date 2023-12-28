@@ -1,7 +1,7 @@
-package io.rezarria.sanbong.mapper;
+package io.rezarria.mapper;
 
-import io.rezarria.sanbong.dto.update.OrganizationUpdateDTO;
-import io.rezarria.sanbong.model.Organization;
+import io.rezarria.dto.update.OrganizationUpdateDTO;
+import io.rezarria.model.Organization;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

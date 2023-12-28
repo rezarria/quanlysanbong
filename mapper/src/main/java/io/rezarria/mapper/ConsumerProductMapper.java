@@ -1,8 +1,8 @@
-package io.rezarria.sanbong.mapper;
+package io.rezarria.mapper;
 
-import io.rezarria.sanbong.dto.post.ConsumerProductPost;
-import io.rezarria.sanbong.mapper.config.ProductUpdateDTOConfig;
-import io.rezarria.sanbong.model.ConsumerProduct;
+
+import io.rezarria.dto.post.ConsumerProductPost;
+import io.rezarria.model.ConsumerProduct;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

@@ -1,7 +1,7 @@
-package io.rezarria.sanbong.mapper;
+package io.rezarria.mapper;
 
-import io.rezarria.sanbong.dto.post.OrganizationPostDTO;
-import io.rezarria.sanbong.model.Organization;
+import io.rezarria.dto.post.OrganizationPostDTO;
+import io.rezarria.model.Organization;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

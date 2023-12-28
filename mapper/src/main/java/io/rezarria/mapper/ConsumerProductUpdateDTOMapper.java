@@ -1,12 +1,12 @@
-package io.rezarria.sanbong.mapper;
+package io.rezarria.mapper;
 
-import io.rezarria.sanbong.dto.update.ConsumerProductUpdateDTO;
-import io.rezarria.sanbong.mapper.config.ProductUpdateDTOConfig;
-import io.rezarria.sanbong.model.ConsumerProduct;
-import io.rezarria.sanbong.model.Field;
-import io.rezarria.sanbong.model.ProductPrice;
-import io.rezarria.sanbong.repository.ConsumerProductRepository;
-import io.rezarria.sanbong.repository.ProductPriceRepository;
+import io.rezarria.dto.update.ConsumerProductUpdateDTO;
+
+import io.rezarria.model.ConsumerProduct;
+import io.rezarria.model.Field;
+import io.rezarria.model.ProductPrice;
+import io.rezarria.repository.ConsumerProductRepository;
+import io.rezarria.repository.ProductPriceRepository;
 import jakarta.persistence.EntityManager;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

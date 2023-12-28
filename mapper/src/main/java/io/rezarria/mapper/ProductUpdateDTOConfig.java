@@ -1,4 +1,4 @@
-package io.rezarria.security.config;
+package io.rezarria.mapper;
 
 
 import io.rezarria.mapper.ProductMapper;
