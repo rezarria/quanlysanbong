@@ -1,4 +1,4 @@
-package io.rezarria.sanbong.schedule;
+package io.rezarria.spring.schedule;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
