@@ -6,9 +6,9 @@ import io.rezarria.model.Account;
 import io.rezarria.model.AccountRole;
 import io.rezarria.model.AccountRoleKey;
 import io.rezarria.model.User;
+import io.rezarria.repository.RoleRepository;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import io.rezarria.repository.RoleRepository;
 
 import java.util.Set;
 import java.util.UUID;

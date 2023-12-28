@@ -1,17 +1,16 @@
 package io.rezarria.security.component;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
+import io.rezarria.security.AccountIdInfoAuthority;
+import io.rezarria.security.UserIdInfoAuthority;
+import lombok.Getter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import io.rezarria.security.AccountIdInfoAuthority;
-import io.rezarria.security.UserIdInfoAuthority;
-import lombok.Getter;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class Auth {
     private Authentication authentication;

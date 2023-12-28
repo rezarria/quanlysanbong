@@ -1,15 +1,14 @@
 package io.rezarria.service;
 
-import java.util.stream.Stream;
-
+import io.rezarria.model.Role;
+import io.rezarria.repository.RoleRepository;
+import io.rezarria.service.interfaces.IService;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import io.rezarria.service.interfaces.IService;
-import io.rezarria.model.Role;
-import io.rezarria.repository.RoleRepository;
-import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor

@@ -1,7 +1,6 @@
 package io.rezarria.mapper;
 
 
-import io.rezarria.mapper.ProductMapper;
 import org.mapstruct.MapperConfig;
 import org.mapstruct.MappingInheritanceStrategy;
 

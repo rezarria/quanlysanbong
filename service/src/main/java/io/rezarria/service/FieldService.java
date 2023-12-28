@@ -1,30 +1,24 @@
 package io.rezarria.service;
 
-import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.TimeZone;
-import java.util.UUID;
-import java.util.stream.Stream;
-
-import org.springframework.dao.PermissionDeniedDataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import io.rezarria.service.interfaces.IService;
 import io.rezarria.model.Field;
 import io.rezarria.repository.FieldHistoryRepository;
 import io.rezarria.repository.FieldRepository;
 import io.rezarria.repository.OrganizationRepository;
 import io.rezarria.security.component.Auth;
+import io.rezarria.service.interfaces.IService;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.dao.PermissionDeniedDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 @Transactional

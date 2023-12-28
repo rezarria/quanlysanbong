@@ -1,8 +1,11 @@
 package io.rezarria.security.config;
 
-import java.util.ArrayList;
-import java.util.UUID;
-
+import io.rezarria.model.Account;
+import io.rezarria.model.AccountRole;
+import io.rezarria.repository.AccountRepository;
+import io.rezarria.repository.RoleRepository;
+import io.rezarria.security.AccountIdInfoAuthority;
+import io.rezarria.security.UserIdInfoAuthority;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,12 +14,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import io.rezarria.model.Account;
-import io.rezarria.model.AccountRole;
-import io.rezarria.repository.AccountRepository;
-import io.rezarria.repository.RoleRepository;
-import io.rezarria.security.AccountIdInfoAuthority;
-import io.rezarria.security.UserIdInfoAuthority;
+import java.util.ArrayList;
+import java.util.UUID;
 
 @Configuration
 public class CustomUserDetailsService {

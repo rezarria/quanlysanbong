@@ -1,7 +1,7 @@
 package io.rezarria.repository;
 
-import io.rezarria.repository.interfaces.CustomRepository;
 import io.rezarria.model.FieldHistory;
+import io.rezarria.repository.interfaces.CustomRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.Instant;

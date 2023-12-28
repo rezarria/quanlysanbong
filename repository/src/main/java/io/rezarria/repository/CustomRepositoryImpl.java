@@ -1,22 +1,22 @@
 package io.rezarria.repository;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.support.JpaEntityInformation;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-import org.springframework.transaction.annotation.Transactional;
-
 import io.rezarria.repository.interfaces.CustomRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.support.JpaEntityInformation;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 public class CustomRepositoryImpl<O, K> extends SimpleJpaRepository<O, K> implements CustomRepository<O, K> {
 
     @PersistenceContext
     private EntityManager entityManager;
+    private Class<O> domainClass;
 
     public CustomRepositoryImpl(JpaEntityInformation<O, ?> entityInformation, EntityManager entityManager) {
         super(entityInformation, entityManager);
@@ -27,8 +27,6 @@ public class CustomRepositoryImpl<O, K> extends SimpleJpaRepository<O, K> implem
         super(domainClass, entityManager);
         this.domainClass = domainClass;
     }
-
-    private Class<O> domainClass;
 
     @Override
     @Transactional(readOnly = true)

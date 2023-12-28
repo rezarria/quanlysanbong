@@ -1,16 +1,5 @@
 package io.rezarria.service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-
-import org.springframework.lang.Nullable;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import org.springframework.stereotype.Service;
-
 import io.jsonwebtoken.Claims;
 import io.rezarria.model.Account;
 import io.rezarria.model.AccountRole;
@@ -20,6 +9,16 @@ import io.rezarria.security.AccountIdInfoAuthority;
 import io.rezarria.security.config.CustomUserDetailsService.CustomUserDetails;
 import io.rezarria.security.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.Nullable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -46,8 +45,8 @@ public class SecurityService {
             throw new RuntimeException("Tạo tài khoản thất bại");
         var roles = roleService.getAll().stream()
                 .map(role -> AccountRole.builder().id(AccountRoleKey.builder()
-                        .roleId(role.getId())
-                        .build()).account(account).role(role)
+                                .roleId(role.getId())
+                                .build()).account(account).role(role)
                         .build())
                 .toList();
         account.getRoles().addAll(roles);

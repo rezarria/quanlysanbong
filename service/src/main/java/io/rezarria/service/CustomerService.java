@@ -1,15 +1,14 @@
 package io.rezarria.service;
 
-import java.util.stream.Stream;
-
+import io.rezarria.model.Customer;
+import io.rezarria.repository.CustomerRepository;
+import io.rezarria.service.interfaces.IService;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.rezarria.service.interfaces.IService;
-import io.rezarria.model.Customer;
-import io.rezarria.repository.CustomerRepository;
-import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor

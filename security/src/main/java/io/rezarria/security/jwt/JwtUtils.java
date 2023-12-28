@@ -8,6 +8,7 @@ import io.jsonwebtoken.Jwts.SIG;
 import io.jsonwebtoken.security.Keys;
 import io.rezarria.security.AccountIdInfoAuthority;
 import io.rezarria.security.InfoAuthority;
+import io.rezarria.security.UserIdInfoAuthority;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,8 +23,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import io.rezarria.security.UserIdInfoAuthority;
 
 @Component
 @RequiredArgsConstructor

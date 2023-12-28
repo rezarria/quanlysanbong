@@ -1,8 +1,8 @@
 package io.rezarria.repository;
 
 import io.rezarria.dto.update.ProductUpdateDTO;
-import io.rezarria.repository.interfaces.CustomRepository;
 import io.rezarria.model.ConsumerProduct;
+import io.rezarria.repository.interfaces.CustomRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.util.Streamable;
 

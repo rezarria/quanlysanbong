@@ -1,12 +1,11 @@
 package io.rezarria.service;
 
-import org.springframework.context.annotation.Lazy;
-
-import io.rezarria.service.interfaces.IService;
 import io.rezarria.model.Request;
 import io.rezarria.repository.RequestRepository;
+import io.rezarria.service.interfaces.IService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 
 @RequiredArgsConstructor
 public class RequestService implements IService<RequestRepository, Request> {

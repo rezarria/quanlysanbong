@@ -1,7 +1,6 @@
 package io.rezarria.mapper;
 
 import io.rezarria.dto.update.ConsumerProductUpdateDTO;
-
 import io.rezarria.model.ConsumerProduct;
 import io.rezarria.model.Field;
 import io.rezarria.model.ProductPrice;

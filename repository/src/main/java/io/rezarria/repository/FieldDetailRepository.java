@@ -1,7 +1,7 @@
 package io.rezarria.repository;
 
-import io.rezarria.repository.interfaces.CustomRepository;
 import io.rezarria.model.FieldDetail;
+import io.rezarria.repository.interfaces.CustomRepository;
 
 import java.util.UUID;
 

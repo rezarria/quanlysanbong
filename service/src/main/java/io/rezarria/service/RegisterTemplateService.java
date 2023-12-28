@@ -1,12 +1,11 @@
 package io.rezarria.service;
 
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import io.rezarria.model.RegisterTemplate;
 import io.rezarria.repository.RegisterTemplateRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

@@ -1,8 +1,8 @@
 package io.rezarria.repository;
 
-import io.rezarria.repository.interfaces.CustomRepository;
 import io.rezarria.model.RegisterTemplateRole;
 import io.rezarria.model.RegisterTemplateRoleKey;
+import io.rezarria.repository.interfaces.CustomRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;

@@ -1,12 +1,5 @@
 package io.rezarria.mapper;
 
-import java.util.UUID;
-
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import io.micrometer.common.lang.Nullable;
 import io.rezarria.dto.post.StaffPostDTO;
 import io.rezarria.model.Account;
@@ -16,6 +9,12 @@ import io.rezarria.model.Staff;
 import io.rezarria.repository.AccountRepository;
 import io.rezarria.repository.RoleRepository;
 import io.rezarria.service.AccountService;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public abstract class StaffMapper {

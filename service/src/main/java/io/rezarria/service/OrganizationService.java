@@ -1,19 +1,18 @@
 package io.rezarria.service;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.UUID;
-
+import io.rezarria.model.Organization;
+import io.rezarria.repository.OrganizationRepository;
+import io.rezarria.service.interfaces.IService;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import io.rezarria.service.interfaces.IService;
-import io.rezarria.model.Organization;
-import io.rezarria.repository.OrganizationRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
