@@ -1,4 +1,4 @@
-package io.rezarria.config;
+package io.rezarria.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

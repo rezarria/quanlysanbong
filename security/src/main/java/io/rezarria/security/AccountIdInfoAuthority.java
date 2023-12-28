@@ -1,4 +1,4 @@
-package io.rezarria;
+package io.rezarria.security;
 
 import org.springframework.security.core.GrantedAuthority;
 

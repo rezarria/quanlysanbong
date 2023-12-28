@@ -1,4 +1,4 @@
-package io.rezarria.jwt;
+package io.rezarria.security.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

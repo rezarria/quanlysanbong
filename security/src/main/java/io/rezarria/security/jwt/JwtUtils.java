@@ -1,4 +1,4 @@
-package io.rezarria.jwt;
+package io.rezarria.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
@@ -6,9 +6,8 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.Jwts.SIG;
 import io.jsonwebtoken.security.Keys;
-import io.rezarria.AccountIdInfoAuthority;
-import io.rezarria.InfoAuthority;
-import io.rezarria.UserIdInfoAuthority;
+import io.rezarria.security.AccountIdInfoAuthority;
+import io.rezarria.security.InfoAuthority;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +22,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import io.rezarria.security.UserIdInfoAuthority;
 
 @Component
 @RequiredArgsConstructor
