@@ -1,6 +1,4 @@
-package io.rezarria.sanbong.projection;
-
-import io.rezarria.sanbong.projection.OrganizationInfo;
+package io.rezarria.projection;
 
 /**
  * Projection for {@link io.rezarria.sanbong.model.Account}

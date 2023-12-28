@@ -1,4 +1,4 @@
-package io.rezarria.sanbong.projection;
+package io.rezarria.projection;
 
 import java.util.Date;
 import java.util.UUID;
