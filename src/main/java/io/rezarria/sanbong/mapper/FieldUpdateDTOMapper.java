@@ -1,5 +1,6 @@
-package io.rezarria.sanbong.dto.update.field;
+package io.rezarria.sanbong.mapper;
 
+import io.rezarria.sanbong.dto.update.FieldUpdateDTO;
 import io.rezarria.sanbong.model.Field;
 import io.rezarria.sanbong.model.ProductImage;
 import io.rezarria.sanbong.model.ProductPrice;

@@ -27,11 +27,11 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import io.rezarria.sanbong.dto.PatchDTO;
 import io.rezarria.sanbong.dto.delete.DeleteDTO;
 import io.rezarria.sanbong.dto.post.FieldPost;
-import io.rezarria.sanbong.dto.update.field.FieldUpdateDTO;
-import io.rezarria.sanbong.dto.update.field.FieldUpdateDTOMapper;
+import io.rezarria.sanbong.dto.update.FieldUpdateDTO;
+import io.rezarria.sanbong.mapper.FieldUpdateDTOMapper;
 import io.rezarria.sanbong.mapper.FieldMapper;
 import io.rezarria.sanbong.model.Field;
-import io.rezarria.sanbong.projection.FieldGetDTO;
+import io.rezarria.sanbong.projection.FieldInfo;
 import io.rezarria.sanbong.service.FieldHistoryService;
 import io.rezarria.sanbong.service.FieldService;
 import io.rezarria.sanbong.service.FieldService.Status;
@@ -64,7 +64,7 @@ public class FieldController {
     }
 
     @GetMapping("size")
-    @SecurityRequirements(value = { @SecurityRequirement(name = "bearer-jwt") })
+    @SecurityRequirements(value = {@SecurityRequirement(name = "bearer-jwt")})
 
     public ResponseEntity<Long> getSize() {
         return ResponseEntity.ok(fieldService.getSize());
@@ -72,19 +72,19 @@ public class FieldController {
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<?> getAll(@PathVariable @RequestParam Optional<UUID> id,
-            @RequestParam @Nullable String name,
-            @RequestParam @Nullable Integer size,
-            @RequestParam @Nullable Integer page) {
+                                    @RequestParam @Nullable String name,
+                                    @RequestParam @Nullable Integer size,
+                                    @RequestParam @Nullable Integer page) {
         if (name != null) {
-            return ResponseEntity.ok(fieldService.getRepo().findAllByNameContaining(name, FieldGetDTO.class).stream());
+            return ResponseEntity.ok(fieldService.getRepo().findAllByNameContaining(name, FieldInfo.class).stream());
         }
         if (id.isPresent()) {
-            return ResponseEntity.ok(fieldService.getRepo().findByIdProject(id.get(), FieldGetDTO.class).orElseThrow());
+            return ResponseEntity.ok(fieldService.getRepo().findByIdProject(id.get(), FieldInfo.class).orElseThrow());
         }
         if (size != null && page != null) {
-            return ResponseEntity.ok(fieldService.getPage(Pageable.ofSize(size).withPage(page), FieldGetDTO.class));
+            return ResponseEntity.ok(fieldService.getPage(Pageable.ofSize(size).withPage(page), FieldInfo.class));
         }
-        var data = fieldService.getStream(FieldGetDTO.class);
+        var data = fieldService.getStream(FieldInfo.class);
         return ResponseEntity.ok(data);
     }
 

@@ -1,5 +1,6 @@
 package io.rezarria.sanbong.service;
 
+import io.rezarria.sanbong.interfaces.IService;
 import io.rezarria.sanbong.model.ConsumerProduct;
 import io.rezarria.sanbong.repository.ConsumerProductRepository;
 import io.rezarria.sanbong.security.component.Auth;

@@ -1,4 +1,4 @@
-package io.rezarria.sanbong.dto.update.account;
+package io.rezarria.sanbong.dto.update;
 
 import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.AccountRole;

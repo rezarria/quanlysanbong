@@ -1,32 +1,32 @@
-package io.rezarria.sanbong.dto.update.field;
+package io.rezarria.sanbong.dto.update;
 
-import io.rezarria.sanbong.model.Field;
+import io.rezarria.sanbong.model.Product;
 import io.rezarria.sanbong.model.ProductImage;
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 import java.util.UUID;
 
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FieldUpdateDTO {
+public class ProductUpdateDTO {
+    protected UUID id;
     @Nullable
-    List<String> images;
-    private UUID id;
+    protected String name;
+    protected double price;
     @Nullable
-    private String name;
-    private double price;
+    protected String description;
     @Nullable
-    private String description;
+    protected List<String> images;
 
-    public static FieldUpdateDTO create(Field field) {
-        var builder = FieldUpdateDTO.builder();
+    public static ProductUpdateDTO create(Product field) {
+        var builder = ProductUpdateDTO.builder();
         builder.id(field.getId());
         builder.description(field.getDescription());
         builder.name(field.getName());

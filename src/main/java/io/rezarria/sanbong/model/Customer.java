@@ -24,9 +24,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("Customer")
 public class Customer extends User {
-    @OneToMany(mappedBy = "customer", orphanRemoval = true)
+    @OneToMany(mappedBy = "customer")
     @Fetch(FetchMode.SELECT)
     @Builder.Default
     private Set<FieldHistory> fieldHistories = new LinkedHashSet<>();
-
 }

@@ -1,6 +1,6 @@
 package io.rezarria.sanbong.api.public_access;
 
-import io.rezarria.sanbong.projection.FieldUnitSettingGetDTO;
+import io.rezarria.sanbong.projection.FieldUnitSettingInfo;
 import io.rezarria.sanbong.service.FieldUnitSettingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class PublicFieldUnitSettingController {
 
     @GetMapping
     public ResponseEntity<?> get(@RequestParam UUID id) {
-        var data = service.getSettingFromFieldId(id, FieldUnitSettingGetDTO.class).orElseThrow();
+        var data = service.getSettingFromFieldId(id, FieldUnitSettingInfo.class).orElseThrow();
         return ResponseEntity.ok(data);
     }
 }

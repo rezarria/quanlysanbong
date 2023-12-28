@@ -21,6 +21,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class User extends BaseEntity {
     protected String name;
+    
     protected String avatar;
 
     @Temporal(TemporalType.TIMESTAMP)

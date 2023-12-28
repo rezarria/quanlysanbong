@@ -1,5 +1,6 @@
-package io.rezarria.sanbong.dto.update.consumer_product;
+package io.rezarria.sanbong.mapper;
 
+import io.rezarria.sanbong.dto.update.ConsumerProductUpdateDTO;
 import io.rezarria.sanbong.mapper.config.ProductUpdateDTOConfig;
 import io.rezarria.sanbong.model.ConsumerProduct;
 import io.rezarria.sanbong.model.Field;

@@ -1,6 +1,6 @@
 package io.rezarria.sanbong.api.public_access;
 
-import io.rezarria.sanbong.projection.FieldGetDTO;
+import io.rezarria.sanbong.projection.FieldInfo;
 import io.rezarria.sanbong.service.FieldHistoryService;
 import io.rezarria.sanbong.service.FieldService;
 import jakarta.annotation.Nullable;
@@ -29,10 +29,10 @@ public class PublicFieldController {
     public ResponseEntity<?> getFieldList(@RequestParam @Nullable UUID id, @RequestParam @Nullable Integer size,
                                           @RequestParam @Nullable Integer page) {
         if (id != null) {
-            return ResponseEntity.ok(fieldService.findByIdProjection(id, FieldGetDTO.class).orElseThrow());
+            return ResponseEntity.ok(fieldService.findByIdProjection(id, FieldInfo.class).orElseThrow());
         }
         if (size != null && page != null) {
-            var data = fieldService.getPublicPage(Pageable.ofSize(size).withPage(page), FieldGetDTO.class);
+            var data = fieldService.getPublicPage(Pageable.ofSize(size).withPage(page), FieldInfo.class);
             return ResponseEntity.ok(data);
         }
         throw new ResponseStatusException(HttpStatusCode.valueOf(400));

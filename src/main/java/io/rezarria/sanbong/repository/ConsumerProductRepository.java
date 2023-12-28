@@ -1,8 +1,8 @@
 package io.rezarria.sanbong.repository;
 
-import io.rezarria.sanbong.dto.update.product.ProductUpdateDTO;
+import io.rezarria.sanbong.dto.update.ProductUpdateDTO;
+import io.rezarria.sanbong.interfaces.CustomRepository;
 import io.rezarria.sanbong.model.ConsumerProduct;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.util.Streamable;
 
@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public interface ConsumerProductRepository extends JpaRepository<ConsumerProduct, UUID>, CustomRepository {
+public interface ConsumerProductRepository extends CustomRepository<ConsumerProduct, UUID> {
     @Query("select u from ConsumerProduct u")
     <T> Stream<T> findAllStream(Class<T> typeClass);
 

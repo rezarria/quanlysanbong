@@ -1,6 +1,5 @@
-package io.rezarria.sanbong.dto.update.consumer_product;
+package io.rezarria.sanbong.dto.update;
 
-import io.rezarria.sanbong.dto.update.product.ProductUpdateDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;

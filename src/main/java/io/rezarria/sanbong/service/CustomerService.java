@@ -2,6 +2,7 @@ package io.rezarria.sanbong.service;
 
 import java.util.stream.Stream;
 
+import io.rezarria.sanbong.interfaces.IService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

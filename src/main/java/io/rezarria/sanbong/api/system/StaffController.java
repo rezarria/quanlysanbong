@@ -2,7 +2,7 @@ package io.rezarria.sanbong.api.system;
 
 import io.rezarria.sanbong.dto.post.StaffPostDTO;
 import io.rezarria.sanbong.mapper.StaffMapper;
-import io.rezarria.sanbong.projection.StaffGetDTO;
+import io.rezarria.sanbong.projection.StaffInfo;
 import io.rezarria.sanbong.service.StaffService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.annotation.Nullable;
@@ -27,12 +27,12 @@ public class StaffController {
     public ResponseEntity<?> getAll(@RequestParam @Nullable UUID id, @RequestParam @Nullable Integer page,
                                     @RequestParam @Nullable Integer size) {
         if (id != null) {
-            return ResponseEntity.ok(service.getById(id, StaffGetDTO.class));
+            return ResponseEntity.ok(service.getById(id, StaffInfo.class));
         }
         if (page != null && size != null) {
-            return ResponseEntity.ok(service.getPage(Pageable.ofSize(size).withPage(page), StaffGetDTO.class));
+            return ResponseEntity.ok(service.getPage(Pageable.ofSize(size).withPage(page), StaffInfo.class));
         }
-        return ResponseEntity.ok(service.all(StaffGetDTO.class));
+        return ResponseEntity.ok(service.all(StaffInfo.class));
     }
 
     @GetMapping("size")

@@ -5,7 +5,7 @@ import java.util.UUID;
 /**
  * Projection for {@link io.rezarria.sanbong.model.FieldUnitSetting}
  */
-public interface FieldUnitSettingGetDTO {
+public interface FieldUnitSettingInfo {
     UUID getId();
 
     boolean isUnitStyle();

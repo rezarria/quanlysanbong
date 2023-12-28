@@ -1,5 +1,6 @@
 package io.rezarria.sanbong.service;
 
+import io.rezarria.sanbong.interfaces.IService;
 import io.rezarria.sanbong.model.Field;
 import io.rezarria.sanbong.repository.FieldHistoryRepository;
 import io.rezarria.sanbong.repository.FieldRepository;

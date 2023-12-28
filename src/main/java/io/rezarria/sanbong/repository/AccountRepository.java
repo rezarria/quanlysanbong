@@ -1,12 +1,12 @@
 package io.rezarria.sanbong.repository;
 
-import io.rezarria.sanbong.dto.update.account.AccountUpdateDTO;
+import io.rezarria.sanbong.dto.update.AccountUpdateDTO;
+import io.rezarria.sanbong.interfaces.CustomRepository;
 import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.Field;
 import io.rezarria.sanbong.model.Organization;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.util.Streamable;
 
@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public interface AccountRepository extends JpaRepository<Account, UUID>, CustomRepository {
+public interface AccountRepository extends CustomRepository<Account, UUID> {
     Optional<Account> findByUsername(String username);
 
     @Query("select a from Account a where a.createdBy.username like concat('%', ?1, '%')")
@@ -39,10 +39,6 @@ public interface AccountRepository extends JpaRepository<Account, UUID>, CustomR
     default Optional<AccountUpdateDTO> findByIdForUpdate(UUID id) {
         var account = findById(id);
         return account.map(AccountUpdateDTO::create);
-    }
-
-    default boolean areIdsExist(Iterable<UUID> ids) {
-        return areIdsExist(ids, Account.class);
     }
 
     <T> Streamable<T> findAllByUsernameContaining(String name, Class<T> classType);

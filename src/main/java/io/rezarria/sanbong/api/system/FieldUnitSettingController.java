@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.rezarria.sanbong.dto.post.FieldUnitSettingPostDTO;
 import io.rezarria.sanbong.mapper.FieldUnitSettingMapper;
 import io.rezarria.sanbong.model.FieldUnitSetting;
-import io.rezarria.sanbong.projection.FieldUnitSettingGetDTO;
+import io.rezarria.sanbong.projection.FieldUnitSettingInfo;
 import io.rezarria.sanbong.service.FieldService;
 import io.rezarria.sanbong.service.FieldUnitSettingService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -31,12 +31,12 @@ public class FieldUnitSettingController {
     @GetMapping
     public ResponseEntity<?> get(@RequestParam UUID id) {
         return ResponseEntity.ok(
-                service.getAllProjection(FieldUnitSettingGetDTO.class, FieldUnitSetting.class));
+                service.getAllProjection(FieldUnitSettingInfo.class, FieldUnitSetting.class));
     }
 
     @GetMapping("byFieldId")
-    public ResponseEntity<FieldUnitSettingGetDTO> getByFieldId(@RequestParam UUID id) {
-        return ResponseEntity.ok(service.getSettingFromFieldId(id, FieldUnitSettingGetDTO.class).orElseThrow());
+    public ResponseEntity<FieldUnitSettingInfo> getByFieldId(@RequestParam UUID id) {
+        return ResponseEntity.ok(service.getSettingFromFieldId(id, FieldUnitSettingInfo.class).orElseThrow());
     }
 
     @PostMapping

@@ -30,6 +30,9 @@ public class CustomerController {
             @RequestParam @Nullable UUID id
 
     ) {
+        if (id != null) {
+
+        }
         if (name != null)
             return ResponseEntity.ok(service.findAllByName(name, CustomerInfo.class));
         return ResponseEntity.ok(service.getAllStreamProjection(CustomerInfo.class));

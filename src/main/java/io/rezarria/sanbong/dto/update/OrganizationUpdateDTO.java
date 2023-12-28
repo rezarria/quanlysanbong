@@ -1,4 +1,4 @@
-package io.rezarria.sanbong.dto.update.organization;
+package io.rezarria.sanbong.dto.update;
 
 import io.rezarria.sanbong.model.Organization;
 import lombok.AllArgsConstructor;

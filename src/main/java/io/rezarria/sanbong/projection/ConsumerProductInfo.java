@@ -7,7 +7,7 @@ import java.util.UUID;
 /**
  * Projection for {@link io.rezarria.sanbong.model.ConsumerProduct}
  */
-public interface ConsumerProductGet {
+public interface ConsumerProductInfo {
     UUID getId();
 
     String getName();

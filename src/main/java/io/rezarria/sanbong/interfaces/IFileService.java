@@ -1,5 +1,6 @@
-package io.rezarria.sanbong.file;
+package io.rezarria.sanbong.interfaces;
 
+import io.rezarria.sanbong.file.FileInfo;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 

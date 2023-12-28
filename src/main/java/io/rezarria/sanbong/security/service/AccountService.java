@@ -1,12 +1,12 @@
 package io.rezarria.sanbong.security.service;
 
-import io.rezarria.sanbong.dto.update.account.AccountUpdateDTO;
+import io.rezarria.sanbong.dto.update.AccountUpdateDTO;
 import io.rezarria.sanbong.model.Account;
 import io.rezarria.sanbong.model.AccountRole;
 import io.rezarria.sanbong.model.AccountRoleKey;
 import io.rezarria.sanbong.repository.AccountRepository;
 import io.rezarria.sanbong.repository.RoleRepository;
-import io.rezarria.sanbong.service.IService;
+import io.rezarria.sanbong.interfaces.IService;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;

@@ -2,7 +2,7 @@ package io.rezarria.sanbong.security.service;
 
 import io.rezarria.sanbong.model.Role;
 import io.rezarria.sanbong.repository.RoleRepository;
-import io.rezarria.sanbong.service.IService;
+import io.rezarria.sanbong.interfaces.IService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;

@@ -6,7 +6,7 @@ import java.util.UUID;
 /**
  * Projection for {@link io.rezarria.sanbong.model.Staff}
  */
-public interface StaffGetDTO {
+public interface StaffInfo {
     UUID getId();
 
     String getName();

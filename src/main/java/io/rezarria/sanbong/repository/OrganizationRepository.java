@@ -1,17 +1,17 @@
 package io.rezarria.sanbong.repository;
 
-import io.rezarria.sanbong.dto.update.organization.OrganizationUpdateDTO;
+import io.rezarria.sanbong.dto.update.OrganizationUpdateDTO;
+import io.rezarria.sanbong.interfaces.CustomRepository;
 import io.rezarria.sanbong.model.Organization;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface OrganizationRepository extends JpaRepository<Organization, UUID> {
+public interface OrganizationRepository extends CustomRepository<Organization, UUID> {
     default Optional<OrganizationUpdateDTO> findByIdForUpdate(UUID id) {
         var account = findById(id);
         return account.map(OrganizationUpdateDTO::create);

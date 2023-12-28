@@ -1,4 +1,4 @@
-package io.rezarria.sanbong.repository;
+package io.rezarria.sanbong.projection;
 
 import io.rezarria.sanbong.projection.OrganizationInfo;
 

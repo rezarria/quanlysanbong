@@ -1,5 +1,6 @@
 package io.rezarria.sanbong.service;
 
+import io.rezarria.sanbong.interfaces.IService;
 import io.rezarria.sanbong.model.Organization;
 import io.rezarria.sanbong.repository.OrganizationRepository;
 import jakarta.persistence.EntityManager;

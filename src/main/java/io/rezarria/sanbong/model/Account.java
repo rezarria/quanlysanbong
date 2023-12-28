@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -19,14 +21,11 @@ public class Account extends BaseEntity {
     @JsonIgnore
     private String password;
     private boolean active;
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "account_id")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @Fetch(FetchMode.SELECT)
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     @Builder.Default
-    private Set<AccountRole> roles = new HashSet<>();
+    private Set<AccountRole> roles = new LinkedHashSet<>();
 
     @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
             CascadeType.REFRESH})
@@ -37,8 +36,8 @@ public class Account extends BaseEntity {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    @Fetch(FetchMode.SELECT)
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private Organization organization;
 }
