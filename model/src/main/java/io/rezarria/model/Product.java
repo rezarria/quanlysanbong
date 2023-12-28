@@ -1,4 +1,4 @@
-package io.rezarria.sanbong.model;
+package io.rezarria.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;

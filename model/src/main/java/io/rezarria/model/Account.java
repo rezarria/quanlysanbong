@@ -1,6 +1,5 @@
-package io.rezarria.sanbong.model;
+package io.rezarria.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -18,19 +17,16 @@ import java.util.Set;
 @AllArgsConstructor
 public class Account extends BaseEntity {
     private String username;
-    @JsonIgnore
     private String password;
     private boolean active;
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @Fetch(FetchMode.SELECT)
-    @JsonIgnore
     @Builder.Default
     private Set<AccountRole> roles = new LinkedHashSet<>();
 
     @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
             CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private User user;
@@ -38,6 +34,5 @@ public class Account extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     @Fetch(FetchMode.SELECT)
-    @JsonIgnore
     private Organization organization;
 }

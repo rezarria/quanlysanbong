@@ -1,4 +1,4 @@
-package io.rezarria.sanbong.model;
+package io.rezarria.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

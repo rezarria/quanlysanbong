@@ -1,4 +1,4 @@
-package io.rezarria.sanbong.model;
+package io.rezarria.model;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

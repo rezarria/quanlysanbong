@@ -1,11 +1,12 @@
-package io.rezarria.sanbong.model;
+package io.rezarria.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Transient;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = true)
@@ -15,10 +16,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FieldDetail extends BaseEntity {
-    @Transient
-    private JsonNode data;
     @ManyToOne
-    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Field field;

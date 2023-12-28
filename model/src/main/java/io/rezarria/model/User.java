@@ -1,8 +1,8 @@
-package io.rezarria.sanbong.model;
+package io.rezarria.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
-import io.rezarria.sanbong.converter.JsonNodeConverter;
+import io.rezarria.converter.JsonNodeConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -21,7 +21,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class User extends BaseEntity {
     protected String name;
-    
+
     protected String avatar;
 
     @Temporal(TemporalType.TIMESTAMP)

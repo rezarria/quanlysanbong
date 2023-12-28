@@ -18,7 +18,7 @@ import java.time.Instant;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FieldHistory extends io.rezarria.sanbong.model.BaseEntity {
+public class FieldHistory extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "field_id")
     private Field field;
