@@ -1,7 +1,7 @@
-package io.rezarria.update;
+package io.rezarria.dto.update;
 
-import io.rezarria.sanbong.model.Product;
-import io.rezarria.sanbong.model.ProductImage;
+import io.rezarria.model.Product;
+import io.rezarria.model.ProductImage;
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;

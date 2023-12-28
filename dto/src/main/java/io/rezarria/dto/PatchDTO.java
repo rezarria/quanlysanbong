@@ -1,4 +1,4 @@
-package io.rezarria;
+package io.rezarria.dto;
 
 import com.github.fge.jsonpatch.JsonPatch;
 import lombok.Data;

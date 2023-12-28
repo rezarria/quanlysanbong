@@ -1,4 +1,4 @@
-package io.rezarria.delete;
+package io.rezarria.dto.delete;
 
 import lombok.Data;
 

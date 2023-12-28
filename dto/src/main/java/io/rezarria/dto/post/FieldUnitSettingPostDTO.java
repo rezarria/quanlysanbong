@@ -1,4 +1,4 @@
-package io.rezarria.post;
+package io.rezarria.dto.post;
 
 import lombok.Data;
 

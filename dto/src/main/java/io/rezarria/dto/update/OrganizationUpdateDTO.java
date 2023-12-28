@@ -1,6 +1,6 @@
-package io.rezarria.update;
+package io.rezarria.dto.update;
 
-import io.rezarria.sanbong.model.Organization;
+import io.rezarria.model.Organization;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,8 +1,8 @@
-package io.rezarria.update;
+package io.rezarria.dto.update;
 
-import io.rezarria.sanbong.model.Account;
-import io.rezarria.sanbong.model.AccountRole;
-import io.rezarria.sanbong.model.AccountRoleKey;
+import io.rezarria.model.Account;
+import io.rezarria.model.AccountRole;
+import io.rezarria.model.AccountRoleKey;
 import lombok.Builder;
 
 import java.util.Set;

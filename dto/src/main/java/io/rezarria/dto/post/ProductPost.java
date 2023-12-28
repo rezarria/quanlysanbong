@@ -1,4 +1,4 @@
-package io.rezarria.post;
+package io.rezarria.dto.post;
 
 import jakarta.annotation.Nullable;
 import lombok.Data;

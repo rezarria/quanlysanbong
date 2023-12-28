@@ -1,4 +1,4 @@
-package io.rezarria.update;
+package io.rezarria.dto.update;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
