@@ -1,4 +1,4 @@
-package io.rezarria;
+package io.rezarria.converter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
