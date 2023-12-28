@@ -1,9 +1,9 @@
 package io.rezarria.service;
 
-import io.rezarria.sanbong.interfaces.IService;
-import io.rezarria.sanbong.model.ConsumerProduct;
-import io.rezarria.sanbong.repository.ConsumerProductRepository;
-import io.rezarria.sanbong.security.component.Auth;
+import io.rezarria.service.interfaces.IService;
+import io.rezarria.model.ConsumerProduct;
+import io.rezarria.repository.ConsumerProductRepository;
+import io.rezarria.security.component.Auth;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

@@ -2,12 +2,12 @@ package io.rezarria.service;
 
 import java.util.stream.Stream;
 
-import io.rezarria.sanbong.interfaces.IService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.rezarria.sanbong.model.Customer;
-import io.rezarria.sanbong.repository.CustomerRepository;
+import io.rezarria.service.interfaces.IService;
+import io.rezarria.model.Customer;
+import io.rezarria.repository.CustomerRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 

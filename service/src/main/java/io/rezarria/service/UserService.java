@@ -1,9 +1,10 @@
-package io.rezarria.security.service;
+package io.rezarria.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import io.rezarria.service.interfaces.IService;
 import io.rezarria.model.User;
 import io.rezarria.repository.UserRepository;
 import jakarta.persistence.EntityManager;

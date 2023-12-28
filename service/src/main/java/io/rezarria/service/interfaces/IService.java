@@ -1,4 +1,4 @@
-package io.rezarria.interfaces;
+package io.rezarria.service.interfaces;
 
 import java.util.Collection;
 import java.util.List;
@@ -6,25 +6,27 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.rezarria.repository.interfaces.CustomRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaQuery;
 
-public interface IService<T extends JpaRepository<OBJ, UUID>, OBJ> {
+public interface IService<T extends CustomRepository<O, UUID>, O> {
 
     T getRepo();
 
     EntityManager getEntityManager();
 
     @Transactional(readOnly = true)
-    default List<OBJ> getAll() {
+    default List<O> getAll() {
         return getRepo().findAll();
     }
 
     @Transactional(readOnly = true)
-    default <P> Stream<P> getAllProjection(Class<P> classType, Class<OBJ> rootClassType) {
+    default <P> Stream<P> getAllProjection(Class<P> classType, Class<O> rootClassType) {
         var criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<P> query = criteriaBuilder.createQuery(classType);
         var root = query.from(rootClassType);
@@ -33,22 +35,22 @@ public interface IService<T extends JpaRepository<OBJ, UUID>, OBJ> {
     }
 
     @Transactional()
-    default OBJ create(OBJ entity) {
+    default O create(O entity) {
         return getRepo().save(entity);
     }
 
     @Transactional(readOnly = true)
-    default Iterable<OBJ> createMany(Iterable<OBJ> entity) {
+    default Iterable<O> createMany(Iterable<O> entity) {
         return getRepo().saveAll(entity);
     }
 
     @Transactional(readOnly = true)
-    default OBJ get(UUID id) {
+    default O get(UUID id) {
         return getRepo().getReferenceById(id);
     }
 
     @Transactional(readOnly = true)
-    default List<OBJ> getMany(Collection<UUID> ids) {
+    default List<O> getMany(Collection<UUID> ids) {
         return getRepo().findAllById(ids);
     }
 
@@ -64,12 +66,17 @@ public interface IService<T extends JpaRepository<OBJ, UUID>, OBJ> {
         return getRepo().count();
     }
 
-    default <T> Optional<T> getByIdProjection(UUID id, Class<T> type) {
+    @Transactional(readOnly = true)
+    default <A> Optional<T> getByIdProjection(UUID id, Class<A> type) {
+        return null;
+    }
+
+    default <A> Page<T> getPage(Pageable page, Class<A> type) {
         return null;
     }
 
     @Transactional
-    default OBJ update(OBJ entity) {
+    default O update(O entity) {
         return getEntityManager().merge(entity);
     }
 

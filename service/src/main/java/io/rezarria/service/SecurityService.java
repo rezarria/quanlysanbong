@@ -1,14 +1,9 @@
 package io.rezarria.service;
 
-import io.jsonwebtoken.Claims;
-import io.rezarria.sanbong.model.Account;
-import io.rezarria.sanbong.model.AccountRole;
-import io.rezarria.sanbong.model.AccountRoleKey;
-import io.rezarria.sanbong.model.User;
-import io.rezarria.AccountIdInfoAuthority;
-import io.rezarria.sanbong.security.config.CustomUserDetailsService.CustomUserDetails;
-import io.rezarria.sanbong.security.jwt.JwtUtils;
-import lombok.RequiredArgsConstructor;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,9 +11,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import io.jsonwebtoken.Claims;
+import io.rezarria.model.Account;
+import io.rezarria.model.AccountRole;
+import io.rezarria.model.AccountRoleKey;
+import io.rezarria.model.User;
+import io.rezarria.security.AccountIdInfoAuthority;
+import io.rezarria.security.config.CustomUserDetailsService.CustomUserDetails;
+import io.rezarria.security.jwt.JwtUtils;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -45,8 +46,8 @@ public class SecurityService {
             throw new RuntimeException("Tạo tài khoản thất bại");
         var roles = roleService.getAll().stream()
                 .map(role -> AccountRole.builder().id(AccountRoleKey.builder()
-                                .roleId(role.getId())
-                                .build()).account(account).role(role)
+                        .roleId(role.getId())
+                        .build()).account(account).role(role)
                         .build())
                 .toList();
         account.getRoles().addAll(roles);

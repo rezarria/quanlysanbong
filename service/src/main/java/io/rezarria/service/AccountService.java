@@ -1,4 +1,4 @@
-package io.rezarria.security.service;
+package io.rezarria.service;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import io.rezarria.service.interfaces.IService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
