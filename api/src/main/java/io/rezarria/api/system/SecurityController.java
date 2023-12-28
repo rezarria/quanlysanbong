@@ -1,4 +1,4 @@
-package io.rezarria.system;
+package io.rezarria.api.system;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;

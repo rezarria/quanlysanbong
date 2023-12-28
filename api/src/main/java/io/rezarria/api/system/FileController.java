@@ -1,4 +1,4 @@
-package io.rezarria.system;
+package io.rezarria.api.system;
 
 import java.util.Collection;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.rezarria.file.FileService;
-import io.rezarria.response.FileResponse;
+import io.rezarria.file.response.FileResponse;
 import lombok.AllArgsConstructor;
 
 @RestController

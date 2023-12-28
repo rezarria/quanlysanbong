@@ -1,4 +1,4 @@
-package io.rezarria.system;
+package io.rezarria.api.system;
 
 import java.util.List;
 import java.util.Optional;

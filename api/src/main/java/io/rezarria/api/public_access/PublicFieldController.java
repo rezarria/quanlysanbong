@@ -1,4 +1,4 @@
-package io.rezarria.public_access;
+package io.rezarria.api.public_access;
 
 
 import io.rezarria.projection.FieldInfo;

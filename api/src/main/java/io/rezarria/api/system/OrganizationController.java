@@ -1,4 +1,4 @@
-package io.rezarria.system;
+package io.rezarria.api.system;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -27,7 +27,7 @@ import io.rezarria.dto.update.OrganizationUpdateDTO;
 import io.rezarria.mapper.OrganizationMapper;
 import io.rezarria.mapper.OrganizationUpdateDTOMapper;
 import io.rezarria.service.OrganizationService;
-import io.rezarria.system.AccountController.UpdateDTO;
+import io.rezarria.api.system.AccountController.UpdateDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
