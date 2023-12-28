@@ -1,4 +1,4 @@
-package io.rezarria.interfaces;
+package io.rezarria.file.interfaces;
 
 import io.rezarria.file.FileInfo;
 import org.springframework.core.io.Resource;

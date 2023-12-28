@@ -1,4 +1,4 @@
-package io.rezarria;
+package io.rezarria.file;
 
 import lombok.Builder;
 

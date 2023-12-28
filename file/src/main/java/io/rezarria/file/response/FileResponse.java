@@ -1,4 +1,4 @@
-package io.rezarria.response;
+package io.rezarria.file.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;

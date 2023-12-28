@@ -1,6 +1,6 @@
-package io.rezarria;
+package io.rezarria.file;
 
-import io.rezarria.sanbong.interfaces.IFileService;
+import io.rezarria.file.interfaces.IFileService;
 import lombok.SneakyThrows;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.core.io.Resource;

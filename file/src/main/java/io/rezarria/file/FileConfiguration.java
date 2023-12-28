@@ -1,4 +1,4 @@
-package io.rezarria;
+package io.rezarria.file;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
