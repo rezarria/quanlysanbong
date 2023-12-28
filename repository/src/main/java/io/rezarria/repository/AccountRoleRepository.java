@@ -1,8 +1,8 @@
-package io.rezarria.sanbong.repository;
+package io.rezarria.repository;
 
-import io.rezarria.sanbong.interfaces.CustomRepository;
-import io.rezarria.sanbong.model.AccountRole;
-import io.rezarria.sanbong.model.AccountRoleKey;
+import io.rezarria.repository.interfaces.CustomRepository;
+import io.rezarria.model.AccountRole;
+import io.rezarria.model.AccountRoleKey;
 
 public interface AccountRoleRepository extends CustomRepository<AccountRole, AccountRoleKey> {
 }

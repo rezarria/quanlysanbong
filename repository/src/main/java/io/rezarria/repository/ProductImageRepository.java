@@ -1,7 +1,7 @@
-package io.rezarria.sanbong.repository;
+package io.rezarria.repository;
 
-import io.rezarria.sanbong.interfaces.CustomRepository;
-import io.rezarria.sanbong.model.ProductImage;
+import io.rezarria.repository.interfaces.CustomRepository;
+import io.rezarria.model.ProductImage;
 
 import java.util.UUID;
 

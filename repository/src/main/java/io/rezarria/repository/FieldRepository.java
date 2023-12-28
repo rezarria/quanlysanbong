@@ -1,8 +1,8 @@
-package io.rezarria.sanbong.repository;
+package io.rezarria.repository;
 
-import io.rezarria.sanbong.dto.update.FieldUpdateDTO;
-import io.rezarria.sanbong.interfaces.CustomRepository;
-import io.rezarria.sanbong.model.Field;
+import io.rezarria.dto.update.FieldUpdateDTO;
+import io.rezarria.repository.interfaces.CustomRepository;
+import io.rezarria.model.Field;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;

@@ -1,7 +1,7 @@
-package io.rezarria.sanbong.repository;
+package io.rezarria.repository;
 
-import io.rezarria.sanbong.interfaces.CustomRepository;
-import io.rezarria.sanbong.model.User;
+import io.rezarria.repository.interfaces.CustomRepository;
+import io.rezarria.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;

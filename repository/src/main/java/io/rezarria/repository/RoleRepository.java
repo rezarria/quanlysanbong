@@ -1,7 +1,7 @@
-package io.rezarria.sanbong.repository;
+package io.rezarria.repository;
 
-import io.rezarria.sanbong.interfaces.CustomRepository;
-import io.rezarria.sanbong.model.Role;
+import io.rezarria.repository.interfaces.CustomRepository;
+import io.rezarria.model.Role;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.UUID;

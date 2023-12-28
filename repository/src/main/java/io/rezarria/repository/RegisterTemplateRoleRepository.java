@@ -1,8 +1,8 @@
-package io.rezarria.sanbong.repository;
+package io.rezarria.repository;
 
-import io.rezarria.sanbong.interfaces.CustomRepository;
-import io.rezarria.sanbong.model.RegisterTemplateRole;
-import io.rezarria.sanbong.model.RegisterTemplateRoleKey;
+import io.rezarria.repository.interfaces.CustomRepository;
+import io.rezarria.model.RegisterTemplateRole;
+import io.rezarria.model.RegisterTemplateRoleKey;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
