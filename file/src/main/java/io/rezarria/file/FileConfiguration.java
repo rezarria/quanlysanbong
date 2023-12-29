@@ -1,11 +1,10 @@
 package io.rezarria.file;
 
-import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
-@Component
-@ConfigurationProperties("storage")
+import lombok.Data;
+
+@ConfigurationProperties(prefix = "storage")
 @Data
 public class FileConfiguration {
     private String location;

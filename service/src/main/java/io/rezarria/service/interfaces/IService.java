@@ -1,17 +1,18 @@
 package io.rezarria.service.interfaces;
 
-import io.rezarria.repository.interfaces.CustomRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaQuery;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
+
+import io.rezarria.repository.interfaces.CustomRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaQuery;
 
 public interface IService<T extends CustomRepository<O, UUID>, O> {
 
@@ -61,6 +62,7 @@ public interface IService<T extends CustomRepository<O, UUID>, O> {
         getRepo().deleteAllById(ids);
     }
 
+    @Transactional(readOnly = true)
     default long getSize() {
         return getRepo().count();
     }
@@ -70,7 +72,8 @@ public interface IService<T extends CustomRepository<O, UUID>, O> {
         return null;
     }
 
-    default <A> Page<T> getPage(Pageable page, Class<A> type) {
+    @Transactional(readOnly = true)
+    default <A> Page<A> getPage(Pageable page, Class<A> type) {
         return null;
     }
 

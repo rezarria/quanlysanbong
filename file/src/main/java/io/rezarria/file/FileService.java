@@ -1,19 +1,21 @@
 package io.rezarria.file;
 
-import io.rezarria.file.interfaces.IFileService;
-import lombok.SneakyThrows;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
+
+import javax.imageio.ImageIO;
+
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.stream.Stream;
+import io.rezarria.file.interfaces.IFileService;
+import lombok.SneakyThrows;
 
 @Service
 public class FileService implements IFileService {
@@ -35,12 +37,16 @@ public class FileService implements IFileService {
             throw new Exception("File rỗng");
         }
         Path dest = Path.of(root.toString(), path).normalize();
+
+        Files.createDirectories(root);
+
         if (!dest.getParent().endsWith(root))
             throw new Exception("không thể lưu ở bên ngoài");
         try (InputStream stream = file.getInputStream(); var outputStream = Files.newOutputStream(dest)) {
             ImageIO.write(ImageIO.read(stream), "webp", outputStream);
         }
-        return new FileInfo(file.getOriginalFilename(), root.relativize(dest).toString(), dest.toFile().getTotalSpace());
+        return new FileInfo(file.getOriginalFilename(), root.relativize(dest).toString(),
+                dest.toFile().getTotalSpace());
     }
 
     @SneakyThrows
