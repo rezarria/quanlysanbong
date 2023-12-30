@@ -2,9 +2,6 @@ package io.rezarria.projection;
 
 import java.util.UUID;
 
-/**
- * Projection for {@link io.rezarria.sanbong.model.FieldUnitSetting}
- */
 public interface FieldUnitSettingInfo {
     UUID getId();
 

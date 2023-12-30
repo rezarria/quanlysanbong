@@ -4,9 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.util.UUID;
 
-/**
- * Projection for {@link io.rezarria.sanbong.model.ConsumerProduct}
- */
 public interface ConsumerProductInfo {
     UUID getId();
 
