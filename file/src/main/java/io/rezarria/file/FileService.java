@@ -1,21 +1,19 @@
 package io.rezarria.file;
 
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.stream.Stream;
-
-import javax.imageio.ImageIO;
-
+import io.rezarria.file.interfaces.IFileService;
+import lombok.SneakyThrows;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import io.rezarria.file.interfaces.IFileService;
-import lombok.SneakyThrows;
+import javax.imageio.ImageIO;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 @Service
 public class FileService implements IFileService {
