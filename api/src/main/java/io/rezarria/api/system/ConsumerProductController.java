@@ -13,6 +13,7 @@ import io.rezarria.mapper.ConsumerProductUpdateDTOMapper;
 import io.rezarria.service.ConsumerProductService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Streamable;
@@ -23,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -44,16 +44,15 @@ public class ConsumerProductController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<?> getAll(@PathVariable @RequestParam Optional<UUID> id,
-                                    @RequestParam Optional<String> name) {
-        if (name.isPresent()) {
-            Streamable<GetDTO> data = consumerProductService.getRepo().findAllByNameContaining(name.get(),
-                    GetDTO.class);
+    public ResponseEntity<?> getAll(@PathVariable @RequestParam @Nullable UUID id,
+                                    @RequestParam @Nullable String name) {
+        if (name != null) {
+            Streamable<GetDTO> data = consumerProductService.getRepo().findAllByNameContaining(name, GetDTO.class);
             return ResponseEntity.ok(data);
         }
-        if (id.isPresent()) {
+        if (id != null) {
             return ResponseEntity
-                    .ok(consumerProductService.getRepo().findByIdProject(id.get(), GetDTO.class).orElseThrow());
+                    .ok(consumerProductService.getRepo().findByIdProject(id, GetDTO.class).orElseThrow());
         }
         return ResponseEntity.ok(consumerProductService.getStream(GetDTO.class));
     }

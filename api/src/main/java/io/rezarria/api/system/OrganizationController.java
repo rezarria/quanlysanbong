@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -44,11 +43,11 @@ public class OrganizationController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<?> getAll(@RequestParam Optional<UUID> id,
+    public ResponseEntity<?> getAll(@RequestParam @Nullable UUID id,
                                     @RequestParam @Nullable Integer size,
                                     @RequestParam @Nullable Integer page) {
-        if (id.isPresent())
-            return ResponseEntity.ok(service.get(id.get()));
+        if (id != null)
+            return ResponseEntity.ok(service.get(id));
         if (size != null && page != null) {
             return ResponseEntity.ok(service.getRepo().findAll(Pageable.ofSize(size).withPage(page)));
         }

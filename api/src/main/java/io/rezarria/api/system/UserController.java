@@ -16,7 +16,6 @@ import org.springframework.data.util.Streamable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -36,17 +35,16 @@ public class UserController {
     }
 
     @GetMapping(produces = "application/json", name = "/{id}")
-    public ResponseEntity<?> getAll(@PathVariable @RequestParam Optional<UUID> id,
-                                    @RequestParam Optional<String> name,
+    public ResponseEntity<?> getAll(@PathVariable @RequestParam @Nullable UUID id,
+                                    @RequestParam @Nullable String name,
                                     @RequestParam @Nullable Integer size,
                                     @RequestParam @Nullable Integer page) {
-        if (name.isPresent()) {
-            Streamable<User> data = userService.getRepo().findAllByNameContaining(name.get(),
-                    User.class);
+        if (name != null) {
+            Streamable<User> data = userService.getRepo().findAllByNameContaining(name, User.class);
             return ResponseEntity.ok(data.stream());
         }
-        if (id.isPresent()) {
-            return ResponseEntity.ok(userService.get(id.get()));
+        if (id != null) {
+            return ResponseEntity.ok(userService.get(id));
         }
         if (size != null && page != null) {
             return ResponseEntity.ok(userService.getPage(Pageable.ofSize(size).withPage(page), User.class));

@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -61,15 +60,15 @@ public class FieldController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<?> getAll(@PathVariable @RequestParam Optional<UUID> id,
+    public ResponseEntity<?> getAll(@PathVariable @RequestParam @Nullable UUID id,
                                     @RequestParam @Nullable String name,
                                     @RequestParam @Nullable Integer size,
                                     @RequestParam @Nullable Integer page) {
         if (name != null) {
             return ResponseEntity.ok(fieldService.getRepo().findAllByNameContaining(name, FieldInfo.class).stream());
         }
-        if (id.isPresent()) {
-            return ResponseEntity.ok(fieldService.getRepo().findByIdProject(id.get(), FieldInfo.class).orElseThrow());
+        if (id != null) {
+            return ResponseEntity.ok(fieldService.getRepo().findByIdProject(id, FieldInfo.class).orElseThrow());
         }
         if (size != null && page != null) {
             return ResponseEntity.ok(fieldService.getPage(Pageable.ofSize(size).withPage(page), FieldInfo.class));

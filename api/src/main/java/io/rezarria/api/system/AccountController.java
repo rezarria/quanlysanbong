@@ -50,7 +50,7 @@ public class AccountController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<?> find(@RequestParam Optional<UUID> id,
+    public ResponseEntity<?> find(@RequestParam @Nullable UUID id,
                                   @RequestParam @Nullable Integer size,
                                   @RequestParam @Nullable Integer page,
                                   @RequestParam @Nullable String name,
@@ -61,8 +61,8 @@ public class AccountController {
             else
                 return ResponseEntity.ok(accountService.findByName(name, true, GetDTO.class));
         }
-        if (id.isPresent()) {
-            var account = accountService.getRepo().findByIdProjection(id.get(), GetDTO.class)
+        if (id != null) {
+            var account = accountService.getRepo().findByIdProjection(id, GetDTO.class)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
             return ResponseEntity.ok(account);
         }
@@ -155,7 +155,7 @@ public class AccountController {
         String getUsername();
     }
 
-    record UpdateDTO(UUID id, JsonPatch patch) {
+    public record UpdateDTO(UUID id, JsonPatch patch) {
     }
 
     public record CreateDTO(String username, String password, @Nullable UUID user, Collection<UUID> roles) {

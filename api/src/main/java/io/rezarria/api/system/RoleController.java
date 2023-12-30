@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -48,14 +47,14 @@ public class RoleController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<?> getAll(@RequestParam Optional<UUID> id, @RequestParam Optional<String> name,
+    public ResponseEntity<?> getAll(@RequestParam @Nullable UUID id, @RequestParam @Nullable String name,
                                     @RequestParam @Nullable Integer size, @RequestParam @Nullable Integer page) {
-        if (name.isPresent()) {
-            Stream<GetDTO> data = roleService.findAllByName(name.get());
+        if (name != null) {
+            Stream<GetDTO> data = roleService.findAllByName(name);
             return ResponseEntity.ok(data);
         }
-        if (id.isPresent())
-            return ResponseEntity.ok(roleService.get(id.get()));
+        if (id != null)
+            return ResponseEntity.ok(roleService.get(id));
         if (size != null && page != null) {
             return ResponseEntity.ok(roleService.getRepo().findAll(Pageable.ofSize(size).withPage(page)));
         }
