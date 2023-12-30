@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class CustomRepositoryImpl<O, K> extends SimpleJpaRepository<O, K> implements CustomRepository<O, K> {
 
+    private final Class<O> domainClass;
     @PersistenceContext
     private EntityManager entityManager;
-    private Class<O> domainClass;
 
     public CustomRepositoryImpl(JpaEntityInformation<O, ?> entityInformation, EntityManager entityManager) {
         super(entityInformation, entityManager);
