@@ -34,9 +34,7 @@ public abstract class StaffMapper {
         if (id == null)
             return null;
         var r = accountRepository.findById(id);
-        if (r.isEmpty())
-            return null;
-        return r.get();
+        return r.orElse(null);
     }
 
     @AfterMapping
