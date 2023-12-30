@@ -1,5 +1,6 @@
 package io.rezarria.spring;
 
+import io.rezarria.repository.CustomRepositoryImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -15,8 +16,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import io.rezarria.repository.CustomRepositoryImpl;
-
 @SpringBootApplication
 @EntityScan("io.rezarria.model")
 @ComponentScan(basePackages = "io.rezarria.*")
@@ -24,7 +23,7 @@ import io.rezarria.repository.CustomRepositoryImpl;
 @EnableJpaRepositories(basePackages = "io.rezarria.repository", repositoryBaseClass = CustomRepositoryImpl.class)
 @EnableScheduling
 @EnableWebSecurity
-@EnableAutoConfiguration(exclude = { ErrorMvcAutoConfiguration.class })
+@EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
 @EnableTransactionManagement
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class SanbongApplication {
