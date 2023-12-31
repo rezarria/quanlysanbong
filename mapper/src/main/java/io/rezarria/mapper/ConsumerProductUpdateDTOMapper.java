@@ -24,8 +24,7 @@ public abstract class ConsumerProductUpdateDTOMapper {
     private EntityManager entityManager;
 
     @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "price", source = "price", ignore = true)
-    @Mapping(target = "images", source = "images", ignore = true)
+    @Mapping(target = "price", ignore = true)
     @Mapping(target = "prices", ignore = true)
     public abstract void convert(ConsumerProductUpdateDTO src, @MappingTarget ConsumerProduct data);
 

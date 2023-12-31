@@ -8,6 +8,8 @@ import io.rezarria.service.interfaces.IService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +43,7 @@ public class ConsumerProductService implements IService<ConsumerProductRepositor
     @Transactional(readOnly = true)
     public <T> Stream<T> getStreamByName(String name, Class<T> type) {
         Auth auth = new Auth();
-        if(auth.hasRole("SUPER_ADMIN")) {
+        if (auth.hasRole("SUPER_ADMIN")) {
             return repository.findAllByNameContaining(name, type);
         }
         var organizationId = organizationRepository.getIdByAccountId(auth.getAccountId());
@@ -54,6 +56,10 @@ public class ConsumerProductService implements IService<ConsumerProductRepositor
     @Override
     public EntityManager getEntityManager() {
         return entityManager;
+    }
+
+    public <T> Page<T> getPage(Pageable page, Class<T> type) {
+        return repository.getPage(page, type);
     }
 
 }

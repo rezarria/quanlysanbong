@@ -25,6 +25,7 @@ public class UserService implements IService<UserRepository, User> {
         return entityManager;
     }
 
+    @Override
     public <T> Page<T> getPage(Pageable page, Class<T> type) {
         return userRepository.getPage(page, type);
     }
