@@ -16,7 +16,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.util.Streamable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +27,8 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/api/consumerProduct")
 @RequiredArgsConstructor
-@RequestMapping(name = "/api/consumerProduct")
 @SecurityRequirement(name = "bearer-jwt")
 public class ConsumerProductController {
     private final ConsumerProductService consumerProductService;
@@ -45,10 +45,14 @@ public class ConsumerProductController {
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<?> getAll(@PathVariable @RequestParam @Nullable UUID id,
-                                    @RequestParam @Nullable String name) {
+                                    @RequestParam @Nullable String name,
+                                    @RequestParam @Nullable Integer size,
+                                    @RequestParam @Nullable Integer page) {
+        if (size != null && page != null) {
+            return ResponseEntity.ok(consumerProductService.getPage(Pageable.ofSize(size).withPage(page), GetDTO.class));
+        }
         if (name != null) {
-            Streamable<GetDTO> data = consumerProductService.getRepo().findAllByNameContaining(name, GetDTO.class);
-            return ResponseEntity.ok(data);
+            return ResponseEntity.ok(consumerProductService.getStreamByName(name, GetDTO.class));
         }
         if (id != null) {
             return ResponseEntity
@@ -104,13 +108,13 @@ public class ConsumerProductController {
         @Value("#{target.images.![path]}")
         List<String> getPictures();
 
-        @Value("#{target.prices != null ? target.prices.![price] : null}")
-        List<Double> getPrices();
-
         String getDescription();
 
         @Value("#{target.price != null ? target.price.price : null}")
         Double getPrice();
+
+        @Value("#{target.price != null ? target.price.id : null}")
+        UUID getPriceId();
     }
 
 }
