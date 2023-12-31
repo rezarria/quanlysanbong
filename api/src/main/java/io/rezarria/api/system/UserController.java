@@ -6,13 +6,13 @@ import io.rezarria.dto.PatchDTO;
 import io.rezarria.dto.post.UserPostDTO;
 import io.rezarria.mapper.UserMapper;
 import io.rezarria.model.User;
+import io.rezarria.projection.UserInfo;
 import io.rezarria.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.util.Streamable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,14 +40,14 @@ public class UserController {
                                     @RequestParam @Nullable Integer size,
                                     @RequestParam @Nullable Integer page) {
         if (name != null) {
-            Streamable<User> data = userService.getRepo().findAllByNameContaining(name, User.class);
+            var data = userService.getRepo().findAllByNameContaining(name, UserInfo.class);
             return ResponseEntity.ok(data.stream());
         }
         if (id != null) {
-            return ResponseEntity.ok(userService.get(id));
+            return ResponseEntity.ok(userService.getByIdProjection(id, UserInfo.class));
         }
         if (size != null && page != null) {
-            return ResponseEntity.ok(userService.getPage(Pageable.ofSize(size).withPage(page), User.class));
+            return ResponseEntity.ok(userService.getPage(Pageable.ofSize(size).withPage(page), UserInfo.class));
         }
 
         return ResponseEntity.ok(userService.getAll());
