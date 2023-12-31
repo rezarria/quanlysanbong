@@ -73,7 +73,7 @@ public interface IService<T extends CustomRepository<O, UUID>, O> {
 
     @Transactional(readOnly = true)
     default <A> Page<A> getPage(Pageable page, Class<A> type) {
-        return null;
+        return getRepo().getPage(page, type);
     }
 
     @Transactional
