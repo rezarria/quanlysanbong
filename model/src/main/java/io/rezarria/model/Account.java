@@ -22,6 +22,7 @@ public class Account extends BaseEntity {
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @Fetch(FetchMode.SELECT)
     @Builder.Default
+    @JoinColumn(name = "account_id")
     private Set<AccountRole> roles = new LinkedHashSet<>();
 
     @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
