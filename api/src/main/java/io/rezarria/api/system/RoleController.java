@@ -76,9 +76,9 @@ public class RoleController {
     @Transactional
     @SneakyThrows
     public ResponseEntity<?> patch(@RequestBody PatchDTO data) {
-        Role role = roleService.get(data.getId());
-        if (role.getLastModifiedDate().equals(data.getTime())) {
-            JsonNode nodePatched = data.getPatch().apply(objectMapper.convertValue(role, JsonNode.class));
+        Role role = roleService.get(data.id());
+        if (role.getLastModifiedDate().equals(data.time())) {
+            JsonNode nodePatched = data.patch().apply(objectMapper.convertValue(role, JsonNode.class));
             role = objectMapper.treeToValue(nodePatched, Role.class);
             role = roleService.update(role);
             return ResponseEntity.ok(role);

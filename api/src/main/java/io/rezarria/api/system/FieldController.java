@@ -99,10 +99,10 @@ public class FieldController {
     public ResponseEntity<Field> update(@RequestBody PatchDTO dto)
             throws IllegalArgumentException, JsonPatchException, JsonProcessingException {
 
-        var currentDTO = fieldService.getRepo().findByIdForUpdate(dto.getId()).orElseThrow();
-        JsonNode nodePatched = dto.getPatch().apply(objectMapper.convertValue(currentDTO, JsonNode.class));
+        var currentDTO = fieldService.getRepo().findByIdForUpdate(dto.id()).orElseThrow();
+        JsonNode nodePatched = dto.patch().apply(objectMapper.convertValue(currentDTO, JsonNode.class));
         var fieldPatched = objectMapper.treeToValue(nodePatched, FieldUpdateDTO.class);
-        Field field = fieldService.get(dto.getId());
+        Field field = fieldService.get(dto.id());
         fieldUpdateDTOMapper.patch(fieldPatched, field);
         fieldService.update(field);
         return ResponseEntity.ok().build();

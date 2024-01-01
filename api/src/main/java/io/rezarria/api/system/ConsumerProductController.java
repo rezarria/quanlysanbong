@@ -49,7 +49,8 @@ public class ConsumerProductController {
                                     @RequestParam @Nullable Integer size,
                                     @RequestParam @Nullable Integer page) {
         if (size != null && page != null) {
-            return ResponseEntity.ok(consumerProductService.getPage(Pageable.ofSize(size).withPage(page), GetDTO.class));
+            return ResponseEntity
+                    .ok(consumerProductService.getPage(Pageable.ofSize(size).withPage(page), GetDTO.class));
         }
         if (name != null) {
             return ResponseEntity.ok(consumerProductService.getStreamByName(name, GetDTO.class));
@@ -83,10 +84,10 @@ public class ConsumerProductController {
     public ResponseEntity<?> update(@RequestBody PatchDTO dto)
             throws IllegalArgumentException, JsonPatchException, JsonProcessingException {
 
-        var currentDTO = consumerProductService.getRepo().findByIdForUpdate(dto.getId()).orElseThrow();
-        JsonNode nodePatched = dto.getPatch().apply(objectMapper.convertValue(currentDTO, JsonNode.class));
+        var currentDTO = consumerProductService.getRepo().findByIdForUpdate(dto.id()).orElseThrow();
+        JsonNode nodePatched = dto.patch().apply(objectMapper.convertValue(currentDTO, JsonNode.class));
         var fieldPatched = objectMapper.treeToValue(nodePatched, ConsumerProductUpdateDTO.class);
-        var field = consumerProductService.get(dto.getId());
+        var field = consumerProductService.get(dto.id());
         updateMapper.patch(fieldPatched, field);
         consumerProductService.update(field);
         return ResponseEntity.ok(field);
