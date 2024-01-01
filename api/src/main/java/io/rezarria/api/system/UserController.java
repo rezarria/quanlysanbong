@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.rezarria.dto.PatchDTO;
 import io.rezarria.dto.post.UserPostDTO;
+import io.rezarria.dto.update.UserUpdateDTO;
 import io.rezarria.mapper.UserMapper;
+import io.rezarria.mapper.UserUpdateDTOMapper;
 import io.rezarria.model.User;
 import io.rezarria.projection.UserInfo;
 import io.rezarria.service.UserService;
@@ -13,6 +15,7 @@ import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +30,7 @@ public class UserController {
 
     private final UserService userService;
     private final UserMapper mapper;
+    private final UserUpdateDTOMapper userUpdateDTOMapper;
     private final ObjectMapper objectMapper;
 
     @GetMapping("getName")
@@ -44,7 +48,8 @@ public class UserController {
             return ResponseEntity.ok(data.stream());
         }
         if (id != null) {
-            return ResponseEntity.ok(userService.getByIdProjection(id, UserInfo.class));
+            return ResponseEntity.ok(userService.getByIdProjection(id, UserInfo.class)
+                    .orElseThrow());
         }
         if (size != null && page != null) {
             return ResponseEntity.ok(userService.getPage(Pageable.ofSize(size).withPage(page), UserInfo.class));
@@ -68,14 +73,15 @@ public class UserController {
     @PatchMapping(consumes = "application/json-patch+json", produces = "application/json")
     @SneakyThrows
     public ResponseEntity<?> update(@RequestBody PatchDTO data) {
-        User user = userService.get(data.getId());
-        if (user.getLastModifiedDate().equals(data.getTime())) {
-            JsonNode nodePatched = data.getPatch().apply(objectMapper.convertValue(user, JsonNode.class));
-            user = objectMapper.treeToValue(nodePatched, User.class);
-            user = userService.update(user);
-            return ResponseEntity.ok(user);
-        }
-        return ResponseEntity.notFound().build();
+        var userProjection = userService.getByIdProjection(data.id(), UserUpdateDTO.class).orElseThrow();
+        JsonNode nodePatched = data.patch().apply(objectMapper.convertValue(userProjection, JsonNode.class));
+        userProjection = objectMapper.treeToValue(nodePatched, UserUpdateDTO.class);
+        var user = userService.getRepo().getReferenceById(data.id());
+        userUpdateDTOMapper.patch(userProjection, user);
+        userService.update(user);
+        var pf = new SpelAwareProxyProjectionFactory();
+        var rp = pf.createProjection(UserInfo.class, userProjection);
+        return ResponseEntity.ok(rp);
     }
 
     @DeleteMapping(consumes = "application/json", produces = "application/json")
