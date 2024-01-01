@@ -27,7 +27,7 @@ public abstract class FieldUpdateDTOMapper {
     @Named("mapImages")
     public void mapImages(@Nullable List<String> images, @MappingTarget Set<ProductImage> data) {
         if (images != null) {
-            data.removeIf(i -> images.contains(i.getPath()));
+            data.removeIf(i -> !images.contains(i.getPath()));
             var oldPath = data.stream().map(ProductImage::getPath).toList();
             var newPath = images.stream().filter(i -> !oldPath.contains(i));
             data.addAll(newPath.map(i -> ProductImage.builder().path(i).build()).toList());
