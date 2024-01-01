@@ -23,4 +23,7 @@ public interface FieldInfo {
 
     @Value("#{target.price != null ? target.price.price : null}")
     Double getPrice();
+
+    @Value("#{target.price != null ? target.price.id : null}")
+    UUID getPriceId();
 }
