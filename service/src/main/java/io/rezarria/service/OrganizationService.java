@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class OrganizationService implements IService<OrganizationRepository, Organization> {
+public class OrganizationService extends IService<OrganizationRepository, Organization> {
 
     private final OrganizationRepository repository;
     private final EntityManager entityManager;

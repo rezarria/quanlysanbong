@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class RoleService implements IService<RoleRepository, Role> {
+public class RoleService extends IService<RoleRepository, Role> {
     @Lazy
     private final RoleRepository roleRepository;
     @Lazy

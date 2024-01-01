@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 
 @RequiredArgsConstructor
-public class RequestService implements IService<RequestRepository, Request> {
+public class RequestService extends IService<RequestRepository, Request> {
     @Lazy
     private final RequestRepository requestRepository;
     @Lazy

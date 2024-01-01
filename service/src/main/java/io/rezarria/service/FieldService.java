@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class FieldService implements IService<FieldRepository, Field> {
+public class FieldService extends IService<FieldRepository, Field> {
     private final FieldRepository fieldRepository;
     private final FieldHistoryRepository fieldHistoryRepository;
     private final OrganizationRepository organizationRepository;
@@ -38,7 +38,7 @@ public class FieldService implements IService<FieldRepository, Field> {
                 entity.setOrganization(organization);
             }
         }
-        return IService.super.create(entity);
+        return super.create(entity);
     }
 
     public <T> Page<T> getPage(Pageable pageable, Class<T> type) {

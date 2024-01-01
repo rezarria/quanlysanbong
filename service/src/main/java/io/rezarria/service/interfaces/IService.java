@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -13,19 +14,19 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public interface IService<T extends CustomRepository<O, UUID>, O> {
+public abstract class IService<T extends CustomRepository<O, UUID>, O> {
 
-    T getRepo();
+    protected abstract T getRepo();
 
-    EntityManager getEntityManager();
+    protected abstract EntityManager getEntityManager();
 
     @Transactional(readOnly = true)
-    default List<O> getAll() {
+    public List<O> getAll() {
         return getRepo().findAll();
     }
 
     @Transactional(readOnly = true)
-    default <P> Stream<P> getAllProjection(Class<P> classType, Class<O> rootClassType) {
+    public <P> Stream<P> getAllProjection(Class<P> classType, Class<O> rootClassType) {
         var criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<P> query = criteriaBuilder.createQuery(classType);
         var root = query.from(rootClassType);
@@ -34,50 +35,55 @@ public interface IService<T extends CustomRepository<O, UUID>, O> {
     }
 
     @Transactional()
-    default O create(O entity) {
+    public O create(O entity) {
         return getRepo().save(entity);
     }
 
     @Transactional(readOnly = true)
-    default Iterable<O> createMany(Iterable<O> entity) {
+    public Iterable<O> createMany(Iterable<O> entity) {
         return getRepo().saveAll(entity);
     }
 
     @Transactional(readOnly = true)
-    default O get(UUID id) {
+    public O get(UUID id) {
         return getRepo().getReferenceById(id);
     }
 
     @Transactional(readOnly = true)
-    default List<O> getMany(Collection<UUID> ids) {
+    public List<O> getMany(Collection<UUID> ids) {
         return getRepo().findAllById(ids);
     }
 
-    default void remove(UUID id) throws IllegalArgumentException {
+    public void remove(UUID id) throws IllegalArgumentException {
         getRepo().deleteById(id);
     }
 
-    default void removeIn(Iterable<UUID> ids) {
+    public void removeIn(Iterable<UUID> ids) {
         getRepo().deleteAllById(ids);
     }
 
     @Transactional(readOnly = true)
-    default long getSize() {
+    public long getSize() {
         return getRepo().count();
     }
 
     @Transactional(readOnly = true)
-    default <A> Optional<T> getByIdProjection(UUID id, Class<A> type) {
-        return null;
+    public <A> Optional<A> getByIdProjection(UUID id, Class<A> type) {
+        var data = getRepo().findById(id);
+        if (data.isEmpty())
+            return Optional.empty();
+        var pf = new SpelAwareProxyProjectionFactory();
+        var rp = pf.createProjection(type, data);
+        return Optional.of(rp);
     }
 
     @Transactional(readOnly = true)
-    default <A> Page<A> getPage(Pageable page, Class<A> type) {
+    public <A> Page<A> getPage(Pageable page, Class<A> type) {
         return getRepo().getPage(page, type);
     }
 
     @Transactional
-    default O update(O entity) {
+    public O update(O entity) {
         return getEntityManager().merge(entity);
     }
 

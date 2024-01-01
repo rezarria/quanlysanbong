@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService implements IService<AccountRepository, Account> {
+public class AccountService extends IService<AccountRepository, Account> {
     @Lazy
     private final PasswordEncoder passwordEncoder;
     @Lazy

@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class ConsumerProductService implements IService<ConsumerProductRepository, ConsumerProduct> {
+public class ConsumerProductService extends IService<ConsumerProductRepository, ConsumerProduct> {
 
     @Lazy
     private final ConsumerProductRepository repository;
@@ -48,7 +48,8 @@ public class ConsumerProductService implements IService<ConsumerProductRepositor
         }
         var organizationId = organizationRepository.getIdByAccountId(auth.getAccountId());
         if (organizationId.isPresent()) {
-            return repository.findByNameContainsAndCreatedBy_ActiveTrueAndOrganization_Id(name, auth.getAccountId(), type);
+            return repository.findByNameContainsAndCreatedBy_ActiveTrueAndOrganization_Id(name, auth.getAccountId(),
+                    type);
         }
         return repository.findByOrganization_Accounts_Id(auth.getAccountId(), type);
     }

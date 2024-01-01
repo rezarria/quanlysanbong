@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class StaffService implements IService<StaffRepository, Staff> {
+public class StaffService extends IService<StaffRepository, Staff> {
 
     private final StaffRepository repository;
     private final EntityManager entityManager;

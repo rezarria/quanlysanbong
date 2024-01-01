@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class FieldHistoryService implements IService<FieldHistoryRepository, FieldHistory> {
+public class FieldHistoryService extends IService<FieldHistoryRepository, FieldHistory> {
     private final FieldHistoryRepository repository;
     private final FieldUnitSettingRepository fieldUnitSettingRepository;
     private final EntityManager entityManager;

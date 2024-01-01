@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements IService<UserRepository, User> {
+public class UserService extends IService<UserRepository, User> {
     private final UserRepository userRepository;
     private final EntityManager entityManager;
 

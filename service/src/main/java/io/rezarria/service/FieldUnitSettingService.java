@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class FieldUnitSettingService implements IService<FieldUnitSettingRepository, FieldUnitSetting> {
+public class FieldUnitSettingService extends IService<FieldUnitSettingRepository, FieldUnitSetting> {
     private final FieldUnitSettingRepository repository;
     private final EntityManager entityManager;
     private final FieldRepository fieldRepository;

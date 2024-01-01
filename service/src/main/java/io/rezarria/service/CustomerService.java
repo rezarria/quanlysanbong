@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerService implements IService<CustomerRepository, Customer> {
+public class CustomerService extends IService<CustomerRepository, Customer> {
     private final CustomerRepository repository;
     private final EntityManager entityManager;
 
