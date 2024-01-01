@@ -1,6 +1,6 @@
 package io.rezarria.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.rezarria.converter.JsonNodeConverter;
 import jakarta.persistence.*;
@@ -28,9 +28,7 @@ public class User extends BaseEntity {
     protected Date dob;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @JsonIgnoreProperties("user")
     @JoinColumn(name = "account_id")
     protected Account account;
 
@@ -39,8 +37,8 @@ public class User extends BaseEntity {
     protected JsonNode data;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonIgnoreProperties("users")
     private Organization organization;
 }
