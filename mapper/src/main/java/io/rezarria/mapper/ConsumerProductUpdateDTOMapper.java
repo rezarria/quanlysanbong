@@ -34,6 +34,7 @@ public abstract class ConsumerProductUpdateDTOMapper {
                     .product(Field.builder().id(data.getId()).build()).build();
             entityManager.persist(price);
             data.getPrices().add(price);
+            data.setPrice(price);
         }
         convert(src, data);
     }
