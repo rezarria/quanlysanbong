@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PersistenceUnitSettings">
-    <persistence-units>
-      <persistence-unit name="Default">
-        <packages>
-          <package value="io.rezarria.model" />
-          <package value="io.rezarria.repository" />
-          <package value="io.rezarria.mapper" />
-          <package value="io.rezarria.projection" />
-        </packages>
-      </persistence-unit>
-    </persistence-units>
-  </component>
+    <component name="PersistenceUnitSettings">
+        <persistence-units>
+            <persistence-unit name="Default">
+                <packages>
+                    <package value="io.rezarria.model"/>
+                    <package value="io.rezarria.repository"/>
+                    <package value="io.rezarria.mapper"/>
+                    <package value="io.rezarria.projection"/>
+                </packages>
+            </persistence-unit>
+        </persistence-units>
+    </component>
 </project>
