@@ -29,17 +29,20 @@ public class Organization extends BaseEntity {
 
     private String image;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "organization")
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE,
+            CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "organization")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<Product> products;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "organization")
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE,
+            CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "organization")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<Account> accounts;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "organization")
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE,
+            CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "organization")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<User> users;

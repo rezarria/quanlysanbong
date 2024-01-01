@@ -40,14 +40,12 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "price_id", unique = true)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     protected ProductPrice price;
 
     @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     protected Set<ProductImage> images = new LinkedHashSet<>();
 

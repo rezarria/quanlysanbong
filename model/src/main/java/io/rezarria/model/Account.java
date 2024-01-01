@@ -23,6 +23,8 @@ public class Account extends BaseEntity {
     @Fetch(FetchMode.SELECT)
     @Builder.Default
     @JoinColumn(name = "account_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<AccountRole> roles = new LinkedHashSet<>();
 
     @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
