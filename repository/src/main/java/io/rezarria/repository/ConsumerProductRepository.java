@@ -6,7 +6,6 @@ import io.rezarria.repository.interfaces.CustomRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.util.Streamable;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -21,21 +20,17 @@ public interface ConsumerProductRepository extends CustomRepository<ConsumerProd
     @Query("""
             select c from ConsumerProduct c
             where c.name like concat('%', ?1, '%') and c.organization.id = ?2""")
-    <T>
-    Stream<T> findByNameContainsAndCreatedBy_ActiveTrueAndOrganization_Id(String name, UUID id, Class<T> type);
-
+    <T> Stream<T> findByNameContainsAndCreatedBy_ActiveTrueAndOrganization_Id(String name, UUID id, Class<T> type);
 
     @Query("select u from ConsumerProduct u where u.id = ?1")
     <T> Optional<T> findByIdProject(UUID id, Class<T> typeClass);
 
     @Query("select c from ConsumerProduct c inner join c.organization.accounts accounts where accounts.id = ?1")
-    <T>
-    Stream<T> findByOrganization_Accounts_Id(UUID id, Class<T> type);
+    <T> Stream<T> findByOrganization_Accounts_Id(UUID id, Class<T> type);
 
     @Override
     @Query("select c from ConsumerProduct c")
     <T> Page<T> getPage(Pageable page, Class<T> type);
-
 
     default Optional<ProductUpdateDTO> findByIdForUpdate(UUID id) {
         var product = findById(id);

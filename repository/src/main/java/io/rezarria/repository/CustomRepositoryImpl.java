@@ -53,7 +53,8 @@ public class CustomRepositoryImpl<O, K> extends SimpleJpaRepository<O, K> implem
 
         Root<?> root = criteriaQuery.from(domainClass);
 
-        var select = criteriaQuery.multiselect(root.getModel().getDeclaredSingularAttributes().stream().map(attr -> root.get(attr.getName())).toArray(Selection[]::new));
+        var select = criteriaQuery.multiselect(root.getModel().getDeclaredSingularAttributes().stream()
+                .map(attr -> root.get(attr.getName())).toArray(Selection[]::new));
 
         var query = entityManager.createQuery(select);
 

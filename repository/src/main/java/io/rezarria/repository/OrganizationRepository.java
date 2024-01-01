@@ -20,7 +20,6 @@ public interface OrganizationRepository extends CustomRepository<Organization, U
     @Query("select o.id from Organization o inner join o.accounts accounts where accounts.id = ?1")
     Optional<UUID> getIdByAccountId(UUID id);
 
-
     @Query("select o from Organization o inner join o.accounts accounts where accounts.id = ?1")
     Optional<Organization> findByAccounts_Id(UUID id);
 

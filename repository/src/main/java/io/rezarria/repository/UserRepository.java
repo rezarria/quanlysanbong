@@ -16,6 +16,5 @@ public interface UserRepository extends CustomRepository<User, UUID> {
     <T> Streamable<T> findAllByNameContaining(String name, Class<T> type);
 
     @Query("select u from User u")
-    <T>
-    Page<T> getPage(Pageable pageable, Class<T> type);
+    <T> Page<T> getPage(Pageable pageable, Class<T> type);
 }

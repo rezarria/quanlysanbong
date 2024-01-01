@@ -48,26 +48,19 @@ public interface FieldRepository extends CustomRepository<Field, UUID> {
     }
 
     @Query("select f from Field f where f.organization.id = ?1")
-    <T>
-    Page<T> findByOrganization_Id(UUID id, Pageable pageable, Class<T> type);
+    <T> Page<T> findByOrganization_Id(UUID id, Pageable pageable, Class<T> type);
 
     @Query("select f from Field f inner join f.organization.accounts accounts where accounts.id = ?1")
-    <T>
-    Page<T> findByOrganization_Accounts_Id(UUID id, Pageable pageable, Class<T> type);
+    <T> Page<T> findByOrganization_Accounts_Id(UUID id, Pageable pageable, Class<T> type);
 
     @Query("select f from Field f")
-    <T>
-    Page<T> findAllCustom(Pageable pageable, Class<T> type);
-
+    <T> Page<T> findAllCustom(Pageable pageable, Class<T> type);
 
     @Query("select f from Field f inner join f.organization.accounts accounts where accounts.id = ?1")
-    <T>
-    Stream<T> findByOrganization_Accounts_Id__Stream(UUID id, Class<T> type);
+    <T> Stream<T> findByOrganization_Accounts_Id__Stream(UUID id, Class<T> type);
 
     @Query("select f from Field f")
-    <T>
-    Page<T> getFields(Pageable pageable, Class<T> type);
-
+    <T> Page<T> getFields(Pageable pageable, Class<T> type);
 
     <T> Streamable<T> findAllByNameContaining(String name, Class<T> typeClass);
 }
