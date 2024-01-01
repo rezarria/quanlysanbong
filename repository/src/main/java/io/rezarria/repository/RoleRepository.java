@@ -10,7 +10,10 @@ import java.util.stream.Stream;
 public interface RoleRepository extends CustomRepository<Role, UUID> {
 
     @Query("select r from Role r")
-    Stream<IdOnly> find();
+    Stream<IdOnly> getId();
+
+    @Query("select r from Role r")
+    <T> Stream<T> getStream(Class<T> type);
 
     <T> Stream<T> findAllByNameContaining(String name);
 

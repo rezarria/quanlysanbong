@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.util.Streamable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +37,7 @@ public interface AccountRepository extends CustomRepository<Account, UUID> {
     @Query("select u from Account u")
     <T> Page<T> findAllProjection(Pageable pageable, Class<T> classType);
 
+    @Transactional(readOnly = true)
     default Optional<AccountUpdateDTO> findByIdForUpdate(UUID id) {
         var account = findById(id);
         return account.map(AccountUpdateDTO::create);
