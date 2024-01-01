@@ -43,13 +43,14 @@ public abstract class FieldUpdateDTOMapper {
     public abstract void convert(FieldUpdateDTO src, @MappingTarget Field data);
 
     public void patch(FieldUpdateDTO src, @MappingTarget Field data) {
+        convert(src, data);
         if (data.getPrice() == null || src.getPrice() != data.getPrice().getPrice()) {
             ProductPrice price = ProductPrice.builder().price(src.getPrice())
                     .product(Field.builder().id(data.getId()).build()).build();
             entityManager.persist(price);
             data.getPrices().add(price);
+            data.setPrice(price);
         }
-        convert(src, data);
         data.getImages().forEach(image -> {
             if (image.getProduct() == null) {
                 image.setProduct(data);

@@ -6,15 +6,16 @@ import io.rezarria.dto.PatchDTO;
 import io.rezarria.dto.post.RolePostDTO;
 import io.rezarria.mapper.RoleMapper;
 import io.rezarria.model.Role;
+import io.rezarria.projection.RoleInfo;
 import io.rezarria.service.RoleService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.annotation.Nullable;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -47,6 +48,7 @@ public class RoleController {
     }
 
     @GetMapping(produces = "application/json")
+    @Transactional(readOnly = true)
     public ResponseEntity<?> getAll(@RequestParam @Nullable UUID id, @RequestParam @Nullable String name,
                                     @RequestParam @Nullable Integer size, @RequestParam @Nullable Integer page) {
         if (name != null) {
@@ -58,7 +60,7 @@ public class RoleController {
         if (size != null && page != null) {
             return ResponseEntity.ok(roleService.getRepo().findAll(Pageable.ofSize(size).withPage(page)));
         }
-        return ResponseEntity.ok(roleService.getAll());
+        return ResponseEntity.ok(roleService.getRepo().getStream(RoleInfo.class));
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")

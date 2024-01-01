@@ -124,10 +124,10 @@ public class AccountController {
         var account = accountService.getRepo().findByIdForUpdate(dto.id).orElseThrow();
         JsonNode nodePatched = dto.patch.apply(objectMapper.convertValue(account, JsonNode.class));
         var accountPatchedDTO = objectMapper.treeToValue(nodePatched, AccountUpdateDTO.class);
-        var accountPatched = accountService.get(dto.id);
+        var accountPatched = accountService.getRepo().getReferenceById(dto.id);
         accountUpdateDTOMapper.patch(accountPatchedDTO, accountPatched);
-        accountPatched = accountService.update(accountPatched);
-        return ResponseEntity.ok(accountPatched);
+        accountService.update(accountPatched);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping
@@ -143,7 +143,7 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
-    interface GetDTO {
+    public interface GetDTO {
         UUID getId();
 
         @Value("#{target.user != null ? target.user.id : null}")

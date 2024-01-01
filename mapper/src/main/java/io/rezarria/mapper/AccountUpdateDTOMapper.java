@@ -1,12 +1,12 @@
 package io.rezarria.mapper;
 
-
 import io.rezarria.dto.update.AccountUpdateDTO;
 import io.rezarria.model.Account;
 import io.rezarria.model.AccountRole;
 import io.rezarria.model.AccountRoleKey;
-import io.rezarria.model.User;
+import io.rezarria.model.Role;
 import io.rezarria.repository.RoleRepository;
+import io.rezarria.repository.UserRepository;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,26 +20,32 @@ public abstract class AccountUpdateDTOMapper {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "user", source = "userId", qualifiedByName = "toUser")
+    @Mapping(target = "user", ignore = true)
     public abstract void convert(AccountUpdateDTO src, @MappingTarget Account dis);
 
     public void patch(AccountUpdateDTO src, @MappingTarget Account dis) {
         convert(src, dis);
+        if (dis.getUser() == null | dis.getUser().getId() != src.userId()) {
+            var user = dis.getUser();
+            user.setAccount(null);
+            userRepository.save(user);
+            dis.setUser(userRepository.findById(src.userId()).orElseThrow());
+        }
         var roles = dis.getRoles();
         roles.removeIf(i -> !src.roleIds().contains(i.getId().getRoleId()));
         var currentroleIds = dis.getRoles().stream().map(AccountRole::getId).map(AccountRoleKey::getRoleId)
                 .collect(Collectors.toSet());
         var newRoleIds = src.roleIds().stream().filter(i -> !currentroleIds.contains(i))
                 .map(i -> AccountRole.builder().id(AccountRoleKey.builder().roleId(i).accountId(dis.getId()).build())
+                        .account(dis)
+                        .role(Role.builder().id(i).build())
                         .build())
                 .toList();
         roles.addAll(newRoleIds);
-    }
-
-    @Named("toUser")
-    public User toUser(UUID id) {
-        return User.builder().id(id).build();
     }
 
     @Named("toRoles")

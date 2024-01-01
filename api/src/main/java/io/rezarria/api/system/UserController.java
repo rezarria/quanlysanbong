@@ -17,6 +17,7 @@ import lombok.SneakyThrows;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -39,6 +40,7 @@ public class UserController {
     }
 
     @GetMapping(produces = "application/json", name = "/{id}")
+    @Transactional(readOnly = true)
     public ResponseEntity<?> getAll(@PathVariable @RequestParam @Nullable UUID id,
                                     @RequestParam @Nullable String name,
                                     @RequestParam @Nullable Integer size,
@@ -55,7 +57,7 @@ public class UserController {
             return ResponseEntity.ok(userService.getPage(Pageable.ofSize(size).withPage(page), UserInfo.class));
         }
 
-        return ResponseEntity.ok(userService.getAll());
+        return ResponseEntity.ok(userService.getRepo().findAllStream(UserInfo.class).stream());
     }
 
     @GetMapping("size")
