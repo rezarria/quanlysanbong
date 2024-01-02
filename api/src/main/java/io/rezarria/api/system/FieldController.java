@@ -12,6 +12,7 @@ import io.rezarria.dto.update.FieldUpdateDTO;
 import io.rezarria.mapper.FieldMapper;
 import io.rezarria.mapper.FieldUpdateDTOMapper;
 import io.rezarria.model.Field;
+import io.rezarria.model.ProductImage;
 import io.rezarria.projection.FieldHistoryInfo;
 import io.rezarria.projection.FieldInfo;
 import io.rezarria.service.FieldHistoryService;
@@ -60,7 +61,7 @@ public class FieldController {
     }
 
     @GetMapping("size")
-    @SecurityRequirements(value = {@SecurityRequirement(name = "bearer-jwt")})
+    @SecurityRequirements(value = { @SecurityRequirement(name = "bearer-jwt") })
 
     public ResponseEntity<Long> getSize() {
         return ResponseEntity.ok(fieldService.getSize());
@@ -68,9 +69,9 @@ public class FieldController {
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<?> getAll(@PathVariable @RequestParam @Nullable UUID id,
-                                    @RequestParam @Nullable String name,
-                                    @RequestParam @Nullable Integer size,
-                                    @RequestParam @Nullable Integer page) {
+            @RequestParam @Nullable String name,
+            @RequestParam @Nullable Integer size,
+            @RequestParam @Nullable Integer page) {
         if (name != null) {
             return ResponseEntity.ok(fieldService.getRepo().findAllByNameContaining(name, FieldInfo.class).stream());
         }
@@ -90,8 +91,13 @@ public class FieldController {
         fieldService.create(field);
         if (field.getPrice() != null) {
             field.getPrice().setProduct(field);
-            fieldService.update(field);
         }
+        var images = dto.getImages();
+        if (images != null && !images.isEmpty()) {
+            field.getImages().addAll(
+                    images.stream().map(img -> ProductImage.builder().product(field).path(img).build()).toList());
+        }
+        fieldService.update(field);
         return ResponseEntity.ok().build();
     }
 

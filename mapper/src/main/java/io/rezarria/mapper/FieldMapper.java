@@ -7,12 +7,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", config = ProductUpdateDTOConfig.class, uses = {
-        ProductMapper.class})
+        ProductMapper.class })
 public abstract class FieldMapper {
     @InheritConfiguration(name = "convert")
     @Mapping(target = "details", ignore = true)
     @Mapping(target = "detail", ignore = true)
     @Mapping(target = "price", source = "price", qualifiedByName = "mapPrice")
-    @Mapping(target = "images", source = "images", qualifiedByName = "mapImages")
+    @Mapping(target = "images", ignore = true)
     public abstract Field convert(FieldPost dto);
 }

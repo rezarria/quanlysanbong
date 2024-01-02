@@ -11,7 +11,7 @@ public interface FieldInfo {
     String getName();
 
     @Value("#{target.images.![path]}")
-    List<String> getPictures();
+    List<String> getImages();
 
     @Value("#{target.prices != null ? target.prices.![price] : null}")
     List<Double> getPrices();
