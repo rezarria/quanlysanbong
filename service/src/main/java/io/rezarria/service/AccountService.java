@@ -113,4 +113,9 @@ public class AccountService extends IService<AccountRepository, Account> {
         return account;
     }
 
+    @Override
+    public <A> Optional<A> getByIdProjection(UUID id, Class<A> type) {
+        return accountRepository.findByIdProjection(id, type);
+    }
+
 }

@@ -15,6 +15,9 @@ public interface FieldHistoryRepository extends CustomRepository<FieldHistory, U
     @Query("select count(f) from FieldHistory f where f.field.id = ?1 and f.from <= ?2 and f.to >= ?3")
     long countByField_IdAndFromLessThanEqualAndToGreaterThanEqual(UUID id, Instant from, Instant to);
 
+    @Query("select count(f) from FieldHistory f where f.field.id = ?1 and f.from <= ?2")
+    long countByField_IdAndFromLessThanEqual(UUID id, Instant from);
+
     @Query("select f from FieldHistory f where f.field.id = ?1 and f.from >= ?2 and f.to <= ?3")
     List<FieldHistory> findByField_IdAndFromLessThanEqualAndToGreaterThanEqual(UUID id, Instant from, Instant to);
 

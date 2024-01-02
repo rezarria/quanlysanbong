@@ -11,4 +11,7 @@ public interface FieldUnitSettingRepository extends CustomRepository<FieldUnitSe
     @Query("select f from FieldUnitSetting f inner join f.currentField fields where fields.id = ?1")
     <T> Optional<T> findByFields_Id(UUID id, Class<T> type);
 
+    @Query("select f from FieldUnitSetting f where f.id = ?1")
+    <T> Optional<T> findByIdProjection(UUID id, Class<T> type);
+
 }

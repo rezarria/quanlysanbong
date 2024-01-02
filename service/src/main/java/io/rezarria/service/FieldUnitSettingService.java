@@ -35,4 +35,9 @@ public class FieldUnitSettingService extends IService<FieldUnitSettingRepository
     public EntityManager getEntityManager() {
         return entityManager;
     }
+
+    @Override
+    public <A> Optional<A> getByIdProjection(UUID id, Class<A> type) {
+        return repository.findByIdProjection(id, type);
+    }
 }

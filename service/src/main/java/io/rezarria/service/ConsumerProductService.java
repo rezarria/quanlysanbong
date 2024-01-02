@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 @Service
@@ -61,6 +63,11 @@ public class ConsumerProductService extends IService<ConsumerProductRepository, 
 
     public <T> Page<T> getPage(Pageable page, Class<T> type) {
         return repository.getPage(page, type);
+    }
+
+    @Override
+    public <A> Optional<A> getByIdProjection(UUID id, Class<A> type) {
+        return repository.findByIdProject(id, type);
     }
 
 }

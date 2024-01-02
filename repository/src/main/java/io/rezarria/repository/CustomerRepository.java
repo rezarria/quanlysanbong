@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -21,5 +22,8 @@ public interface CustomerRepository extends CustomRepository<Customer, UUID> {
 
     @Query("select c from Customer c")
     <T> Stream<T> getAllStreamProjection(Class<T> type);
+
+    @Query("select c from Customer c where c.id = ?1")
+    <T> Optional<T> findByIdProjection(UUID id, Class<T> type);
 
 }

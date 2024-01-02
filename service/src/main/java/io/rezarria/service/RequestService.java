@@ -5,6 +5,10 @@ import io.rezarria.repository.RequestRepository;
 import io.rezarria.service.interfaces.IService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.context.annotation.Lazy;
 
 @RequiredArgsConstructor
@@ -22,6 +26,11 @@ public class RequestService extends IService<RequestRepository, Request> {
     @Override
     public EntityManager getEntityManager() {
         return entityManager;
+    }
+
+    @Override
+    public <A> Optional<A> getByIdProjection(UUID id, Class<A> type) {
+        return requestRepository.findByIdProjection(id, type);
     }
 
 }

@@ -11,6 +11,7 @@ import io.rezarria.dto.post.OrderPostDTO;
 import io.rezarria.dto.update.FieldUpdateDTO;
 import io.rezarria.mapper.FieldMapper;
 import io.rezarria.mapper.FieldUpdateDTOMapper;
+import io.rezarria.mapper.OrderMapper;
 import io.rezarria.model.Field;
 import io.rezarria.model.ProductImage;
 import io.rezarria.projection.FieldHistoryInfo;
@@ -18,6 +19,7 @@ import io.rezarria.projection.FieldInfo;
 import io.rezarria.service.FieldHistoryService;
 import io.rezarria.service.FieldService;
 import io.rezarria.service.FieldService.Status;
+import io.rezarria.service.exceptions.FieldOrderServiceException;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.annotation.Nullable;
@@ -42,6 +44,7 @@ public class FieldController {
     private final FieldHistoryService fieldHistoryService;
     @Qualifier("jsonPatchObjectMapper")
     private final ObjectMapper objectMapper;
+    private final OrderMapper orderMapper;
 
     private final FieldUpdateDTOMapper fieldUpdateDTOMapper;
 
@@ -131,7 +134,12 @@ public class FieldController {
 
     @PostMapping("order")
     public ResponseEntity<?> order(@RequestBody OrderPostDTO dto) {
-
+        var order = orderMapper.convert(dto);
+        try {
+            fieldService.order(order);
+        } catch (FieldOrderServiceException e) {
+            e.printStackTrace();
+        }
         return ResponseEntity.ok().build();
     }
 

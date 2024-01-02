@@ -1,21 +1,27 @@
 package io.rezarria.service;
 
 import io.rezarria.model.Field;
+import io.rezarria.model.FieldHistory;
 import io.rezarria.repository.FieldHistoryRepository;
 import io.rezarria.repository.FieldRepository;
 import io.rezarria.repository.OrganizationRepository;
 import io.rezarria.security.component.Auth;
+import io.rezarria.service.exceptions.FieldOrderServiceException;
 import io.rezarria.service.interfaces.IService;
+import io.rezarria.service.status.FieldOrderServiceStatus;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+
+import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Stream;
@@ -24,10 +30,22 @@ import java.util.stream.Stream;
 @Transactional
 @RequiredArgsConstructor
 public class FieldService extends IService<FieldRepository, Field> {
+    @Lazy
     private final FieldRepository fieldRepository;
+    @Lazy
     private final FieldHistoryRepository fieldHistoryRepository;
+    @Lazy
     private final OrganizationRepository organizationRepository;
+    @Lazy
     private final EntityManager entityManager;
+
+    public void order(FieldHistory order) throws FieldOrderServiceException {
+        var count = fieldHistoryRepository.countByField_IdAndFromLessThanEqual(order.getField().getId(),
+                order.getFrom());
+        if (count != 0)
+            throw FieldOrderServiceException.NotFit(order);
+
+    }
 
     @Override
     public Field create(Field entity) {
@@ -140,6 +158,11 @@ public class FieldService extends IService<FieldRepository, Field> {
 
     @Builder
     record FieldStatus(UUID id, Status status) {
+    }
+
+    @Override
+    public <A> Optional<A> getByIdProjection(UUID id, Class<A> type) {
+        return fieldRepository.findByIdProject(id, type);
     }
 
 }

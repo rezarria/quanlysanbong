@@ -44,4 +44,9 @@ public class OrganizationService extends IService<OrganizationRepository, Organi
         return entityManager;
     }
 
+    @Override
+    public <A> Optional<A> getByIdProjection(UUID id, Class<A> type) {
+        return repository.findByIdProjection(id, type);
+    }
+
 }

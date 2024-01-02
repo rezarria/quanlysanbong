@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 @Service
@@ -34,5 +36,10 @@ public class CustomerService extends IService<CustomerRepository, Customer> {
     @Transactional(readOnly = true)
     public <T> Stream<T> getAllStreamProjection(Class<T> type) {
         return repository.getAllStreamProjection(type);
+    }
+
+    @Override
+    public <A> Optional<A> getByIdProjection(UUID id, Class<A> type) {
+        return repository.findByIdProjection(id, type);
     }
 }

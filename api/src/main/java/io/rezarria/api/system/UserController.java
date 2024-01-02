@@ -42,9 +42,9 @@ public class UserController {
     @GetMapping(produces = "application/json", name = "/{id}")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getAll(@PathVariable @RequestParam @Nullable UUID id,
-                                    @RequestParam @Nullable String name,
-                                    @RequestParam @Nullable Integer size,
-                                    @RequestParam @Nullable Integer page) {
+            @RequestParam @Nullable String name,
+            @RequestParam @Nullable Integer size,
+            @RequestParam @Nullable Integer page) {
         if (name != null) {
             var data = userService.getRepo().findAllByNameContaining(name, UserInfo.class);
             return ResponseEntity.ok(data.stream());
@@ -75,15 +75,13 @@ public class UserController {
     @PatchMapping(consumes = "application/json-patch+json", produces = "application/json")
     @SneakyThrows
     public ResponseEntity<?> update(@RequestBody PatchDTO data) {
-        var userProjection = userService.getByIdProjection(data.id(), UserUpdateDTO.class).orElseThrow();
+        var userProjection = userService.getRepo().findByIdForUpdate(data.id()).orElseThrow();
         JsonNode nodePatched = data.patch().apply(objectMapper.convertValue(userProjection, JsonNode.class));
         userProjection = objectMapper.treeToValue(nodePatched, UserUpdateDTO.class);
         var user = userService.getRepo().getReferenceById(data.id());
         userUpdateDTOMapper.patch(userProjection, user);
         userService.update(user);
-        var pf = new SpelAwareProxyProjectionFactory();
-        var rp = pf.createProjection(UserInfo.class, userProjection);
-        return ResponseEntity.ok(rp);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping(consumes = "application/json", produces = "application/json")

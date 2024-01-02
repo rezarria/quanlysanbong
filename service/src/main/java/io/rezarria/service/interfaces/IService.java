@@ -5,7 +5,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -68,14 +67,7 @@ public abstract class IService<T extends CustomRepository<O, UUID>, O> {
     }
 
     @Transactional(readOnly = true)
-    public <A> Optional<A> getByIdProjection(UUID id, Class<A> type) {
-        var data = getRepo().findById(id);
-        if (data.isEmpty())
-            return Optional.empty();
-        var pf = new SpelAwareProxyProjectionFactory();
-        var rp = pf.createProjection(type, data);
-        return Optional.of(rp);
-    }
+    public abstract <A> Optional<A> getByIdProjection(UUID id, Class<A> type);
 
     @Transactional(readOnly = true)
     public <A> Page<A> getPage(Pageable page, Class<A> type) {

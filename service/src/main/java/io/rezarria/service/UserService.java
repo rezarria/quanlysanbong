@@ -5,6 +5,10 @@ import io.rezarria.repository.UserRepository;
 import io.rezarria.service.interfaces.IService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,5 +32,10 @@ public class UserService extends IService<UserRepository, User> {
     @Override
     public <T> Page<T> getPage(Pageable page, Class<T> type) {
         return userRepository.getPage(page, type);
+    }
+
+    @Override
+    public <A> Optional<A> getByIdProjection(UUID id, Class<A> type) {
+        return userRepository.findByIdProjection(id, type);
     }
 }

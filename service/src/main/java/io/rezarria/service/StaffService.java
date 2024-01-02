@@ -63,4 +63,9 @@ public class StaffService extends IService<StaffRepository, Staff> {
         }
         throw new PermissionDeniedDataAccessException("no", new RuntimeException());
     }
+
+    @Override
+    public <A> Optional<A> getByIdProjection(UUID id, Class<A> type) {
+        return repository.getByIdProjection(id, type);
+    }
 }

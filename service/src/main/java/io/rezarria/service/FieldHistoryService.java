@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 import java.util.TimeZone;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -96,6 +97,11 @@ public class FieldHistoryService extends IService<FieldHistoryRepository, FieldH
         Instant getFrom();
 
         Instant getTo();
+    }
+
+    @Override
+    public <A> Optional<A> getByIdProjection(UUID id, Class<A> type) {
+        return fieldUnitSettingRepository.findByIdProjection(id, type);
     }
 
 }

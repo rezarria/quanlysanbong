@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 @Service
@@ -36,5 +38,10 @@ public class RoleService extends IService<RoleRepository, Role> {
     @Override
     public EntityManager getEntityManager() {
         return entityManager;
+    }
+
+    @Override
+    public <A> Optional<A> getByIdProjection(UUID id, Class<A> type) {
+        return roleRepository.findByIdProjection(id, type);
     }
 }

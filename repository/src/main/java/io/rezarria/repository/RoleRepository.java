@@ -4,6 +4,7 @@ import io.rezarria.model.Role;
 import io.rezarria.repository.interfaces.CustomRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -20,4 +21,7 @@ public interface RoleRepository extends CustomRepository<Role, UUID> {
     interface IdOnly {
         UUID id();
     }
+
+    @Query("select r from Role r where r.id = ?1")
+    <T> Optional<T> findByIdProjection(UUID id, Class<T> type);
 }
