@@ -7,6 +7,7 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import io.rezarria.dto.PatchDTO;
 import io.rezarria.dto.delete.DeleteDTO;
 import io.rezarria.dto.post.FieldPost;
+import io.rezarria.dto.post.OrderPostDTO;
 import io.rezarria.dto.update.FieldUpdateDTO;
 import io.rezarria.mapper.FieldMapper;
 import io.rezarria.mapper.FieldUpdateDTOMapper;
@@ -120,6 +121,12 @@ public class FieldController {
         if (data.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return ResponseEntity.ok(data.get());
+    }
+
+    @PostMapping("order")
+    public ResponseEntity<?> order(@RequestBody OrderPostDTO dto) {
+
+        return ResponseEntity.ok().build();
     }
 
 }
