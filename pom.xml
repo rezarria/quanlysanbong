@@ -30,6 +30,7 @@
         <module>helper</module>
         <module>file</module>
         <module>spring</module>
+        <module>vnpay</module>
     </modules>
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
