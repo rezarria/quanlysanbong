@@ -1,9 +1,7 @@
 package io.rezarria.api.system;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.fge.jsonpatch.JsonPatchException;
+import io.rezarria.api.action.Model;
 import io.rezarria.dto.PatchDTO;
 import io.rezarria.dto.delete.DeleteDTO;
 import io.rezarria.dto.post.FieldPost;
@@ -64,7 +62,7 @@ public class FieldController {
     }
 
     @GetMapping("size")
-    @SecurityRequirements(value = { @SecurityRequirement(name = "bearer-jwt") })
+    @SecurityRequirements(value = {@SecurityRequirement(name = "bearer-jwt")})
 
     public ResponseEntity<Long> getSize() {
         return ResponseEntity.ok(fieldService.getSize());
@@ -72,9 +70,9 @@ public class FieldController {
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<?> getAll(@PathVariable @RequestParam @Nullable UUID id,
-            @RequestParam @Nullable String name,
-            @RequestParam @Nullable Integer size,
-            @RequestParam @Nullable Integer page) {
+                                    @RequestParam @Nullable String name,
+                                    @RequestParam @Nullable Integer size,
+                                    @RequestParam @Nullable Integer page) {
         if (name != null) {
             return ResponseEntity.ok(fieldService.getRepo().findAllByNameContaining(name, FieldInfo.class).stream());
         }
@@ -113,14 +111,8 @@ public class FieldController {
     @PatchMapping(consumes = "application/json-patch+json")
     @Transactional()
     public ResponseEntity<Field> update(@RequestBody PatchDTO dto)
-            throws IllegalArgumentException, JsonPatchException, JsonProcessingException {
-
-        var currentDTO = fieldService.getRepo().findByIdForUpdate(dto.id()).orElseThrow();
-        JsonNode nodePatched = dto.patch().apply(objectMapper.convertValue(currentDTO, JsonNode.class));
-        var fieldPatched = objectMapper.treeToValue(nodePatched, FieldUpdateDTO.class);
-        Field field = fieldService.get(dto.id());
-        fieldUpdateDTOMapper.patch(fieldPatched, field);
-        fieldService.update(field);
+            throws IllegalArgumentException {
+        Model.update(dto.id(), dto.patch(), objectMapper, fieldService.getRepo()::findByIdForUpdate, fieldService.getRepo()::findById, fieldUpdateDTOMapper::patch, FieldUpdateDTO.class);
         return ResponseEntity.ok().build();
     }
 
