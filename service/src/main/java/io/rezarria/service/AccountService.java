@@ -1,5 +1,16 @@
 package io.rezarria.service;
 
+import java.util.Collection;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import io.rezarria.dto.update.AccountUpdateDTO;
 import io.rezarria.model.Account;
 import io.rezarria.model.AccountRole;
@@ -10,17 +21,6 @@ import io.rezarria.service.interfaces.IService;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -44,12 +44,10 @@ public class AccountService extends IService<AccountRepository, Account> {
         return true;
     }
 
-    @Transactional(readOnly = true)
     public <T> Stream<T> findByUserNull(Class<T> type) {
         return accountRepository.findByUserNull(type);
     }
 
-    @Transactional(readOnly = true)
     public <T> Stream<T> findByName(String name, boolean skipUser, Class<T> type) {
         if (skipUser)
             return accountRepository.findByUsernameContainsAndUserNull(name, type);

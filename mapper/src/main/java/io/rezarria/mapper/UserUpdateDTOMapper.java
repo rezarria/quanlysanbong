@@ -9,7 +9,6 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public abstract class UserUpdateDTOMapper {
 
-    @BeanMapping(ignoreByDefault = true)
     public abstract void convert(UserUpdateDTO dto, @MappingTarget User user);
 
     public void patch(UserUpdateDTO dto, @MappingTarget User user) {

@@ -24,7 +24,6 @@ import java.time.Instant;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@DynamicUpdate
 public class Audit {
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)

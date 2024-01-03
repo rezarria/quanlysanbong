@@ -124,7 +124,7 @@ public class FieldController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/beforeUpdate")
+    @GetMapping("beforeUpdate")
     public ResponseEntity<?> getDataBeforeUpdate(@RequestParam UUID id) {
         var data = fieldService.getRepo().findByIdForUpdate(id);
         if (data.isEmpty())

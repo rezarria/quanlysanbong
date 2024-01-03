@@ -23,22 +23,9 @@ public interface FieldRepository extends CustomRepository<Field, UUID> {
 
     void deleteAllByNameIn(Collection<String> name);
 
-    // @EntityGraph(attributePaths = {
-    // "details",
-    // "detail",
-    // "prices",
-    // "price",
-    // "usedHistories" })
     @Query("select u from Field u")
     <T> Stream<T> findAllStream(Class<T> typeClass);
 
-    // @EntityGraph(attributePaths = {
-    // "details",
-    // "detail",
-    // "prices",
-    // "price",
-    // "images",
-    // "usedHistories" })
     @Query("select u from Field u where u.id = ?1")
     <T> Optional<T> findByIdProject(UUID id, Class<T> typeClass);
 

@@ -37,7 +37,6 @@ public interface AccountRepository extends CustomRepository<Account, UUID> {
     @Query("select u from Account u")
     <T> Page<T> findAllProjection(Pageable pageable, Class<T> classType);
 
-    @Transactional(readOnly = true)
     default Optional<AccountUpdateDTO> findByIdForUpdate(UUID id) {
         var account = findById(id);
         return account.map(AccountUpdateDTO::create);
