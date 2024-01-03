@@ -8,7 +8,6 @@ import io.rezarria.model.FieldUnitSetting;
 import io.rezarria.repository.CustomerRepository;
 import io.rezarria.repository.FieldRepository;
 import io.rezarria.repository.FieldUnitSettingRepository;
-
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -5,11 +5,10 @@ import io.rezarria.repository.RequestRepository;
 import io.rezarria.service.interfaces.IService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.Optional;
 import java.util.UUID;
-
-import org.springframework.context.annotation.Lazy;
 
 @RequiredArgsConstructor
 public class RequestService extends IService<RequestRepository, Request> {

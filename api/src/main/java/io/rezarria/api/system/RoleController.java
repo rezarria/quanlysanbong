@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.rezarria.api.action.Model;
 import io.rezarria.dto.PatchDTO;
 import io.rezarria.dto.post.RolePostDTO;
+import io.rezarria.dto.update.RoleUpdateDTO;
 import io.rezarria.mapper.RoleMapper;
+import io.rezarria.mapper.RoleUpdateDTOMapper;
 import io.rezarria.model.Role;
 import io.rezarria.projection.RoleInfo;
 import io.rezarria.service.RoleService;
@@ -41,6 +43,8 @@ public class RoleController {
     private final ObjectMapper objectMapper;
     @Lazy
     private final RoleMapper roleMapper;
+    @Lazy
+    private final RoleUpdateDTOMapper roleUpdateDTOMapper;
 
     @GetMapping("size")
     public ResponseEntity<Long> getSize() {
@@ -84,10 +88,10 @@ public class RoleController {
     @PatchMapping
     @Transactional
     @SneakyThrows
-    public ResponseEntity<?> patch(@RequestBody PatchDTO data) {
-        var org = roleService.getRepo().createUpdateById(data.id()).orElseThrow();
-        var json = objectMapper.convertValue(org, JsonNode.class)
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<?> patch(@RequestBody PatchDTO dto) {
+        Model.update(dto.id(), dto.patch(), objectMapper, roleService.getRepo()::createUpdateById,
+                roleService.getRepo()::findById, roleUpdateDTOMapper::patch, RoleUpdateDTO.class);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("beforeUpdate")

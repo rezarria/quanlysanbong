@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", config = ProductUpdateDTOConfig.class, uses = {
-        ProductMapper.class })
+        ProductMapper.class})
 public abstract class FieldMapper {
     @InheritConfiguration(name = "convert")
     @Mapping(target = "details", ignore = true)

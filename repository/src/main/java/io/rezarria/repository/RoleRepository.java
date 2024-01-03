@@ -1,16 +1,15 @@
 package io.rezarria.repository;
 
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Stream;
-
+import io.rezarria.dto.update.RoleUpdateDTO;
+import io.rezarria.model.Role;
+import io.rezarria.repository.interfaces.CustomRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 
-import io.rezarria.dto.update.RoleUpdateDTO;
-import io.rezarria.model.Role;
-import io.rezarria.repository.interfaces.CustomRepository;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 public interface RoleRepository extends CustomRepository<Role, UUID> {
 
@@ -22,10 +21,6 @@ public interface RoleRepository extends CustomRepository<Role, UUID> {
 
     <T> Stream<T> findAllByNameContaining(String name);
 
-    interface IdOnly {
-        UUID id();
-    }
-
     @Query("select r from Role r where r.id = ?1")
     <T> Optional<T> findByIdProjection(UUID id, Class<T> type);
 
@@ -34,4 +29,8 @@ public interface RoleRepository extends CustomRepository<Role, UUID> {
 
     @Query("select new io.rezarria.dto.update.RoleUpdateDTO(r.id, r.name, r.displayName) from Role r where r.id = ?1")
     Optional<RoleUpdateDTO> createUpdateById(UUID id);
+
+    interface IdOnly {
+        UUID id();
+    }
 }

@@ -8,20 +8,17 @@ import io.rezarria.repository.OrganizationRepository;
 import io.rezarria.security.component.Auth;
 import io.rezarria.service.exceptions.FieldOrderServiceException;
 import io.rezarria.service.interfaces.IService;
-import io.rezarria.service.status.FieldOrderServiceStatus;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Stream;
@@ -152,17 +149,17 @@ public class FieldService extends IService<FieldRepository, Field> {
         }
     }
 
+    @Override
+    public <A> Optional<A> getByIdProjection(UUID id, Class<A> type) {
+        return fieldRepository.findByIdProject(id, type);
+    }
+
     public enum Status {
         FREE, BUSY, DENY, UNKNOWN
     }
 
     @Builder
     record FieldStatus(UUID id, Status status) {
-    }
-
-    @Override
-    public <A> Optional<A> getByIdProjection(UUID id, Class<A> type) {
-        return fieldRepository.findByIdProject(id, type);
     }
 
 }
