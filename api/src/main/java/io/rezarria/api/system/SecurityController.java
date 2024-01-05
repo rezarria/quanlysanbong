@@ -27,7 +27,7 @@ public class SecurityController {
         return ResponseEntity.ok(securityService.login(dto.getUsername(), dto.getPassword()));
     }
 
-    @PostMapping(path = "/refesh", produces = "application/json")
+    @PostMapping(path = "/refresh", produces = "application/json")
     public ResponseEntity<JwtAndRefreshRecord> refesh(@RequestBody String token) {
         return ResponseEntity.ok(securityService.refresh(token));
     }

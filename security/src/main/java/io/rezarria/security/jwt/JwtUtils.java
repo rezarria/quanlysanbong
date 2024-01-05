@@ -83,7 +83,7 @@ public class JwtUtils {
         var accountId = UUID.fromString(claims.get(AccountIdInfoAuthority.NAME, String.class));
         var userId = UUID.fromString(claims.get(UserIdInfoAuthority.NAME, String.class));
         authorities.add(new AccountIdInfoAuthority(accountId));
-        authorities.add(new UserIdInfoAuthority(accountId));
+        authorities.add(new UserIdInfoAuthority(userId));
         User principal = new User(claims.getSubject(), "", authorities);
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
