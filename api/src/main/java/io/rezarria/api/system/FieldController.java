@@ -124,15 +124,4 @@ public class FieldController {
         return ResponseEntity.ok(data.get());
     }
 
-    @PostMapping("order")
-    public ResponseEntity<?> order(@RequestBody OrderPostDTO dto) {
-        var order = orderMapper.convert(dto);
-        try {
-            fieldService.order(order);
-        } catch (FieldOrderServiceException e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.ok().build();
-    }
-
 }

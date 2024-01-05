@@ -1,11 +1,13 @@
 package io.rezarria.service;
 
 import io.rezarria.model.FieldHistory;
-import io.rezarria.repository.FieldHistoryRepository;
-import io.rezarria.repository.FieldUnitSettingRepository;
+import io.rezarria.repository.*;
+import io.rezarria.security.component.Auth;
+import io.rezarria.service.exceptions.FieldOrderServiceException;
 import io.rezarria.service.interfaces.IService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,9 +20,18 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 public class FieldHistoryService extends IService<FieldHistoryRepository, FieldHistory> {
+    @Lazy
     private final FieldHistoryRepository repository;
+    @Lazy
     private final FieldUnitSettingRepository fieldUnitSettingRepository;
+    @Lazy
     private final EntityManager entityManager;
+    @Lazy
+    private final CustomerRepository customerRepository;
+    @Lazy
+    private final FieldRepository fieldRepository;
+    @Lazy
+    private final StaffRepository staffRepository;
 
     @Override
     public FieldHistoryRepository getRepo() {
@@ -86,6 +97,23 @@ public class FieldHistoryService extends IService<FieldHistoryRepository, FieldH
     @Override
     public <A> Optional<A> getByIdProjection(UUID id, Class<A> type) {
         return fieldUnitSettingRepository.findByIdProjection(id, type);
+    }
+
+    public FieldHistory order(UUID customerId, UUID fieldId, Instant from, Instant to) throws FieldOrderServiceException {
+        var count = repository.countByField_IdAndFromLessThanEqualAndToGreaterThanEqual(fieldId, from, to);
+        if (count == 0) {
+            var builder = FieldHistory.builder()
+                    .customer(customerRepository.findById(customerId).orElseThrow())
+                    .from(from).to(to)
+                    .field(fieldRepository.findById(fieldId).orElseThrow());
+            var auth = new Auth();
+            if (auth.isLogin() && !auth.hasRole("SUPER_ADMIN")) {
+                var staff = staffRepository.findByAccount_Id(auth.getAccountId()).orElseThrow();
+                builder.staff(staff);
+            }
+            return repository.save(builder.build());
+        }
+        return null;
     }
 
     public interface SettingProjection {

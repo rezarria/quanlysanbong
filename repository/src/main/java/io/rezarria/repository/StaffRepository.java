@@ -26,6 +26,9 @@ public interface StaffRepository extends CustomRepository<Staff, UUID> {
     @Query("select s from Staff s inner join s.organization.accounts accounts where s.id = ?1 and accounts.id = ?2")
     <T> Optional<T> findByIdAndOrganization_Accounts_Id(UUID id, UUID id1, Class<T> type);
 
+    @Query("select s from Staff s where s.account.id = ?1")
+    Optional<Staff> findByAccount_Id(UUID id);
+
     @Query("select s from Staff s")
     <T> Stream<T> getAllStreamProjection(Class<T> type);
 

@@ -5,12 +5,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class BillDetail extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "product_id")

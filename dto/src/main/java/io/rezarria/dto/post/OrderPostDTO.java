@@ -1,5 +1,7 @@
 package io.rezarria.dto.post;
 
+import io.rezarria.model.Bill;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -13,5 +15,6 @@ public record OrderPostDTO(
         Instant to,
         int unit,
         String description,
+        Bill.PaymentMethod paymentMethod,
         List<OrderDetailPostDTO> details) {
 }

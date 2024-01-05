@@ -1,12 +1,10 @@
 package io.rezarria.service;
 
 import io.rezarria.model.Field;
-import io.rezarria.model.FieldHistory;
 import io.rezarria.repository.FieldHistoryRepository;
 import io.rezarria.repository.FieldRepository;
 import io.rezarria.repository.OrganizationRepository;
 import io.rezarria.security.component.Auth;
-import io.rezarria.service.exceptions.FieldOrderServiceException;
 import io.rezarria.service.interfaces.IService;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -35,14 +33,6 @@ public class FieldService extends IService<FieldRepository, Field> {
     private final OrganizationRepository organizationRepository;
     @Lazy
     private final EntityManager entityManager;
-
-    public void order(FieldHistory order) throws FieldOrderServiceException {
-        var count = fieldHistoryRepository.countByField_IdAndFromLessThanEqual(order.getField().getId(),
-                order.getFrom());
-        if (count != 0)
-            throw FieldOrderServiceException.NotFit(order);
-
-    }
 
     @Override
     public Field create(Field entity) {
