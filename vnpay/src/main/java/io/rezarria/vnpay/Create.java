@@ -16,13 +16,12 @@ import java.util.*;
 public class Create {
 
     @SneakyThrows
-    protected static String create(String bankCode, long _amount, String ipAdress, String locate) {
-
+    public static String create(String bankCode, long _amount, String ipAdress, String locate, UUID id) {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
         long amount = _amount * 100;
-        String vnp_TxnRef = UUID.randomUUID().toString();
+        String vnp_TxnRef = id.toString();
         String vnp_IpAddr = ipAdress;
         String vnp_TmnCode = Config.vnp_TmnCode;
         Map<String, String> vnp_Params = new HashMap<>();
