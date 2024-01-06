@@ -1,5 +1,9 @@
 package io.rezarria.model;
 
+import java.util.UUID;
+
+import org.hibernate.annotations.DynamicUpdate;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,14 +14,13 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.util.UUID;
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 @MappedSuperclass
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
+@DynamicUpdate
 public class BaseEntity extends Audit {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

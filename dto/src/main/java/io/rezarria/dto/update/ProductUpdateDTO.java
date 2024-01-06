@@ -1,5 +1,9 @@
 package io.rezarria.dto.update;
 
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import io.rezarria.model.Product;
 import io.rezarria.model.ProductImage;
 import jakarta.annotation.Nullable;
@@ -7,9 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-
-import java.util.List;
-import java.util.UUID;
 
 @Data
 @SuperBuilder
@@ -23,14 +24,14 @@ public class ProductUpdateDTO {
     @Nullable
     protected String description;
     @Nullable
-    protected List<String> images;
+    protected Set<String> images;
 
     public static ProductUpdateDTO create(Product field) {
         var builder = ProductUpdateDTO.builder();
         builder.id(field.getId());
         builder.description(field.getDescription());
         builder.name(field.getName());
-        builder.images(field.getImages().stream().map(ProductImage::getPath).toList());
+        builder.images(field.getImages().stream().map(ProductImage::getPath).collect(Collectors.toSet()));
         if (field.getPrice() != null) {
             builder.price(field.getPrice().getPrice());
         }

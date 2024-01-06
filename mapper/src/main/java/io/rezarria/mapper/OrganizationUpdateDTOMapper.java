@@ -1,13 +1,12 @@
 package io.rezarria.mapper;
 
-import io.rezarria.dto.update.OrganizationUpdateDTO;
-import io.rezarria.model.Organization;
-import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
+import io.rezarria.dto.update.OrganizationUpdateDTO;
+import io.rezarria.model.Organization;
+
 public abstract @Mapper(componentModel = "spring") class OrganizationUpdateDTOMapper {
-    @BeanMapping(ignoreByDefault = true)
     public abstract void convert(OrganizationUpdateDTO src, @MappingTarget Organization data);
 
     public void patch(OrganizationUpdateDTO src, @MappingTarget Organization data) {

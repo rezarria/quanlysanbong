@@ -2,6 +2,7 @@ package io.rezarria.service;
 
 import io.rezarria.model.Organization;
 import io.rezarria.repository.OrganizationRepository;
+import io.rezarria.security.component.Auth;
 import io.rezarria.service.interfaces.IService;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -49,4 +51,19 @@ public class OrganizationService extends IService<OrganizationRepository, Organi
         return repository.findByIdProjection(id, type);
     }
 
+    public <A> Stream<A> getAll(Class<A> type) {
+        return repository.getStream(type);
+    }
+
+    @Override
+    public <A> Page<A> getPage(Pageable page, Class<A> type) {
+        var auth = new Auth();
+        if (auth.isLogin()) {
+            if (auth.hasRole("SUPER_ADMIN"))
+                return repository.getPage(page, type);
+            else
+                return repository.getPageByAccountId(auth.getAccountId(), page, type);
+        }
+        throw new RuntimeException();
+    }
 }

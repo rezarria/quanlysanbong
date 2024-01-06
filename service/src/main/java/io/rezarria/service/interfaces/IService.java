@@ -48,6 +48,11 @@ public abstract class IService<T extends CustomRepository<O, UUID>, O> {
         return getRepo().getReferenceById(id);
     }
 
+    @Transactional
+    public O getWrite(UUID id) {
+        return  getRepo().getReferenceById(id);
+    }
+
     @Transactional(readOnly = true)
     public List<O> getMany(Collection<UUID> ids) {
         return getRepo().findAllById(ids);
