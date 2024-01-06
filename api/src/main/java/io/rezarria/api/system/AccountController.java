@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import io.rezarria.dto.ChangePasswordDTO;
+import io.rezarria.dto.delete.DeleteDTO;
 import io.rezarria.dto.update.AccountUpdateDTO;
 import io.rezarria.mapper.AccountUpdateDTOMapper;
 import io.rezarria.model.Account;
@@ -129,15 +130,8 @@ public class AccountController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> delete(@RequestBody Collection<UUID> ids) {
-        accountService.delete(ids);
-        return ResponseEntity.ok().build();
-    }
-
-    public ResponseEntity<?> update(@RequestBody UpdateModelDTO dto) {
-        var account = accountService.getById(dto.id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
+    public ResponseEntity<?> delete(@RequestBody DeleteDTO dto) {
+        accountService.delete(dto.ids());
         return ResponseEntity.ok().build();
     }
 
