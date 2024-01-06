@@ -1,15 +1,15 @@
 package io.rezarria.mapper;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import io.rezarria.dto.update.ProductUpdateDTO;
 import io.rezarria.model.Field;
 import io.rezarria.model.Product;
 import io.rezarria.model.ProductPrice;
 import jakarta.persistence.EntityManager;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(componentModel = "spring")
 public abstract class ProductUpdateDTOMapper {
@@ -17,7 +17,6 @@ public abstract class ProductUpdateDTOMapper {
     @Autowired
     private EntityManager entityManager;
 
-    @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "price", source = "price", ignore = true)
     @Mapping(target = "images", source = "images", ignore = true)
     @Mapping(target = "prices", ignore = true)
