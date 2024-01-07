@@ -1,10 +1,10 @@
 package io.rezarria.api.public_access;
 
-import io.rezarria.model.Bill;
-import io.rezarria.service.BillService;
-import io.rezarria.vnpay.Config;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.UUID;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.UUID;
+import io.rezarria.model.Bill;
+import io.rezarria.service.BillService;
+import io.rezarria.vnpay.Config;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
@@ -57,7 +58,7 @@ public class PublicBillController {
     @GetMapping("done")
     public ResponseEntity<?> done(HttpServletRequest request) {
         var fields = new HashMap<String, String>();
-        for (var params = request.getParameterNames(); params.hasMoreElements(); ) {
+        for (var params = request.getParameterNames(); params.hasMoreElements();) {
             String fieldName = params.nextElement();
             String fieldValue = request.getParameter(fieldName);
             if ((fieldValue != null) && (!fieldValue.isEmpty())) {

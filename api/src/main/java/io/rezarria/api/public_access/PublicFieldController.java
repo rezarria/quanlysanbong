@@ -1,12 +1,9 @@
 package io.rezarria.api.public_access;
 
 
-import io.rezarria.projection.FieldInfo;
-import io.rezarria.service.FieldHistoryService;
-import io.rezarria.service.FieldService;
-import jakarta.annotation.Nullable;
-import lombok.Builder;
-import lombok.RequiredArgsConstructor;
+import java.time.Instant;
+import java.util.UUID;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Instant;
-import java.util.UUID;
+import io.rezarria.projection.FieldInfo;
+import io.rezarria.service.FieldHistoryService;
+import io.rezarria.service.FieldService;
+import jakarta.annotation.Nullable;
+import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,8 +28,7 @@ public class PublicFieldController {
     private final FieldHistoryService fieldHistoryService;
 
     @GetMapping
-    public ResponseEntity<?> getFieldList(@RequestParam @Nullable UUID id, @RequestParam @Nullable Integer size,
-                                          @RequestParam @Nullable Integer page) {
+    public ResponseEntity<?> getFieldList(@RequestParam @Nullable UUID id, @RequestParam @Nullable Integer size, @RequestParam @Nullable Integer page) {
         if (id != null) {
             return ResponseEntity.ok(fieldService.findByIdProjection(id, FieldInfo.class).orElseThrow());
         }

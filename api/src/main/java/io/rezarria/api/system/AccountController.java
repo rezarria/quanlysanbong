@@ -1,8 +1,34 @@
 package io.rezarria.api.system;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.util.Streamable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
+
 import io.rezarria.dto.ChangePasswordDTO;
 import io.rezarria.dto.delete.DeleteDTO;
 import io.rezarria.dto.update.AccountUpdateDTO;
@@ -16,18 +42,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.util.Streamable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -50,11 +64,7 @@ public class AccountController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<?> find(@RequestParam @Nullable UUID id,
-                                  @RequestParam @Nullable Integer size,
-                                  @RequestParam @Nullable Integer page,
-                                  @RequestParam @Nullable String name,
-                                  @RequestParam @Nullable Boolean skipUser) {
+    public ResponseEntity<?> find(@RequestParam @Nullable UUID id, @RequestParam @Nullable Integer size, @RequestParam @Nullable Integer page, @RequestParam @Nullable String name, @RequestParam @Nullable Boolean skipUser) {
         if (name != null && !name.isBlank()) {
             if (skipUser == null)
                 return ResponseEntity.ok(accountService.findByName(name, false, GetDTO.class));
@@ -62,19 +72,16 @@ public class AccountController {
                 return ResponseEntity.ok(accountService.findByName(name, true, GetDTO.class));
         }
         if (id != null) {
-            var account = accountService.getRepo().findByIdProjection(id, GetDTO.class)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            var account = accountService.getRepo().findByIdProjection(id, GetDTO.class).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
             return ResponseEntity.ok(account);
         }
         if (size != null && page != null) {
-            return ResponseEntity
-                    .ok(accountService.getRepo().findAllProjection(Pageable.ofSize(size).withPage(page), GetDTO.class));
+            return ResponseEntity.ok(accountService.getRepo().findAllProjection(Pageable.ofSize(size).withPage(page), GetDTO.class));
         }
         if (skipUser != null && skipUser) {
             return ResponseEntity.ok(accountService.findByUserNull(GetDTO.class));
         }
-        Streamable<GetDTO> data = accountService.getRepo().findAllByUsernameContaining("",
-                GetDTO.class);
+        Streamable<GetDTO> data = accountService.getRepo().findAllByUsernameContaining("", GetDTO.class);
         return ResponseEntity.ok(data.stream());
     }
 
@@ -94,14 +101,8 @@ public class AccountController {
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<Account> create(@RequestBody CreateDTO dto) {
 
-        var account = accountService
-                .create(Account.builder().username(dto.username)
-                        .password(passwordEncoder.encode(dto.password))
-                        .build());
-        Set<AccountRole> roles = dto.roles.stream()
-                .map(i -> AccountRole.builder()
-                        .id(AccountRoleKey.builder().roleId(i).accountId(account.getId()).build()).build())
-                .collect(Collectors.toSet());
+        var account = accountService.create(Account.builder().username(dto.username).password(passwordEncoder.encode(dto.password)).build());
+        Set<AccountRole> roles = dto.roles.stream().map(i -> AccountRole.builder().id(AccountRoleKey.builder().roleId(i).accountId(account.getId()).build()).build()).collect(Collectors.toSet());
         if (dto.user != null) {
             account.setUser(User.builder().id(dto.user).build());
         }
