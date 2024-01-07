@@ -1,10 +1,13 @@
 package io.rezarria.api.system;
 
+import io.rezarria.dto.delete.DeleteDTO;
 import io.rezarria.model.Customer;
 import io.rezarria.projection.CustomerInfo;
 import io.rezarria.service.CustomerService;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,10 +28,14 @@ public class CustomerController {
 
     ) {
         if (id != null) {
-
+            return ResponseEntity.ok(service.getByIdProjection(id, CustomerInfo.class).orElseThrow());
         }
-        if (name != null)
-            return ResponseEntity.ok(service.findAllByName(name, CustomerInfo.class));
+        if (size != null & page != null) {
+            var pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "lastModifiedDate"));
+            if (name != null)
+                return ResponseEntity.ok(service.getPageContainName(name, pageable, CustomerInfo.class));
+            return ResponseEntity.ok(service.getPage(pageable, CustomerInfo.class));
+        }
         return ResponseEntity.ok(service.getAllStreamProjection(CustomerInfo.class));
     }
 
@@ -47,6 +54,17 @@ public class CustomerController {
                 return customer.getName();
             }
         });
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> delete(@RequestBody DeleteDTO dto) {
+        service.removeIn(dto.ids());
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping
+    public ResponseEntity<?> patch() {
+        return null;
     }
 
     /**
