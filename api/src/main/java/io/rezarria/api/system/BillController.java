@@ -3,18 +3,21 @@ package io.rezarria.api.system;
 import io.rezarria.dto.post.OrderDetailPostDTO;
 import io.rezarria.dto.post.OrderPostDTO;
 import io.rezarria.mapper.OrderMapper;
+import io.rezarria.projection.BillInfo;
 import io.rezarria.repository.ConsumerProductRepository;
 import io.rezarria.repository.ProductPriceRepository;
 import io.rezarria.service.BillService;
 import io.rezarria.service.FieldHistoryService;
 import io.rezarria.service.exceptions.FieldOrderServiceException;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RequestMapping("/api/bill")
 @RestController
@@ -28,6 +31,7 @@ public class BillController {
     private final OrderMapper orderMapper;
     @Lazy
     private final ProductPriceRepository productPriceRepository;
+    @Lazy
     private final ConsumerProductRepository consumerProductRepository;
 
     @PostMapping
@@ -59,4 +63,23 @@ public class BillController {
 
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping
+    public ResponseEntity<?> get(@RequestParam @Nullable UUID id,
+                                 @RequestParam @Nullable Integer page,
+                                 @RequestParam @Nullable Integer size,
+                                 @RequestParam @Nullable String name) {
+        if (id != null) {
+            return ResponseEntity.ok(billService.getByIdProjection(id, BillInfo.class).orElseThrow());
+        }
+
+        if (page != null && size != null) {
+            var pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "lastModifiedDate"));
+            if (name != null)
+                return ResponseEntity.ok(billService.getPageContainName(name, pageable, BillInfo.class));
+            return ResponseEntity.ok(billService.getPage(pageable, BillInfo.class));
+        }
+        return ResponseEntity.ok(billService.getAll(BillInfo.class));
+    }
+
 }

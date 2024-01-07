@@ -37,6 +37,10 @@ public class Bill extends BaseEntity {
     private String url;
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
+
     public enum PaymentMethod {
         MONEY, VNPAY, ETC
     }

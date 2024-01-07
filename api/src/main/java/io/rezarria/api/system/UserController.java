@@ -1,6 +1,5 @@
 package io.rezarria.api.system;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.rezarria.api.action.Model;
 import io.rezarria.dto.PatchDTO;

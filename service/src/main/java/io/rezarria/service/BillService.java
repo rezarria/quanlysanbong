@@ -2,6 +2,7 @@ package io.rezarria.service;
 
 import io.rezarria.model.*;
 import io.rezarria.repository.BillRepository;
+import io.rezarria.security.component.Auth;
 import io.rezarria.service.interfaces.IService;
 import io.rezarria.vnpay.Config;
 import io.rezarria.vnpay.Create;
@@ -9,12 +10,15 @@ import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -93,6 +97,37 @@ public class BillService extends IService<BillRepository, Bill> {
         repository.save(bill);
     }
 
+    @Transactional(readOnly = true)
+    public <T> Page<T> getPage(Pageable pageable, Class<T> type) {
+        var auth = new Auth();
+        if (auth.isLogin()) {
+            if (auth.hasRole("SUPER_ADMIN"))
+                return repository.getPage(pageable, type);
+            return repository.findByOrganization_Accounts_Id(auth.getAccountId(), pageable, type);
+        }
+        throw new RuntimeException();
+    }
+
+    public <T> Page<T> getPageContainName(String name, Pageable pageable, Class<T> type) {
+        var auth = new Auth();
+        if (auth.isLogin()) {
+            if (auth.hasRole("SUPER_ADMIN"))
+                return repository.findByName(name, pageable, type);
+            return repository.findByNameAndId(auth.getAccountId(), name, pageable, type);
+        }
+        throw new RuntimeException();
+    }
+
+    public <T> Stream<T> getAll(Class<T> type) {
+        var auth = new Auth();
+        if (auth.isLogin()) {
+            if (auth.hasRole("SUPER_ADMIN"))
+                return repository.getStream(type);
+            return repository.getStreamByAccountId(auth.getAccountId(), type);
+        }
+        throw new RuntimeException();
+    }
+
     @Builder
     public record OrderInfo(Product product, ProductPrice price, long count) {
     }
@@ -100,4 +135,5 @@ public class BillService extends IService<BillRepository, Bill> {
     @Builder
     public record OrderInfoId(UUID productId, UUID priceId, long count) {
     }
+
 }

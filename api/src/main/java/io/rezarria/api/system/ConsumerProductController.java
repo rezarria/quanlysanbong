@@ -1,8 +1,6 @@
 package io.rezarria.api.system;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.fge.jsonpatch.JsonPatchException;
 import io.rezarria.api.action.Model;
 import io.rezarria.dto.PatchDTO;
 import io.rezarria.dto.delete.DeleteDTO;

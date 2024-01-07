@@ -2,7 +2,6 @@ package io.rezarria.dto.update;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.rezarria.model.Customer;
-import io.rezarria.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
