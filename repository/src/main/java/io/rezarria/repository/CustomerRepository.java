@@ -1,15 +1,14 @@
 package io.rezarria.repository;
 
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Stream;
-
+import io.rezarria.model.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import io.rezarria.model.Customer;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 public interface CustomerRepository extends JpaRepository<Customer, UUID> {
     @Query("select c from Customer c inner join c.organization.accounts accounts where accounts.id = ?1")

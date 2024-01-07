@@ -1,20 +1,19 @@
 package io.rezarria.repository;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Stream;
-
+import io.rezarria.dto.update.AccountUpdateDTO;
+import io.rezarria.model.Account;
+import io.rezarria.model.Field;
+import io.rezarria.model.Organization;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.util.Streamable;
 
-import io.rezarria.dto.update.AccountUpdateDTO;
-import io.rezarria.model.Account;
-import io.rezarria.model.Field;
-import io.rezarria.model.Organization;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 public interface AccountRepository extends JpaRepository<Account, UUID> {
     Optional<Account> findByUsername(String username);

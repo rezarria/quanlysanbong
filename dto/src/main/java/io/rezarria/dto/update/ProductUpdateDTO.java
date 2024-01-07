@@ -1,9 +1,5 @@
 package io.rezarria.dto.update;
 
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import io.rezarria.model.Product;
 import io.rezarria.model.ProductImage;
 import jakarta.annotation.Nullable;
@@ -11,6 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Data
 @SuperBuilder

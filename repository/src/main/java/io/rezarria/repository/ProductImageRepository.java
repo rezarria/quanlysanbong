@@ -1,10 +1,9 @@
 package io.rezarria.repository;
 
-import java.util.UUID;
-
+import io.rezarria.model.ProductImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import io.rezarria.model.ProductImage;
+import java.util.UUID;
 
 public interface ProductImageRepository extends JpaRepository<ProductImage, UUID> {
 

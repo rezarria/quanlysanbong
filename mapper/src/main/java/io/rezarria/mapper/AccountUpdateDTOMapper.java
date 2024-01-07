@@ -1,15 +1,5 @@
 package io.rezarria.mapper;
 
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import io.rezarria.dto.update.AccountUpdateDTO;
 import io.rezarria.model.Account;
 import io.rezarria.model.AccountRole;
@@ -18,6 +8,15 @@ import io.rezarria.model.Role;
 import io.rezarria.repository.AccountRoleRepository;
 import io.rezarria.repository.RoleRepository;
 import io.rezarria.repository.UserRepository;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public abstract class AccountUpdateDTOMapper {

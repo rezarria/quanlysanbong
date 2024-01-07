@@ -1,9 +1,5 @@
 package io.rezarria.model;
 
-import java.util.UUID;
-
-import org.hibernate.annotations.DynamicUpdate;
-
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,6 +9,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicUpdate;
+
+import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

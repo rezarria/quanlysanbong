@@ -1,40 +1,29 @@
 package io.rezarria.api.system;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatchException;
-
 import io.rezarria.dto.PatchDTO;
 import io.rezarria.dto.delete.DeleteDTO;
 import io.rezarria.dto.post.ConsumerProductPost;
 import io.rezarria.dto.update.ConsumerProductUpdateDTO;
 import io.rezarria.mapper.ConsumerProductMapper;
 import io.rezarria.mapper.ConsumerProductUpdateDTOMapper;
+import io.rezarria.projection.ConsumerProductInfo;
 import io.rezarria.service.ConsumerProductService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/consumerProduct")
@@ -47,7 +36,7 @@ public class ConsumerProductController {
     private final ConsumerProductUpdateDTOMapper updateMapper;
 
     @GetMapping("size")
-    @SecurityRequirements(value = { @SecurityRequirement(name = "bearer-jwt") })
+    @SecurityRequirements(value = {@SecurityRequirement(name = "bearer-jwt")})
 
     public ResponseEntity<Long> getSize() {
         return ResponseEntity.ok(consumerProductService.getSize());
@@ -55,21 +44,21 @@ public class ConsumerProductController {
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<?> getAll(@PathVariable @RequestParam @Nullable UUID id,
-            @RequestParam @Nullable String name,
-            @RequestParam @Nullable Integer size,
-            @RequestParam @Nullable Integer page) {
+                                    @RequestParam @Nullable String name,
+                                    @RequestParam @Nullable Integer size,
+                                    @RequestParam @Nullable Integer page) {
         if (size != null && page != null) {
             return ResponseEntity
-                    .ok(consumerProductService.getPage(Pageable.ofSize(size).withPage(page), GetDTO.class));
+                    .ok(consumerProductService.getPage(Pageable.ofSize(size).withPage(page), ConsumerProductInfo.class));
         }
         if (name != null) {
-            return ResponseEntity.ok(consumerProductService.getStreamByName(name, GetDTO.class));
+            return ResponseEntity.ok(consumerProductService.getStreamByName(name, ConsumerProductInfo.class));
         }
         if (id != null) {
             return ResponseEntity
-                    .ok(consumerProductService.getRepo().findByIdProject(id, GetDTO.class).orElseThrow());
+                    .ok(consumerProductService.getRepo().findByIdProject(id, ConsumerProductInfo.class).orElseThrow());
         }
-        return ResponseEntity.ok(consumerProductService.getStream(GetDTO.class));
+        return ResponseEntity.ok(consumerProductService.getStream(ConsumerProductInfo.class));
     }
 
     @PostMapping(consumes = "application/json")
@@ -110,22 +99,4 @@ public class ConsumerProductController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return ResponseEntity.ok(data.get());
     }
-
-    interface GetDTO {
-        UUID getId();
-
-        String getName();
-
-        @Value("#{target.images.![path]}")
-        List<String> getPictures();
-
-        String getDescription();
-
-        @Value("#{target.price != null ? target.price.price : null}")
-        Double getPrice();
-
-        @Value("#{target.price != null ? target.price.id : null}")
-        UUID getPriceId();
-    }
-
 }

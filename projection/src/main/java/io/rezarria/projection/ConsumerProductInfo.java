@@ -2,6 +2,7 @@ package io.rezarria.projection;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface ConsumerProductInfo {
@@ -9,8 +10,14 @@ public interface ConsumerProductInfo {
 
     String getName();
 
+    @Value("#{target.images.![path]}")
+    List<String> getImages();
+
     String getDescription();
 
     @Value("#{target.price != null ? target.price.price : null}")
-    Double price();
+    Double getPrice();
+
+    @Value("#{target.price != null ? target.price.id : null}")
+    UUID getPriceId();
 }

@@ -1,12 +1,11 @@
 package io.rezarria.repository;
 
-import java.util.Optional;
-import java.util.UUID;
-
+import io.rezarria.model.FieldUnitSetting;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import io.rezarria.model.FieldUnitSetting;
+import java.util.Optional;
+import java.util.UUID;
 
 public interface FieldUnitSettingRepository extends JpaRepository<FieldUnitSetting, UUID> {
     @Query("select f from FieldUnitSetting f inner join f.currentField fields where fields.id = ?1")

@@ -1,15 +1,14 @@
 package io.rezarria.repository;
 
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Stream;
-
+import io.rezarria.model.Staff;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import io.rezarria.model.Staff;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 public interface StaffRepository extends JpaRepository<Staff, UUID> {
     @Query("select s from Staff s inner join s.organization.accounts accounts where accounts.id = ?1")

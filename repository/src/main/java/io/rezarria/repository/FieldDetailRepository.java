@@ -1,10 +1,9 @@
 package io.rezarria.repository;
 
-import java.util.UUID;
-
+import io.rezarria.model.FieldDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import io.rezarria.model.FieldDetail;
+import java.util.UUID;
 
 public interface FieldDetailRepository extends JpaRepository<FieldDetail, UUID> {
 

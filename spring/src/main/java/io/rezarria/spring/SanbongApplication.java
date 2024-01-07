@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories(basePackages = "io.rezarria.repository")
 @EnableScheduling
 @EnableWebSecurity
-@EnableAutoConfiguration(exclude = { ErrorMvcAutoConfiguration.class })
+@EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
 @EnableTransactionManagement
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class SanbongApplication {

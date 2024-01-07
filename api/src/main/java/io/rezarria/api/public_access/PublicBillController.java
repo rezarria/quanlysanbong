@@ -5,7 +5,6 @@ import io.rezarria.service.BillService;
 import io.rezarria.vnpay.Config;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/public/api/bill")
 public class PublicBillController {
-    @Lazy
     private final BillService billService;
 
     public ResponseEntity<?> payment(@RequestParam UUID id, HttpServletRequest request) throws URISyntaxException {

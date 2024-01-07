@@ -1,19 +1,18 @@
 package io.rezarria.repository;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Stream;
-
+import io.rezarria.dto.update.FieldUpdateDTO;
+import io.rezarria.model.Field;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.util.Streamable;
 
-import io.rezarria.dto.update.FieldUpdateDTO;
-import io.rezarria.model.Field;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 public interface FieldRepository extends JpaRepository<Field, UUID> {
     void deleteByName(String name);

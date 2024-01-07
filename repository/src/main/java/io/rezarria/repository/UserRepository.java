@@ -1,8 +1,7 @@
 package io.rezarria.repository;
 
-import java.util.Optional;
-import java.util.UUID;
-
+import io.rezarria.dto.update.UserUpdateDTO;
+import io.rezarria.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,8 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.util.Streamable;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.rezarria.dto.update.UserUpdateDTO;
-import io.rezarria.model.User;
+import java.util.Optional;
+import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
     @Query("select u from User u")

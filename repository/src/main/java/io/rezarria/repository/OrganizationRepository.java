@@ -1,17 +1,16 @@
 package io.rezarria.repository;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Stream;
-
+import io.rezarria.dto.update.OrganizationUpdateDTO;
+import io.rezarria.model.Organization;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import io.rezarria.dto.update.OrganizationUpdateDTO;
-import io.rezarria.model.Organization;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 public interface OrganizationRepository extends JpaRepository<Organization, UUID> {
 
