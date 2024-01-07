@@ -28,22 +28,15 @@ public class BillController {
     @Lazy
     private final FieldHistoryService historyService;
     @Lazy
-    private final OrderMapper orderMapper;
-    @Lazy
     private final ProductPriceRepository productPriceRepository;
     @Lazy
     private final ConsumerProductRepository consumerProductRepository;
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody OrderPostDTO dto) throws FieldOrderServiceException {
-        var history = historyService.order(dto.customerId(), dto.fieldId(), dto.from(), dto.to());
-
-        var consumerProducts = consumerProductRepository.findAllById(
-                dto.details().stream().map(OrderDetailPostDTO::consumerProductId).toList()
-        );
-        var prices = productPriceRepository.findAllById(
-                dto.details().stream().map(OrderDetailPostDTO::priceId).toList()
-        );
+        var history = historyService.order(dto.customerId(), dto.fieldId(), dto.priceId(), dto.from(), dto.to());
+        var consumerProducts = consumerProductRepository.findAllById(dto.details().stream().map(OrderDetailPostDTO::consumerProductId).toList());
+        var prices = productPriceRepository.findAllById(dto.details().stream().map(OrderDetailPostDTO::priceId).toList());
 
         var info = dto.details().stream().map(d -> {
             var builder = BillService.OrderInfo.builder();
@@ -52,31 +45,19 @@ public class BillController {
             builder.count(d.count());
             return builder.build();
         }).toList();
-
-
-        billService.createOrder(
-                info,
-                history.getCustomer(),
-                dto.paymentMethod(),
-                dto.description()
-        );
-
+        billService.createOrder(info, history, dto.paymentMethod(), dto.description());
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public ResponseEntity<?> get(@RequestParam @Nullable UUID id,
-                                 @RequestParam @Nullable Integer page,
-                                 @RequestParam @Nullable Integer size,
-                                 @RequestParam @Nullable String name) {
+    public ResponseEntity<?> get(@RequestParam @Nullable UUID id, @RequestParam @Nullable Integer page, @RequestParam @Nullable Integer size, @RequestParam @Nullable String name) {
         if (id != null) {
             return ResponseEntity.ok(billService.getByIdProjection(id, BillInfo.class).orElseThrow());
         }
 
         if (page != null && size != null) {
             var pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "lastModifiedDate"));
-            if (name != null)
-                return ResponseEntity.ok(billService.getPageContainName(name, pageable, BillInfo.class));
+            if (name != null) return ResponseEntity.ok(billService.getPageContainName(name, pageable, BillInfo.class));
             return ResponseEntity.ok(billService.getPage(pageable, BillInfo.class));
         }
         return ResponseEntity.ok(billService.getAll(BillInfo.class));

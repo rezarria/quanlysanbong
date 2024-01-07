@@ -32,6 +32,8 @@ public class FieldHistoryService extends IService<FieldHistoryRepository, FieldH
     private final FieldRepository fieldRepository;
     @Lazy
     private final StaffRepository staffRepository;
+    @Lazy
+    private final ProductPriceRepository productPriceRepository;
 
     @Override
     public FieldHistoryRepository getRepo() {
@@ -99,11 +101,12 @@ public class FieldHistoryService extends IService<FieldHistoryRepository, FieldH
         return fieldUnitSettingRepository.findByIdProjection(id, type);
     }
 
-    public FieldHistory order(UUID customerId, UUID fieldId, Instant from, Instant to) throws FieldOrderServiceException {
+    public FieldHistory order(UUID customerId, UUID fieldId, UUID priceId, Instant from, Instant to) throws FieldOrderServiceException {
         var count = repository.countByField_IdAndFromLessThanEqualAndToGreaterThanEqual(fieldId, from, to);
         if (count == 0) {
             var builder = FieldHistory.builder()
                     .customer(customerRepository.findById(customerId).orElseThrow())
+                    .price(productPriceRepository.findById(priceId).orElseThrow())
                     .from(from).to(to)
                     .field(fieldRepository.findById(fieldId).orElseThrow());
             var auth = new Auth();

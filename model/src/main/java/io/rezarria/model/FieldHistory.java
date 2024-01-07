@@ -24,6 +24,10 @@ public class FieldHistory extends BaseEntity {
     private Field field;
 
     @ManyToOne
+    @JoinColumn(name = "price_id")
+    private ProductPrice price;
+
+    @ManyToOne
     @JoinColumn(name = "staff_id")
     private Staff staff;
 

@@ -12,7 +12,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 public interface FieldHistoryRepository extends JpaRepository<FieldHistory, UUID> {
-    @Query("select count(f) from FieldHistory f where f.field.id = ?1 and f.from <= ?2 and f.to >= ?3")
+    @Query("select count(f) from FieldHistory f where f.field.id = ?1 and f.from >= ?2 and f.to <= ?3")
     long countByField_IdAndFromLessThanEqualAndToGreaterThanEqual(UUID id, Instant from, Instant to);
 
     @Query("select count(f) from FieldHistory f where f.field.id = ?1 and f.from <= ?2")

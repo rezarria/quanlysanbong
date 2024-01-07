@@ -41,27 +41,22 @@ public class BillService extends IService<BillRepository, Bill> {
         return repository.getByIdProjection(id, type);
     }
 
-    public Bill createOrder(Collection<OrderInfo> infoList, Customer customer, Bill.PaymentMethod method, String description) {
+    public Bill createOrder(Collection<OrderInfo> infoList, FieldHistory history, Bill.PaymentMethod method, String description) {
         var bill = Bill.builder().build();
         bill.setPaymentMethod(method);
-        bill.setCustomer(customer);
+        bill.setCustomer(history.getCustomer());
         bill.setDescription(description);
+        bill.setFieldHistory(history);
         var details = bill.getDetails();
-        details.addAll(
-                infoList.stream()
-                        .map(info -> BillDetail
-                                .builder()
-                                .product(info.product)
-                                .price(info.price)
-                                .count(info.count)
-                                .build()
-                        ).toList()
-        );
-        bill.setTotalPrice(
-                infoList.stream()
-                        .map(info -> info.price.getPrice() * info.count)
-                        .reduce(0.0, Double::sum)
-        );
+        details.addAll(infoList.stream().map(info -> BillDetail.builder().product(info.product).price(info.price).count(info.count).build()).toList());
+        var totalConsumeProductsPrice = infoList.stream().map(info -> info.price.getPrice() * info.count).reduce(0.0, Double::sum);
+        double fieldPrice = 0;
+        var setting = history.getUnitSetting();
+        if (setting.isUnitStyle()) {
+            fieldPrice = history.getUnitSize() * setting.getDuration();
+        } else {
+        }
+        bill.setTotalPrice(totalConsumeProductsPrice);
         bill.setPaymentStatus(Bill.PaymentStatus.PENDING);
         repository.save(bill);
         return bill;
@@ -101,8 +96,7 @@ public class BillService extends IService<BillRepository, Bill> {
     public <T> Page<T> getPage(Pageable pageable, Class<T> type) {
         var auth = new Auth();
         if (auth.isLogin()) {
-            if (auth.hasRole("SUPER_ADMIN"))
-                return repository.getPage(pageable, type);
+            if (auth.hasRole("SUPER_ADMIN")) return repository.getPage(pageable, type);
             return repository.findByOrganization_Accounts_Id(auth.getAccountId(), pageable, type);
         }
         throw new RuntimeException();
@@ -111,8 +105,7 @@ public class BillService extends IService<BillRepository, Bill> {
     public <T> Page<T> getPageContainName(String name, Pageable pageable, Class<T> type) {
         var auth = new Auth();
         if (auth.isLogin()) {
-            if (auth.hasRole("SUPER_ADMIN"))
-                return repository.findByName(name, pageable, type);
+            if (auth.hasRole("SUPER_ADMIN")) return repository.findByName(name, pageable, type);
             return repository.findByNameAndId(auth.getAccountId(), name, pageable, type);
         }
         throw new RuntimeException();
@@ -121,8 +114,7 @@ public class BillService extends IService<BillRepository, Bill> {
     public <T> Stream<T> getAll(Class<T> type) {
         var auth = new Auth();
         if (auth.isLogin()) {
-            if (auth.hasRole("SUPER_ADMIN"))
-                return repository.getStream(type);
+            if (auth.hasRole("SUPER_ADMIN")) return repository.getStream(type);
             return repository.getStreamByAccountId(auth.getAccountId(), type);
         }
         throw new RuntimeException();

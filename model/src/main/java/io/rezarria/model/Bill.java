@@ -1,6 +1,7 @@
 package io.rezarria.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -21,10 +23,12 @@ public class Bill extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-    @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "bill_id")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn
+    @Fetch(FetchMode.SELECT)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<BillDetail> details;
+    @Builder.Default
+    private List<BillDetail> details = new LinkedList<>();
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(unique = true)
     @Fetch(FetchMode.SELECT)
