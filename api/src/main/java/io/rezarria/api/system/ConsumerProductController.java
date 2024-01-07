@@ -1,9 +1,9 @@
 package io.rezarria.api.system;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatchException;
+import io.rezarria.api.action.Model;
 import io.rezarria.dto.PatchDTO;
 import io.rezarria.dto.delete.DeleteDTO;
 import io.rezarria.dto.post.ConsumerProductPost;
@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class ConsumerProductController {
     private final ConsumerProductService consumerProductService;
     private final ConsumerProductMapper mapper;
     private final ObjectMapper objectMapper;
-    private final ConsumerProductUpdateDTOMapper updateMapper;
+    private final ConsumerProductUpdateDTOMapper consumerProductUpdateDTOMapper;
 
     @GetMapping("size")
     @SecurityRequirements(value = {@SecurityRequirement(name = "bearer-jwt")})
@@ -80,16 +81,10 @@ public class ConsumerProductController {
 
     @PatchMapping(consumes = "application/json-patch+json")
     @Transactional()
-    public ResponseEntity<?> update(@RequestBody PatchDTO dto)
-            throws IllegalArgumentException, JsonPatchException, JsonProcessingException {
-
-        var currentDTO = consumerProductService.getRepo().findByIdForUpdate(dto.id()).orElseThrow();
-        JsonNode nodePatched = dto.patch().apply(objectMapper.convertValue(currentDTO, JsonNode.class));
-        var fieldPatched = objectMapper.treeToValue(nodePatched, ConsumerProductUpdateDTO.class);
-        var field = consumerProductService.get(dto.id());
-        updateMapper.patch(fieldPatched, field);
-        consumerProductService.update(field);
-        return ResponseEntity.ok(field);
+    @SneakyThrows
+    public ResponseEntity<?> update(@RequestBody PatchDTO dto) {
+        Model.update(dto.id(), dto.patch(), objectMapper, consumerProductService.getRepo()::findByIdForUpdate, consumerProductService.getRepo()::findById, consumerProductUpdateDTOMapper::patch, ConsumerProductUpdateDTO.class);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/beforeUpdate")

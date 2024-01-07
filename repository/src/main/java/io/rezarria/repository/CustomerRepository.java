@@ -1,5 +1,6 @@
 package io.rezarria.repository;
 
+import io.rezarria.dto.update.CustomerUpdateDTO;
 import io.rezarria.model.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,5 +40,15 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
 
     @Query("select c from Customer c where c.id = ?1")
     <T> Optional<T> findByIdProjection(UUID id, Class<T> type);
+
+    default Optional<CustomerUpdateDTO> getUpdateById(UUID id) {
+        return findById(id).map(c -> CustomerUpdateDTO.builder()
+                .id(c.getId())
+                .name(c.getName())
+                .avatar(c.getAvatar())
+                .dob(c.getDob())
+                .data(c.getData())
+                .build());
+    }
 
 }

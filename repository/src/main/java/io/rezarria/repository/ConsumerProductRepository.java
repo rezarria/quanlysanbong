@@ -1,6 +1,6 @@
 package io.rezarria.repository;
 
-import io.rezarria.dto.update.ProductUpdateDTO;
+import io.rezarria.dto.update.ConsumerProductUpdateDTO;
 import io.rezarria.model.ConsumerProduct;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,8 +31,8 @@ public interface ConsumerProductRepository extends JpaRepository<ConsumerProduct
     @Query("select c from ConsumerProduct c")
     <T> Page<T> getPage(Pageable page, Class<T> type);
 
-    default Optional<ProductUpdateDTO> findByIdForUpdate(UUID id) {
+    default Optional<ConsumerProductUpdateDTO> findByIdForUpdate(UUID id) {
         var product = findById(id);
-        return product.map(ProductUpdateDTO::create);
+        return product.map(ConsumerProductUpdateDTO::create);
     }
 }

@@ -1,5 +1,6 @@
 package io.rezarria.repository;
 
+import io.rezarria.dto.update.StaffUpdateDTO;
 import io.rezarria.model.Staff;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,19 @@ import java.util.stream.Stream;
 public interface StaffRepository extends JpaRepository<Staff, UUID> {
     @Query("select s from Staff s inner join s.organization.accounts accounts where accounts.id = ?1")
     <T> Page<T> findByOrganization_Accounts_Id(UUID id, Pageable pageable, Class<T> type);
+
+    @Query("""
+            select s from Staff s inner join s.organization.accounts accounts
+            where s.name like concat('%', ?1, '%') and accounts.id = ?2""")
+    <T>
+    Page<T> findByNameContainsAndOrganization_Accounts_Id(String name, UUID id, Pageable pageable, Class<T> type);
+
+    @Query("select s from Staff s where s.name like concat('%', ?1, '%')")
+    <T>
+    Page<T> findByNameContains(String name, Pageable pageable, Class<T> type);
+
+    @Query("select s from Staff s ")
+    <T> Page<T> getPage(Pageable pageable, Class<T> type);
 
     @Query("select s from Staff s where s.organization.id = ?1")
     <T> Page<T> findByOrganization_Id(UUID id, Pageable pageable, Class<T> type);
@@ -35,4 +49,13 @@ public interface StaffRepository extends JpaRepository<Staff, UUID> {
     @Query("select s from Staff s inner join s.organization.accounts accounts where accounts.id = ?1")
     <T> Stream<T> getAllStreamProjectionByAccountId(UUID id, Class<T> type);
 
+
+    default Optional<StaffUpdateDTO> getUpdateById(UUID id) {
+        return findById(id).map(t -> StaffUpdateDTO.builder()
+                .id(t.getId())
+                .name((t.getName()))
+                .avatar(t.getAvatar())
+                .dob(t.getDob())
+                .build());
+    }
 }

@@ -1,9 +1,7 @@
 package io.rezarria.mapper;
 
 import io.rezarria.dto.update.CustomerUpdateDTO;
-import io.rezarria.dto.update.UserUpdateDTO;
 import io.rezarria.model.Customer;
-import io.rezarria.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

@@ -48,8 +48,17 @@ public class StaffService extends IService<StaffRepository, Staff> {
         if (auth.isLogin()) {
             if (auth.hasRole("SUPER_ADMIN"))
                 return repository.getAllProjection(page, type);
-
             return repository.findByOrganization_Accounts_Id(auth.getAccountId(), page, type);
+        }
+        throw new PermissionDeniedDataAccessException("no", new RuntimeException());
+    }
+
+    public <T> Page<T> getPageContainName(String name, Pageable page, Class<T> type) {
+        Auth auth = new Auth();
+        if (auth.isLogin()) {
+            if (auth.hasRole("SUPER_ADMIN"))
+                return repository.findByNameContains(name, page, type);
+            return repository.findByNameContainsAndOrganization_Accounts_Id(name, auth.getAccountId(), page, type);
         }
         throw new PermissionDeniedDataAccessException("no", new RuntimeException());
     }

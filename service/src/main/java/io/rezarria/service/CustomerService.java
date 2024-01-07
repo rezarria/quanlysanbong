@@ -1,5 +1,6 @@
 package io.rezarria.service;
 
+import io.rezarria.dto.update.CustomerUpdateDTO;
 import io.rezarria.model.Customer;
 import io.rezarria.repository.CustomerRepository;
 import io.rezarria.security.component.Auth;
@@ -66,5 +67,10 @@ public class CustomerService extends IService<CustomerRepository, Customer> {
     @Override
     public <A> Optional<A> getByIdProjection(UUID id, Class<A> type) {
         return repository.findByIdProjection(id, type);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<CustomerUpdateDTO> getUpdateById(UUID id) {
+        return repository.getUpdateById(id);
     }
 }

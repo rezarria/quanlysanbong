@@ -2,6 +2,7 @@ package io.rezarria.api.system;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.rezarria.api.action.Model;
 import io.rezarria.api.system.AccountController.UpdateDTO;
 import io.rezarria.dto.post.OrganizationPostDTO;
 import io.rezarria.dto.update.OrganizationUpdateDTO;
@@ -72,12 +73,7 @@ public class OrganizationController {
     @PatchMapping(consumes = "application/json-patch+json", produces = "application/json")
     @Transactional()
     public ResponseEntity<?> update(@RequestBody UpdateDTO dto) {
-        var organization = service.getRepo().findByIdForUpdate(dto.id()).orElseThrow();
-        JsonNode nodePatched = dto.patch().apply(objectMapper.convertValue(organization, JsonNode.class));
-        var organizationPatchedDTO = objectMapper.treeToValue(nodePatched, OrganizationUpdateDTO.class);
-        var organizationPatched = service.getWrite(dto.id());
-        organizationUpdateDTOMapper.patch(organizationPatchedDTO, organizationPatched);
-        service.update(organizationPatched);
+        Model.update(dto.id(), dto.patch(), objectMapper, service.getRepo()::findByIdForUpdate, service.getRepo()::findById, organizationUpdateDTOMapper::patch, OrganizationUpdateDTO.class);
         return ResponseEntity.ok().build();
     }
 
