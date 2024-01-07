@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConf
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories(basePackages = "io.rezarria.repository")
 @EnableScheduling
 @EnableWebSecurity
+@EnableJpaAuditing
 @EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
 @EnableTransactionManagement
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
