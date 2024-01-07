@@ -1,17 +1,18 @@
 package io.rezarria.repository;
 
-import io.rezarria.dto.update.ProductUpdateDTO;
-import io.rezarria.model.ConsumerProduct;
-import io.rezarria.repository.interfaces.CustomRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public interface ConsumerProductRepository extends CustomRepository<ConsumerProduct, UUID> {
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import io.rezarria.dto.update.ProductUpdateDTO;
+import io.rezarria.model.ConsumerProduct;
+
+public interface ConsumerProductRepository extends JpaRepository<ConsumerProduct, UUID> {
     @Query("select u from ConsumerProduct u")
     <T> Stream<T> findAllStream(Class<T> typeClass);
 
@@ -28,7 +29,6 @@ public interface ConsumerProductRepository extends CustomRepository<ConsumerProd
     @Query("select c from ConsumerProduct c inner join c.organization.accounts accounts where accounts.id = ?1")
     <T> Stream<T> findByOrganization_Accounts_Id(UUID id, Class<T> type);
 
-    @Override
     @Query("select c from ConsumerProduct c")
     <T> Page<T> getPage(Pageable page, Class<T> type);
 

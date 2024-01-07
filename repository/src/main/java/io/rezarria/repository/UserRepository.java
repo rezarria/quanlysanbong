@@ -1,18 +1,19 @@
 package io.rezarria.repository;
 
-import io.rezarria.dto.update.UserUpdateDTO;
-import io.rezarria.model.User;
-import io.rezarria.repository.interfaces.CustomRepository;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.util.Streamable;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-import java.util.UUID;
+import io.rezarria.dto.update.UserUpdateDTO;
+import io.rezarria.model.User;
 
-public interface UserRepository extends CustomRepository<User, UUID> {
+public interface UserRepository extends JpaRepository<User, UUID> {
     @Query("select u from User u")
     <T> Streamable<T> findAllStream(Class<T> type);
 

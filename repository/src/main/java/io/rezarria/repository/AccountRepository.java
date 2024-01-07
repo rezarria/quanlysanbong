@@ -1,21 +1,22 @@
 package io.rezarria.repository;
 
-import io.rezarria.dto.update.AccountUpdateDTO;
-import io.rezarria.model.Account;
-import io.rezarria.model.Field;
-import io.rezarria.model.Organization;
-import io.rezarria.repository.interfaces.CustomRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.util.Streamable;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public interface AccountRepository extends CustomRepository<Account, UUID> {
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.util.Streamable;
+
+import io.rezarria.dto.update.AccountUpdateDTO;
+import io.rezarria.model.Account;
+import io.rezarria.model.Field;
+import io.rezarria.model.Organization;
+
+public interface AccountRepository extends JpaRepository<Account, UUID> {
     Optional<Account> findByUsername(String username);
 
     @Query("select a from Account a where a.createdBy.username like concat('%', ?1, '%')")

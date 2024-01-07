@@ -1,15 +1,16 @@
 package io.rezarria.repository;
 
-import io.rezarria.model.Bill;
-import io.rezarria.repository.interfaces.CustomRepository;
+import java.util.Optional;
+import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-import java.util.UUID;
+import io.rezarria.model.Bill;
 
-public interface BillRepository extends CustomRepository<Bill, UUID> {
+public interface BillRepository extends JpaRepository<Bill, UUID> {
     @Query("select b from Bill b where b.id = ?1")
     <T> Optional<T> getByIdProjection(UUID id, Class<T> type);
 

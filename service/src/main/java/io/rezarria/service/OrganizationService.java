@@ -1,5 +1,14 @@
 package io.rezarria.service;
 
+import java.util.Collection;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Stream;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import io.rezarria.model.Organization;
 import io.rezarria.repository.OrganizationRepository;
 import io.rezarria.security.component.Auth;
@@ -7,14 +16,6 @@ import io.rezarria.service.interfaces.IService;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import java.util.Collection;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -55,7 +56,6 @@ public class OrganizationService extends IService<OrganizationRepository, Organi
         return repository.getStream(type);
     }
 
-    @Override
     public <A> Page<A> getPage(Pageable page, Class<A> type) {
         var auth = new Auth();
         if (auth.isLogin()) {

@@ -1,16 +1,19 @@
 package io.rezarria.service;
 
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Stream;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import io.rezarria.model.Role;
 import io.rezarria.repository.RoleRepository;
 import io.rezarria.service.interfaces.IService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -43,5 +46,9 @@ public class RoleService extends IService<RoleRepository, Role> {
     @Override
     public <A> Optional<A> getByIdProjection(UUID id, Class<A> type) {
         return roleRepository.findByIdProjection(id, type);
+    }
+
+    public <A> Page<A> getPage(Pageable pageable, Class<A> type) {
+        return roleRepository.getPage(pageable, type);
     }
 }

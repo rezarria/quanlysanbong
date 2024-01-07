@@ -7,13 +7,14 @@ import java.util.stream.Stream;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import io.rezarria.dto.update.OrganizationUpdateDTO;
 import io.rezarria.model.Organization;
-import io.rezarria.repository.interfaces.CustomRepository;
 
-public interface OrganizationRepository extends CustomRepository<Organization, UUID> {
+public interface OrganizationRepository extends JpaRepository<Organization, UUID> {
+
     default Optional<OrganizationUpdateDTO> findByIdForUpdate(UUID id) {
         var account = findById(id);
         return account.map(OrganizationUpdateDTO::create);

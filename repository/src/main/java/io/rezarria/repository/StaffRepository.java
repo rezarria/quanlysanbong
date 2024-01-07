@@ -1,16 +1,17 @@
 package io.rezarria.repository;
 
-import io.rezarria.model.Staff;
-import io.rezarria.repository.interfaces.CustomRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public interface StaffRepository extends CustomRepository<Staff, UUID> {
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import io.rezarria.model.Staff;
+
+public interface StaffRepository extends JpaRepository<Staff, UUID> {
     @Query("select s from Staff s inner join s.organization.accounts accounts where accounts.id = ?1")
     <T> Page<T> findByOrganization_Accounts_Id(UUID id, Pageable pageable, Class<T> type);
 

@@ -59,7 +59,7 @@ public abstract class AccountUpdateDTOMapper {
 
     @Named("toRoles")
     public Set<AccountRole> toRoles(Set<UUID> ids) {
-        if (roleRepository.areIdsExist(ids))
+        if (roleRepository.existsByIdIn(ids))
             throw new RuntimeException("id không khớp");
         return ids.stream().map(id -> AccountRole.builder().build()).collect(Collectors.toSet());
     }

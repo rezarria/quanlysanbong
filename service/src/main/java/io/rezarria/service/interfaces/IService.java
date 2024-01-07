@@ -1,19 +1,18 @@
 package io.rezarria.service.interfaces;
 
-import io.rezarria.repository.interfaces.CustomRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaQuery;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public abstract class IService<T extends CustomRepository<O, UUID>, O> {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaQuery;
+
+public abstract class IService<T extends JpaRepository<O, UUID>, O> {
 
     protected abstract T getRepo();
 
@@ -50,7 +49,7 @@ public abstract class IService<T extends CustomRepository<O, UUID>, O> {
 
     @Transactional
     public O getWrite(UUID id) {
-        return  getRepo().getReferenceById(id);
+        return getRepo().getReferenceById(id);
     }
 
     @Transactional(readOnly = true)
@@ -73,11 +72,6 @@ public abstract class IService<T extends CustomRepository<O, UUID>, O> {
 
     @Transactional(readOnly = true)
     public abstract <A> Optional<A> getByIdProjection(UUID id, Class<A> type);
-
-    @Transactional(readOnly = true)
-    public <A> Page<A> getPage(Pageable page, Class<A> type) {
-        return getRepo().getPage(page, type);
-    }
 
     @Transactional
     public O update(O entity) {

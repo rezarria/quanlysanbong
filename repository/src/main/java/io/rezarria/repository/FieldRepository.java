@@ -1,20 +1,21 @@
 package io.rezarria.repository;
 
-import io.rezarria.dto.update.FieldUpdateDTO;
-import io.rezarria.model.Field;
-import io.rezarria.repository.interfaces.CustomRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.util.Streamable;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public interface FieldRepository extends CustomRepository<Field, UUID> {
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.util.Streamable;
+
+import io.rezarria.dto.update.FieldUpdateDTO;
+import io.rezarria.model.Field;
+
+public interface FieldRepository extends JpaRepository<Field, UUID> {
     void deleteByName(String name);
 
     List<Field> findAllByNameIn(Collection<String> name);

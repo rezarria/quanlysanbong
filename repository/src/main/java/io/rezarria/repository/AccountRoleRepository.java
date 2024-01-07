@@ -1,8 +1,9 @@
 package io.rezarria.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import io.rezarria.model.AccountRole;
 import io.rezarria.model.AccountRoleKey;
-import io.rezarria.repository.interfaces.CustomRepository;
 
-public interface AccountRoleRepository extends CustomRepository<AccountRole, AccountRoleKey> {
+public interface AccountRoleRepository extends JpaRepository<AccountRole, AccountRoleKey> {
 }

@@ -31,6 +31,7 @@ public abstract class ConsumerProductUpdateDTOMapper {
     public abstract void convert(ConsumerProductUpdateDTO src, @MappingTarget ConsumerProduct data);
 
     public void patch(ConsumerProductUpdateDTO src, @MappingTarget ConsumerProduct data) {
+        convert(src, data);
         if (data.getPrice() == null || src.getPrice() != data.getPrice().getPrice()) {
             ProductPrice price = ProductPrice.builder().price(src.getPrice())
                     .product(Field.builder().id(data.getId()).build()).build();
@@ -38,7 +39,11 @@ public abstract class ConsumerProductUpdateDTOMapper {
             data.getPrices().add(price);
             data.setPrice(price);
         }
-        convert(src, data);
+        var images = data.getImages();
+        images.forEach(img -> {
+            if (img.getProduct() == null)
+                img.setProduct(data);
+        });
     }
 
 }
