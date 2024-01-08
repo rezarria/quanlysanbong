@@ -116,7 +116,7 @@ public class FieldController {
     @PatchMapping(consumes = "application/json-patch+json")
     @Transactional()
     public ResponseEntity<Field> update(@RequestBody PatchDTO dto) throws IllegalArgumentException {
-        Model.update(dto.id(), dto.patch(), objectMapper, fieldService.getRepo()::findByIdForUpdate, fieldService.getRepo()::findById, fieldUpdateDTOMapper::patch, FieldUpdateDTO.class);
+        fieldService.update(Model.update(dto.id(), dto.patch(), objectMapper, fieldService.getRepo()::findByIdForUpdate, fieldService.getRepo()::findById, fieldUpdateDTOMapper::patch, FieldUpdateDTO.class));
         return ResponseEntity.ok().build();
     }
 

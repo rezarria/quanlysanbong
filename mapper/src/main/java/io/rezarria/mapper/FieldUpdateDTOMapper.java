@@ -16,6 +16,7 @@ import io.rezarria.model.ProductPrice;
 import io.rezarria.repository.FieldRepository;
 import io.rezarria.repository.OrganizationRepository;
 import io.rezarria.repository.ProductPriceRepository;
+import io.rezarria.security.component.Auth;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 
@@ -61,9 +62,14 @@ public abstract class FieldUpdateDTOMapper {
                 image.setProduct(data);
             }
         });
+        var auth = new Auth();
         var organization = data.getOrganization();
-        if (organization == null || organization.getId() != src.getOrganizationId() && src.getOrganizationId() != null) {
-            data.setOrganization(organizationRepository.findById(src.getOrganizationId()).orElseThrow());
+        if (!auth.isLogin()) throw new RuntimeException();
+        if (organization == null || organization.getId() != src.getOrganizationId()) {
+            if (auth.hasRole("SUPER_ADMIN")) {
+                data.setOrganization(organizationRepository.findById(src.getOrganizationId()).orElseThrow());
+            } else
+                data.setOrganization(organizationRepository.findByAccounts_Id(auth.getAccountId()).orElseThrow());
         }
     }
 
