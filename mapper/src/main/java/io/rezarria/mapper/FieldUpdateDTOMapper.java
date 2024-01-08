@@ -1,21 +1,23 @@
 package io.rezarria.mapper;
 
-import io.rezarria.dto.update.FieldUpdateDTO;
-import io.rezarria.model.Field;
-import io.rezarria.model.ProductImage;
-import io.rezarria.model.ProductPrice;
-import io.rezarria.repository.FieldRepository;
-import io.rezarria.repository.ProductPriceRepository;
-import jakarta.annotation.Nullable;
-import jakarta.persistence.EntityManager;
+import java.util.List;
+import java.util.Set;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-import java.util.Set;
+import io.rezarria.dto.update.FieldUpdateDTO;
+import io.rezarria.model.Field;
+import io.rezarria.model.ProductImage;
+import io.rezarria.model.ProductPrice;
+import io.rezarria.repository.FieldRepository;
+import io.rezarria.repository.OrganizationRepository;
+import io.rezarria.repository.ProductPriceRepository;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.EntityManager;
 
 @Mapper(componentModel = "spring")
 public abstract class FieldUpdateDTOMapper {
@@ -24,6 +26,8 @@ public abstract class FieldUpdateDTOMapper {
     private FieldRepository fieldRepository;
     @Autowired
     private ProductPriceRepository productPriceRepository;
+    @Autowired
+    private OrganizationRepository organizationRepository;
     @Autowired
     private EntityManager entityManager;
 
@@ -47,8 +51,7 @@ public abstract class FieldUpdateDTOMapper {
     public void patch(FieldUpdateDTO src, @MappingTarget Field data) {
         convert(src, data);
         if (data.getPrice() == null || src.getPrice() != data.getPrice().getPrice()) {
-            ProductPrice price = ProductPrice.builder().price(src.getPrice())
-                    .product(Field.builder().id(data.getId()).build()).build();
+            ProductPrice price = ProductPrice.builder().price(src.getPrice()).product(Field.builder().id(data.getId()).build()).build();
             entityManager.persist(price);
             data.getPrices().add(price);
             data.setPrice(price);
@@ -58,6 +61,10 @@ public abstract class FieldUpdateDTOMapper {
                 image.setProduct(data);
             }
         });
+        var organization = data.getOrganization();
+        if (organization == null || organization.getId() != src.getOrganizationId() && src.getOrganizationId() != null) {
+            data.setOrganization(organizationRepository.findById(src.getOrganizationId()).orElseThrow());
+        }
     }
 
 }

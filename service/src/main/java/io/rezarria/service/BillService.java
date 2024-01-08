@@ -1,5 +1,6 @@
 package io.rezarria.service;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
@@ -58,10 +59,11 @@ public class BillService extends IService<BillRepository, Bill> {
         double fieldPrice = 0;
         var setting = history.getUnitSetting();
         if (setting.isUnitStyle()) {
-            fieldPrice = history.getUnitSize() * setting.getDuration();
+            fieldPrice = history.getUnitSize() * setting.getDuration() / 60.0D * history.getPrice().getPrice();
         } else {
+            fieldPrice = ((double) ChronoUnit.MINUTES.between(history.getFrom(), history.getTo())) / setting.getDuration() * history.getPrice().getPrice();
         }
-        bill.setTotalPrice(totalConsumeProductsPrice);
+        bill.setTotalPrice(totalConsumeProductsPrice + fieldPrice);
         bill.setPaymentStatus(Bill.PaymentStatus.PENDING);
         repository.save(bill);
         return bill;
