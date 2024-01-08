@@ -1,6 +1,20 @@
 package io.rezarria.service;
 
-import io.rezarria.model.*;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Stream;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import io.rezarria.model.Bill;
+import io.rezarria.model.BillDetail;
+import io.rezarria.model.FieldHistory;
+import io.rezarria.model.Product;
+import io.rezarria.model.ProductPrice;
 import io.rezarria.repository.BillRepository;
 import io.rezarria.security.component.Auth;
 import io.rezarria.service.interfaces.IService;
@@ -10,15 +24,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collection;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +54,7 @@ public class BillService extends IService<BillRepository, Bill> {
         bill.setFieldHistory(history);
         var details = bill.getDetails();
         details.addAll(infoList.stream().map(info -> BillDetail.builder().product(info.product).price(info.price).count(info.count).build()).toList());
-        var totalConsumeProductsPrice = infoList.stream().map(info -> info.price.getPrice() * info.count).reduce(0.0, Double::sum);
+        var totalConsumeProductsPrice = infoList.stream().map(info -> info.price.getPrice() * info.count).reduce(0.0, (a, b) -> a + b);
         double fieldPrice = 0;
         var setting = history.getUnitSetting();
         if (setting.isUnitStyle()) {

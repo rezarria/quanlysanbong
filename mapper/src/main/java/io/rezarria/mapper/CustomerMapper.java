@@ -1,9 +1,10 @@
 package io.rezarria.mapper;
 
-import io.rezarria.dto.post.CustomerPostDTO;
-import io.rezarria.model.Customer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import io.rezarria.dto.post.CustomerPostDTO;
+import io.rezarria.model.Customer;
 
 @Mapper(componentModel = "spring")
 public interface CustomerMapper {
@@ -15,5 +16,6 @@ public interface CustomerMapper {
     @Mapping(target = "data", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "organization", ignore = true)
+    @Mapping(target = "fieldHistories", ignore = true)
     Customer convert(CustomerPostDTO dto);
 }

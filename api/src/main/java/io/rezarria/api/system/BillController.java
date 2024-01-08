@@ -1,27 +1,35 @@
 package io.rezarria.api.system;
 
+import java.util.UUID;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import io.rezarria.dto.post.OrderDetailPostDTO;
 import io.rezarria.dto.post.OrderPostDTO;
-import io.rezarria.mapper.OrderMapper;
 import io.rezarria.projection.BillInfo;
 import io.rezarria.repository.ConsumerProductRepository;
 import io.rezarria.repository.ProductPriceRepository;
 import io.rezarria.service.BillService;
 import io.rezarria.service.FieldHistoryService;
 import io.rezarria.service.exceptions.FieldOrderServiceException;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RequestMapping("/api/bill")
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearer-jwt")
+
 public class BillController {
     @Lazy
     private final BillService billService;

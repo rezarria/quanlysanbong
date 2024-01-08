@@ -1,7 +1,18 @@
 package io.rezarria.model;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OrderColumn;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @Entity
@@ -14,6 +25,7 @@ import lombok.experimental.SuperBuilder;
 public class AccountRole extends Audit {
     @EmbeddedId
     @OrderColumn()
+    @Builder.Default
     private AccountRoleKey id = new AccountRoleKey();
 
     @ManyToOne(fetch = FetchType.LAZY)

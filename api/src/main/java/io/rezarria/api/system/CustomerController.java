@@ -52,7 +52,7 @@ public class CustomerController {
         if (id != null) {
             return ResponseEntity.ok(service.getByIdProjection(id, CustomerInfo.class).orElseThrow());
         }
-        if (size != null & page != null) {
+        if (size != null && page != null) {
             var pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "lastModifiedDate"));
             if (name != null)
                 return ResponseEntity.ok(service.getPageContainName(name, pageable, CustomerInfo.class));
