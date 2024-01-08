@@ -1,21 +1,32 @@
 package io.rezarria.service;
 
-import io.rezarria.model.FieldHistory;
-import io.rezarria.repository.*;
-import io.rezarria.security.component.Auth;
-import io.rezarria.service.exceptions.FieldOrderServiceException;
-import io.rezarria.service.interfaces.IService;
-import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
+import java.time.Instant;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
+import java.util.TimeZone;
+import java.util.UUID;
+import java.util.stream.Stream;
+
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.util.*;
-import java.util.stream.Stream;
+import io.rezarria.model.FieldHistory;
+import io.rezarria.repository.CustomerRepository;
+import io.rezarria.repository.FieldHistoryRepository;
+import io.rezarria.repository.FieldRepository;
+import io.rezarria.repository.FieldUnitSettingRepository;
+import io.rezarria.repository.ProductPriceRepository;
+import io.rezarria.repository.StaffRepository;
+import io.rezarria.security.component.Auth;
+import io.rezarria.service.exceptions.FieldOrderServiceException;
+import io.rezarria.service.interfaces.IService;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -64,8 +75,7 @@ public class FieldHistoryService extends IService<FieldHistoryRepository, FieldH
         var end = (Calendar) start.clone();
         end.set(Calendar.MINUTE, closeTime % 60);
         end.set(Calendar.HOUR_OF_DAY, closeTime / 60);
-        return repository.findByField_IdAndFromLessThanEqualAndToGreaterThanEqual(id,
-                start.toInstant(), end.toInstant());
+        return repository.findByField_IdAndFromLessThanEqualAndToGreaterThanEqual(id, start.toInstant(), end.toInstant());
     }
 
     private Instant getStart(UUID id) {
@@ -86,13 +96,6 @@ public class FieldHistoryService extends IService<FieldHistoryRepository, FieldH
 
     @Transactional(readOnly = true)
     public <T> Stream<T> getSchedule(UUID id, Class<T> type) {
-        var setting = fieldUnitSettingRepository.findByFields_Id(id, SettingProjection.class).orElseThrow();
-        var openTime = setting.getOpenTime();
-        var start = Calendar.getInstance(TimeZone.getDefault());
-        start.set(Calendar.HOUR_OF_DAY, openTime / 60);
-        start.set(Calendar.MINUTE, openTime % 60);
-        start.set(Calendar.SECOND, 0);
-        start.set(Calendar.MILLISECOND, 0);
         return repository.getSchedule(id, getStart(id), type);
     }
 
@@ -101,14 +104,10 @@ public class FieldHistoryService extends IService<FieldHistoryRepository, FieldH
         return fieldUnitSettingRepository.findByIdProjection(id, type);
     }
 
-    public FieldHistory order(UUID customerId, UUID fieldId, UUID priceId, Instant from, Instant to) throws FieldOrderServiceException {
+    public @Nullable FieldHistory order(UUID customerId, UUID fieldId, UUID priceId, UUID settingId, Instant from, Instant to) throws FieldOrderServiceException {
         var count = repository.countByField_IdAndFromLessThanEqualAndToGreaterThanEqual(fieldId, from, to);
         if (count == 0) {
-            var builder = FieldHistory.builder()
-                    .customer(customerRepository.findById(customerId).orElseThrow())
-                    .price(productPriceRepository.findById(priceId).orElseThrow())
-                    .from(from).to(to)
-                    .field(fieldRepository.findById(fieldId).orElseThrow());
+            var builder = FieldHistory.builder().unitSetting(fieldUnitSettingRepository.findById(settingId).orElseThrow()).customer(customerRepository.findById(customerId).orElseThrow()).price(productPriceRepository.findById(priceId).orElseThrow()).from(from).to(to).field(fieldRepository.findById(fieldId).orElseThrow());
             var auth = new Auth();
             if (auth.isLogin() && !auth.hasRole("SUPER_ADMIN")) {
                 var staff = staffRepository.findByAccount_Id(auth.getAccountId()).orElseThrow();

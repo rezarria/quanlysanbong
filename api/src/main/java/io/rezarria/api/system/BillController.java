@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import io.rezarria.dto.post.OrderDetailPostDTO;
 import io.rezarria.dto.post.OrderPostDTO;
@@ -42,7 +44,8 @@ public class BillController {
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody OrderPostDTO dto) throws FieldOrderServiceException {
-        var history = historyService.order(dto.customerId(), dto.fieldId(), dto.priceId(), dto.from(), dto.to());
+        var history = historyService.order(dto.customerId(), dto.fieldId(), dto.priceId(), dto.fieldUnitSettingId(), dto.from(), dto.to());
+        if (history == null) throw new ResponseStatusException(HttpStatus.CONFLICT);
         var consumerProducts = consumerProductRepository.findAllById(dto.details().stream().map(OrderDetailPostDTO::consumerProductId).toList());
         var prices = productPriceRepository.findAllById(dto.details().stream().map(OrderDetailPostDTO::priceId).toList());
 
@@ -69,6 +72,11 @@ public class BillController {
             return ResponseEntity.ok(billService.getPage(pageable, BillInfo.class));
         }
         return ResponseEntity.ok(billService.getAll(BillInfo.class));
+    }
+
+    @GetMapping("beforeUpdate")
+    public ResponseEntity<?> beforeUpdate(@RequestParam UUID id) {
+        return ResponseEntity.ok(billService.getUpdate(id).orElseThrow());
     }
 
 }

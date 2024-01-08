@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.rezarria.dto.update.BillUpdateDTO;
 import io.rezarria.model.Bill;
 import io.rezarria.model.BillDetail;
 import io.rezarria.model.FieldHistory;
@@ -127,6 +128,10 @@ public class BillService extends IService<BillRepository, Bill> {
         throw new RuntimeException();
     }
 
+    public Optional<BillUpdateDTO> getUpdate(UUID id) {
+        return repository.getUpdate(id);
+    }
+
     @Builder
     public record OrderInfo(Product product, ProductPrice price, long count) {
     }
@@ -134,5 +139,6 @@ public class BillService extends IService<BillRepository, Bill> {
     @Builder
     public record OrderInfoId(UUID productId, UUID priceId, long count) {
     }
+
 
 }
