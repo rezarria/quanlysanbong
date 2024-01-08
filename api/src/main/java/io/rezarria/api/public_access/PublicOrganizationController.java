@@ -28,6 +28,11 @@ public class PublicOrganizationController {
         return ResponseEntity.ok(service.findByIdProjection(id, OrganizationInfo.class).orElseThrow());
     }
 
+    @GetMapping("detail")
+    public ResponseEntity<?> detail(@RequestParam UUID id) {
+        return ResponseEntity.ok(service.getDetailById(id).orElseThrow());
+    }
+
     @PostMapping("ids")
     public ResponseEntity<?> getOrganizationsById(@RequestBody Set<UUID> ids) {
         var page = service.findByIds(ids, Pageable.ofSize(100).withPage(0), OrganizationInfo.class);

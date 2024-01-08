@@ -67,7 +67,8 @@ public abstract class FieldUpdateDTOMapper {
         if (!auth.isLogin()) throw new RuntimeException();
         if (organization == null || organization.getId() != src.getOrganizationId()) {
             if (auth.hasRole("SUPER_ADMIN")) {
-                data.setOrganization(organizationRepository.findById(src.getOrganizationId()).orElseThrow());
+                if (src.getOrganizationId() != null)
+                    data.setOrganization(organizationRepository.findById(src.getOrganizationId()).orElseThrow());
             } else
                 data.setOrganization(organizationRepository.findByAccounts_Id(auth.getAccountId()).orElseThrow());
         }
