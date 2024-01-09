@@ -34,7 +34,7 @@ public class BillService extends IService<BillRepository, Bill> {
     private final EntityManager entityManager;
 
     @Override
-    protected BillRepository getRepo() {
+    public BillRepository getRepo() {
         return repository;
     }
 
@@ -65,7 +65,7 @@ public class BillService extends IService<BillRepository, Bill> {
             fieldPrice = ((double) ChronoUnit.MINUTES.between(history.getFrom(), history.getTo())) / setting.getDuration() * history.getPrice().getPrice();
         }
         bill.setTotalPrice(totalConsumeProductsPrice + fieldPrice);
-        bill.setPaymentStatus(Bill.PaymentStatus.PENDING);
+        bill.setPaymentStatus(Bill.PaymentStatus.NONE);
         repository.save(bill);
         return bill;
     }
@@ -79,7 +79,7 @@ public class BillService extends IService<BillRepository, Bill> {
     }
 
     public String createVNPAY(Bill bill, String ip) {
-        var url = Create.create("", Math.round(bill.getTotalPrice()), ip, "vn", bill.getId());
+        var url = Create.create("", Math.round(bill.getTotalPrice()), ip, "vn", bill.getId(), "http://localhost:8080/public/api/bill/done");
         repository.updateUrlById(url, bill.getId());
         return url;
     }

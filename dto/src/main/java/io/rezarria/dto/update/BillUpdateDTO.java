@@ -1,15 +1,19 @@
 package io.rezarria.dto.update;
 
-import io.rezarria.model.Bill;
-import lombok.Builder;
-import lombok.Data;
-
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+import io.rezarria.model.Bill;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BillUpdateDTO {
     private UUID id;
     private UUID customerId;
@@ -26,7 +30,10 @@ public class BillUpdateDTO {
     private List<BillDetailUpdateDTO> details;
 
     @Data
+
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class BillDetailUpdateDTO {
         private UUID id;
         private UUID consumerProductId;

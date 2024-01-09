@@ -1,8 +1,5 @@
 package io.rezarria.vnpay;
 
-import com.google.gson.JsonObject;
-import lombok.SneakyThrows;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -11,12 +8,24 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
+import java.util.UUID;
+
+import com.google.gson.JsonObject;
+
+import lombok.SneakyThrows;
 
 public class Create {
 
     @SneakyThrows
-    public static String create(String bankCode, long _amount, String ipAdress, String locate, UUID id) {
+    public static String create(String bankCode, long _amount, String ipAdress, String locate, UUID id, String returnUrl) {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
@@ -42,7 +51,7 @@ public class Create {
         } else {
             vnp_Params.put("vnp_Locale", "vn");
         }
-        vnp_Params.put("vnp_ReturnUrl", Config.vnp_ReturnUrl);
+        vnp_Params.put("vnp_ReturnUrl", returnUrl);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));

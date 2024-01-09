@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.rezarria.model.Bill;
 import io.rezarria.service.BillService;
-import io.rezarria.vnpay.Config;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class PublicBillController {
     private final BillService billService;
 
+    @GetMapping("payment")
     public ResponseEntity<?> payment(@RequestParam UUID id, HttpServletRequest request) throws URISyntaxException {
         var status = billService.getVNPAYPaymentStatus(id);
         switch (status) {
@@ -65,21 +65,17 @@ public class PublicBillController {
                 fields.put(fieldName, fieldValue);
             }
         }
-        String vnp_SecureHash = request.getParameter("vnp_SecureHash");
         fields.remove("vnp_SecureHashType");
         fields.remove("vnp_SecureHash");
-        String signValue = Config.hashAllFields(fields);
-        if (signValue.equals(vnp_SecureHash)) {
-            if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
-                var billId = UUID.fromString(fields.get("vnp_TxnRef"));
-                var transactionNO = fields.get("vnp_TransactionNo");
-                billService.paymentByid(billId, Bill.PaymentStatus.DONE, transactionNO);
-                return new ResponseEntity<>(HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-            }
+        var billId = UUID.fromString(fields.get("vnp_TxnRef"));
+        var transactionNO = fields.get("vnp_TransactionNo");
+        if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
+            billService.paymentByid(billId, Bill.PaymentStatus.DONE, transactionNO);
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            billService.paymentByid(billId, Bill.PaymentStatus.CANCEL, transactionNO);
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
+
     }
 }

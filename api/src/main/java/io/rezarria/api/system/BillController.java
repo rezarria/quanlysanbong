@@ -1,5 +1,6 @@
 package io.rezarria.api.system;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.springframework.context.annotation.Lazy;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.rezarria.api.action.Model;
+import io.rezarria.api.system.AccountController.UpdateDTO;
 import io.rezarria.dto.post.OrderDetailPostDTO;
 import io.rezarria.dto.post.OrderPostDTO;
+import io.rezarria.dto.update.BillUpdateDTO;
+import io.rezarria.mapper.BillUpdateDTOMapper;
 import io.rezarria.projection.BillInfo;
 import io.rezarria.repository.ConsumerProductRepository;
 import io.rezarria.repository.ProductPriceRepository;
@@ -41,18 +49,23 @@ public class BillController {
     private final ProductPriceRepository productPriceRepository;
     @Lazy
     private final ConsumerProductRepository consumerProductRepository;
+    @Lazy
+    private final ObjectMapper objectMapper;
+    @Lazy
+    private final BillUpdateDTOMapper billUpdateDTOMapper;
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody OrderPostDTO dto) throws FieldOrderServiceException {
         var history = historyService.order(dto.customerId(), dto.fieldId(), dto.priceId(), dto.fieldUnitSettingId(), dto.from(), dto.to());
         if (history == null) throw new ResponseStatusException(HttpStatus.CONFLICT);
-        var consumerProducts = consumerProductRepository.findAllById(dto.details().stream().map(OrderDetailPostDTO::consumerProductId).toList());
-        var prices = productPriceRepository.findAllById(dto.details().stream().map(OrderDetailPostDTO::priceId).toList());
-
-        var info = dto.details().stream().map(d -> {
+        var consumerProducts = dto.details() == null ? null : consumerProductRepository.findAllById(dto.details().stream().map(OrderDetailPostDTO::consumerProductId).toList());
+        var prices = dto.details() == null ? null : productPriceRepository.findAllById(dto.details().stream().map(OrderDetailPostDTO::priceId).toList());
+        var info = dto.details() == null ? new ArrayList<BillService.OrderInfo>() : dto.details().stream().map(d -> {
             var builder = BillService.OrderInfo.builder();
-            builder.price(prices.stream().filter(p -> p.getId().equals(d.priceId())).findFirst().orElseThrow());
-            builder.product(consumerProducts.stream().filter(c -> c.getId().equals(d.consumerProductId())).findFirst().orElseThrow());
+            if (prices != null)
+                builder.price(prices.stream().filter(p -> p.getId().equals(d.priceId())).findFirst().orElseThrow());
+            if (consumerProducts != null)
+                builder.product(consumerProducts.stream().filter(c -> c.getId().equals(d.consumerProductId())).findFirst().orElseThrow());
             builder.count(d.count());
             return builder.build();
         }).toList();
@@ -77,6 +90,12 @@ public class BillController {
     @GetMapping("beforeUpdate")
     public ResponseEntity<?> beforeUpdate(@RequestParam UUID id) {
         return ResponseEntity.ok(billService.getUpdate(id).orElseThrow());
+    }
+
+    @PatchMapping
+    public ResponseEntity<?> update(@RequestBody UpdateDTO dto) {
+        billService.update(Model.update(dto.id(), dto.patch(), objectMapper, billService::getUpdate, billService.getRepo()::findById, billUpdateDTOMapper::apply, BillUpdateDTO.class));
+        return ResponseEntity.ok().build();
     }
 
 }

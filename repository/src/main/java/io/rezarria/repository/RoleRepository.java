@@ -38,6 +38,9 @@ public interface RoleRepository extends JpaRepository<Role, UUID> {
     @Query("select count(r) from Role r where r.createdBy.id in ?1")
     long countByCreatedBy_IdIn(Collection<UUID> ids);
 
+    @Query("select r from Role r where r.name = ?1")
+    Optional<Role> findByName(String name);
+
 
     interface IdOnly {
         UUID id();
