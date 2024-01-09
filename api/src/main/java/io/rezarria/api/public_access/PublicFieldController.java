@@ -1,13 +1,13 @@
 package io.rezarria.api.public_access;
 
 
-import io.rezarria.projection.FieldInfo;
-import io.rezarria.service.FieldHistoryService;
-import io.rezarria.service.FieldService;
-import jakarta.annotation.Nullable;
-import lombok.Builder;
-import lombok.RequiredArgsConstructor;
+import java.time.Instant;
+import java.util.UUID;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Instant;
-import java.util.UUID;
+import io.rezarria.projection.FieldInfo;
+import io.rezarria.service.FieldHistoryService;
+import io.rezarria.service.FieldService;
+import jakarta.annotation.Nullable;
+import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,6 +52,12 @@ public class PublicFieldController {
             builder.to(i.getTo());
             return builder.build();
         }).toList());
+    }
+
+    @GetMapping("search")
+    public ResponseEntity<?> search(@RequestParam String name, @RequestParam Integer page, @RequestParam Integer size) {
+        var pageable = PageRequest.of(page, size, Sort.by(Direction.DESC, "lastModifiedDate"));
+        return ResponseEntity.ok(fieldService.getRepo().findByOrganization_AddressContains(name, pageable, FieldInfo.class));
     }
 
     @Builder
