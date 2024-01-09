@@ -1,16 +1,5 @@
 package io.rezarria.service;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Stream;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import io.rezarria.model.Field;
 import io.rezarria.model.Organization;
 import io.rezarria.repository.FieldRepository;
@@ -20,6 +9,16 @@ import io.rezarria.service.interfaces.IService;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -83,13 +82,13 @@ public class OrganizationService extends IService<OrganizationRepository, Organi
     }
 
     public static record OrganizationDetailInfo(
-                                                UUID id,
-                                                String name,
-                                                String address,
-                                                String email,
-                                                String phone,
-                                                String image,
-                                                List<FieldDetailInfo> fields
+            UUID id,
+            String name,
+            String address,
+            String email,
+            String phone,
+            String image,
+            List<FieldDetailInfo> fields
     ) {
         public static OrganizationDetailInfo create(Organization organization, List<FieldDetailInfo> fields) {
             return new OrganizationDetailInfo(organization.getId(), organization.getName(), organization.getAddress(), organization.getEmail(), organization.getPhone(), organization.getImage(), fields);
@@ -97,10 +96,10 @@ public class OrganizationService extends IService<OrganizationRepository, Organi
     }
 
     public static record FieldDetailInfo(
-                                         UUID id,
-                                         String name,
-                                         String description,
-                                         List<String> images
+            UUID id,
+            String name,
+            String description,
+            List<String> images
     ) {
         public static FieldDetailInfo create(Field field) {
             return new FieldDetailInfo(field.getId(), field.getName(), field.getDescription(), field.getImages().stream().map(i -> i.getPath()).toList());

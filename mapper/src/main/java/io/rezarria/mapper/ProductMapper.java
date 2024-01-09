@@ -1,15 +1,5 @@
 package io.rezarria.mapper;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import io.rezarria.dto.post.ProductPost;
 import io.rezarria.model.Organization;
 import io.rezarria.model.Product;
@@ -18,6 +8,15 @@ import io.rezarria.model.ProductPrice;
 import io.rezarria.repository.OrganizationRepository;
 import io.rezarria.security.component.Auth;
 import jakarta.annotation.Nullable;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public abstract class ProductMapper {

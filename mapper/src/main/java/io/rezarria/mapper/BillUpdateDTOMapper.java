@@ -1,22 +1,16 @@
 package io.rezarria.mapper;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Mappings;
-import org.mapstruct.Named;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import io.rezarria.dto.update.BillUpdateDTO;
 import io.rezarria.dto.update.BillUpdateDTO.BillDetailUpdateDTO;
 import io.rezarria.model.Bill;
 import io.rezarria.model.BillDetail;
 import io.rezarria.model.Customer;
 import io.rezarria.repository.CustomerRepository;
+import org.mapstruct.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public abstract class BillUpdateDTOMapper {

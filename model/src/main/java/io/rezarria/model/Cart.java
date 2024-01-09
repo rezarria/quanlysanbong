@@ -1,18 +1,14 @@
 package io.rezarria.model;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity

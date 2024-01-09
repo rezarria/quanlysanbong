@@ -1,8 +1,5 @@
 package io.rezarria.dto.update;
 
-import java.util.List;
-import java.util.UUID;
-
 import io.rezarria.model.Field;
 import io.rezarria.model.ProductImage;
 import jakarta.annotation.Nullable;
@@ -10,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder

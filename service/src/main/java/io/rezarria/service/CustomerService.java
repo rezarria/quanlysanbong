@@ -1,16 +1,5 @@
 package io.rezarria.service;
 
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Stream;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import io.rezarria.dto.update.CustomerUpdateDTO;
 import io.rezarria.model.Account;
 import io.rezarria.model.AccountRole;
@@ -23,6 +12,16 @@ import io.rezarria.security.component.Auth;
 import io.rezarria.service.interfaces.IService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor

@@ -1,11 +1,11 @@
 package io.rezarria.projection;
 
+import io.rezarria.model.Bill;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-
-import io.rezarria.model.Bill;
 
 /**
  * Projection for {@link io.rezarria.model.Bill}

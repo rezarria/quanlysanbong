@@ -1,22 +1,7 @@
 package io.rezarria.service;
 
-import java.time.temporal.ChronoUnit;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Stream;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import io.rezarria.dto.update.BillUpdateDTO;
-import io.rezarria.model.Bill;
-import io.rezarria.model.BillDetail;
-import io.rezarria.model.FieldHistory;
-import io.rezarria.model.Product;
-import io.rezarria.model.ProductPrice;
+import io.rezarria.model.*;
 import io.rezarria.repository.BillRepository;
 import io.rezarria.security.component.Auth;
 import io.rezarria.service.interfaces.IService;
@@ -26,6 +11,16 @@ import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.temporal.ChronoUnit;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor

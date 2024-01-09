@@ -1,14 +1,5 @@
 package io.rezarria.mapper;
 
-import java.util.List;
-import java.util.Set;
-
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import io.rezarria.dto.update.FieldUpdateDTO;
 import io.rezarria.model.Field;
 import io.rezarria.model.ProductImage;
@@ -19,6 +10,14 @@ import io.rezarria.repository.ProductPriceRepository;
 import io.rezarria.security.component.Auth;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public abstract class FieldUpdateDTOMapper {

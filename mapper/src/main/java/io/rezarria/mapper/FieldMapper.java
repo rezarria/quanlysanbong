@@ -1,13 +1,8 @@
 package io.rezarria.mapper;
 
-import org.mapstruct.AfterMapping;
-import org.mapstruct.InheritConfiguration;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-
 import io.rezarria.dto.post.FieldPost;
 import io.rezarria.model.Field;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", config = ProductUpdateDTOConfig.class, uses = {ProductMapper.class})
 public abstract class FieldMapper {

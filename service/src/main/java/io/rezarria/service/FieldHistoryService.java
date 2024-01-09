@@ -1,32 +1,22 @@
 package io.rezarria.service;
 
-import java.time.Instant;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
-import java.util.TimeZone;
-import java.util.UUID;
-import java.util.stream.Stream;
-
-import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import io.rezarria.model.FieldHistory;
-import io.rezarria.repository.CustomerRepository;
-import io.rezarria.repository.FieldHistoryRepository;
-import io.rezarria.repository.FieldRepository;
-import io.rezarria.repository.FieldUnitSettingRepository;
-import io.rezarria.repository.ProductPriceRepository;
-import io.rezarria.repository.StaffRepository;
+import io.rezarria.repository.*;
 import io.rezarria.security.component.Auth;
 import io.rezarria.service.exceptions.FieldOrderServiceException;
 import io.rezarria.service.interfaces.IService;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
