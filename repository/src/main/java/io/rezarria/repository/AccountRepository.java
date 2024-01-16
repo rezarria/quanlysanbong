@@ -18,7 +18,6 @@ import java.util.stream.Stream;
 public interface AccountRepository extends JpaRepository<Account, UUID> {
     boolean existsByUsername(String username);
 
-
     Optional<Account> findByUsername(String username);
 
     @Query("select a from Account a where a.createdBy.username like concat('%', ?1, '%')")
@@ -38,6 +37,12 @@ public interface AccountRepository extends JpaRepository<Account, UUID> {
 
     @Query("select u from Account u")
     <T> Page<T> findAllProjection(Pageable pageable, Class<T> classType);
+
+    @Query("select a from Account a where a.createdBy.username like concat('%', ?1, '%')")
+    <T> Page<T> getPageContain(String username, Pageable pageable, Class<T> type);
+
+    @Query("select a from Account a where a.createdBy.username like concat('%', ?1, '%') and a.user is null")
+    <T> Page<T> getPageContainSkipUser(String username, Pageable pageable, Class<T> type);
 
     default Optional<AccountUpdateDTO> findByIdForUpdate(UUID id) {
         var account = findById(id);

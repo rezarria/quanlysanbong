@@ -61,25 +61,25 @@ public class AccountController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<?> find(@RequestParam @Nullable UUID id, @RequestParam @Nullable Integer size, @RequestParam @Nullable Integer page, @RequestParam @Nullable String name, @RequestParam @Nullable Boolean skipUser) {
+    public ResponseEntity<?> find(@RequestParam @Nullable UUID id, @RequestParam @Nullable Integer size,
+            @RequestParam @Nullable Integer page, @RequestParam @Nullable String name,
+            @RequestParam @Nullable Boolean skipUser) throws NoSuchMethodException {
         if (id != null) {
-            var account = accountService.getRepo().findByIdProjection(id, AccountInfo.class).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            var account = accountService.getRepo().findByIdProjection(id, AccountInfo.class)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
             return ResponseEntity.ok(account);
         }
         if (size != null && page != null) {
             var pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "lastModifiedDate"));
             if (name != null && !name.isBlank()) {
-                if (skipUser == null)
-                    return ResponseEntity.ok(accountService.findByName(name, false, AccountInfo.class));
-                else return ResponseEntity.ok(accountService.findByName(name, true, AccountInfo.class));
+                if (skipUser == null || !skipUser)
+                    return ResponseEntity.ok(accountService.getPageContainName(name, pageable, AccountInfo.class));
+                else
+                    return ResponseEntity
+                            .ok(accountService.getPageContainNameSkipUser(name, pageable, AccountInfo.class));
             }
-            return ResponseEntity.ok(accountService.getRepo().findAllProjection(pageable, AccountInfo.class));
         }
-        if (skipUser != null && skipUser) {
-            return ResponseEntity.ok(accountService.findByUserNull(AccountInfo.class));
-        }
-        Streamable<AccountInfo> data = accountService.getRepo().findAllByUsernameContaining("", AccountInfo.class);
-        return ResponseEntity.ok(data.stream());
+        throw new NoSuchMethodException();
     }
 
     @PostMapping(consumes = "application/json")
@@ -88,7 +88,8 @@ public class AccountController {
         try {
             if (accountService.changePassword(dto.id(), dto.oldPassword(), dto.newPassword()))
                 return ResponseEntity.ok().build();
-            else return ResponseEntity.noContent().build();
+            else
+                return ResponseEntity.noContent().build();
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
@@ -97,7 +98,8 @@ public class AccountController {
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<Account> create(@RequestBody CreateDTO dto) {
 
-        var account = accountService.create(Account.builder().username(dto.username).password(passwordEncoder.encode(dto.password)).build());
+        var account = accountService.create(
+                Account.builder().username(dto.username).password(passwordEncoder.encode(dto.password)).build());
         if (dto.user != null) {
             var user = userService.get(dto.user);
             user.setAccount(account);
@@ -105,7 +107,10 @@ public class AccountController {
         }
         if (dto.role != null) {
             var role = roleService.get(dto.role);
-            account.getRoles().add(AccountRole.builder().id(AccountRoleKey.builder().roleId(role.getId()).accountId(account.getId()).build()).account(account).role(role).build());
+            account.getRoles()
+                    .add(AccountRole.builder()
+                            .id(AccountRoleKey.builder().roleId(role.getId()).accountId(account.getId()).build())
+                            .account(account).role(role).build());
         }
         accountService.update(account);
         return ResponseEntity.ok().build();
@@ -114,7 +119,8 @@ public class AccountController {
     @GetMapping("/beforeUpdate")
     public ResponseEntity<?> getDataBeforeUpdate(@RequestParam UUID id) {
         var data = accountService.getRepo().findByIdForUpdate(id);
-        if (data.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if (data.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return ResponseEntity.ok(data.get());
     }
 

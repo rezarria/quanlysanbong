@@ -11,6 +11,8 @@ import jakarta.annotation.Nullable;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -67,6 +69,14 @@ public class AccountService extends IService<AccountRepository, Account> {
 
     public void delete(Collection<UUID> ids) {
         accountRepository.deleteAllById(ids);
+    }
+
+    public <T> Page<T> getPageContainName(String nam, Pageable page, Class<T> type) {
+        return getRepo().getPageContain(nam, page, type);
+    }
+
+    public <T> Page<T> getPageContainNameSkipUser(String nam, Pageable page, Class<T> type) {
+        return getRepo().getPageContainSkipUser(nam, page, type);
     }
 
     @Nullable
