@@ -43,7 +43,7 @@ public abstract class IService<T extends JpaRepository<O, UUID>, O> {
 
     @Transactional(readOnly = true)
     public O get(UUID id) {
-        return getRepo().getReferenceById(id);
+        return getRepo().findById(id).orElseThrow();
     }
 
     @Transactional

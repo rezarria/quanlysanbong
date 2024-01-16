@@ -16,6 +16,9 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 public interface AccountRepository extends JpaRepository<Account, UUID> {
+    boolean existsByUsername(String username);
+
+
     Optional<Account> findByUsername(String username);
 
     @Query("select a from Account a where a.createdBy.username like concat('%', ?1, '%')")

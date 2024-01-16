@@ -28,6 +28,11 @@ public interface RoleRepository extends JpaRepository<Role, UUID> {
     @Query("select r from Role r")
     <T> Page<T> getPage(Pageable page, Class<T> type);
 
+    @Query("select r from Role r where r.name like concat('%', ?1, '%')")
+    <T>
+    Page<T> findByNameContains(String name, Pageable pageable, Class<T> type);
+
+
     @Query("select new io.rezarria.dto.update.RoleUpdateDTO(r.id, r.name, r.displayName) from Role r where r.id = ?1")
     Optional<RoleUpdateDTO> createUpdateById(UUID id);
 

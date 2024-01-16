@@ -15,7 +15,8 @@ import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -53,13 +54,14 @@ public class RoleController {
     @GetMapping(produces = "application/json")
     @Transactional(readOnly = true)
     public ResponseEntity<?> getAll(@RequestParam @Nullable UUID id, @RequestParam @Nullable String name, @RequestParam @Nullable Integer size, @RequestParam @Nullable Integer page) {
-        if (name != null) {
-            return ResponseEntity.ok(roleService.findAllByName(name));
-        }
         if (id != null)
             return ResponseEntity.ok(roleService.getByIdProjection(id, RoleInfo.class).orElseThrow());
         if (size != null && page != null) {
-            return ResponseEntity.ok(roleService.getPage(Pageable.ofSize(size).withPage(page), RoleInfo.class));
+            var pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "lastModifiedDate"));
+            if (name != null) {
+                return ResponseEntity.ok(roleService.getRepo().findByNameContains(name, pageable, RoleInfo.class));
+            }
+            return ResponseEntity.ok(roleService.getPage(pageable, RoleInfo.class));
         }
         return ResponseEntity.ok(roleService.getRepo().getStream(RoleInfo.class));
     }
