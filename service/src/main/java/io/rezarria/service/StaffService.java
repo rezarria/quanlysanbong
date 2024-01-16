@@ -6,6 +6,8 @@ import io.rezarria.security.component.Auth;
 import io.rezarria.service.interfaces.IService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +20,9 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 public class StaffService extends IService<StaffRepository, Staff> {
-
+    @Lazy
     private final StaffRepository repository;
+    @Lazy
     private final EntityManager entityManager;
 
     @Override

@@ -37,7 +37,8 @@ public class CustomerController {
 
     @GetMapping
     public ResponseEntity<?> get(
-            @RequestParam @Nullable String name, @RequestParam @Nullable Integer size, @RequestParam @Nullable Integer page, @RequestParam @Nullable UUID id
+            @RequestParam @Nullable String name, @RequestParam @Nullable Integer size,
+            @RequestParam @Nullable Integer page, @RequestParam @Nullable UUID id
 
     ) {
         if (id != null) {
@@ -63,17 +64,7 @@ public class CustomerController {
     public ResponseEntity<?> fastAdd(@RequestBody FastAddDTO data) {
         var customer = Customer.builder().name(data.name).build();
         service.create(customer);
-        return ResponseEntity.ok(new CustomerInfo() {
-            @Override
-            public UUID getId() {
-                return customer.getId();
-            }
-
-            @Override
-            public String getName() {
-                return customer.getName();
-            }
-        });
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping
@@ -90,7 +81,8 @@ public class CustomerController {
     @PatchMapping
     @SneakyThrows
     public ResponseEntity<?> patch(@RequestBody PatchDTO dto) {
-        Model.update(dto.id(), dto.patch(), objectMapper, service.getRepo()::getUpdateById, service.getRepo()::findById, customerUpdateDTOMapper::patch, CustomerUpdateDTO.class);
+        service.update(Model.update(dto.id(), dto.patch(), objectMapper, service.getRepo()::getUpdateById,
+                service.getRepo()::findById, customerUpdateDTOMapper::patch, CustomerUpdateDTO.class));
         return ResponseEntity.ok().build();
     }
 

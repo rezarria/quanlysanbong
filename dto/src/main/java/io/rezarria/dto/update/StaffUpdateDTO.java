@@ -19,7 +19,7 @@ public class StaffUpdateDTO {
     private String name;
     private String avatar;
     private Date dob;
-    private JsonNode data;
+    private UUID AccountId;
 
     public static StaffUpdateDTO create(Staff staff) {
         return StaffUpdateDTO.builder()
@@ -27,7 +27,7 @@ public class StaffUpdateDTO {
                 .name(staff.getName())
                 .avatar(staff.getAvatar())
                 .dob(staff.getDob())
-                .data(staff.getData())
+                .AccountId(staff.getAccount() != null ? staff.getAccount().getId() : null)
                 .build();
     }
 }

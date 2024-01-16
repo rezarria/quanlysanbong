@@ -17,17 +17,13 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
     <T> Page<T> getPage(Pageable pageable, Class<T> type);
 
     @Query("select c from Customer c where c.name like concat('%', ?1, '%')")
-    <T>
-    Page<T> findByNameContains(String name, Pageable pageable, Class<T> type);
-
+    <T> Page<T> findByNameContains(String name, Pageable pageable, Class<T> type);
 
     @Query("select c from Customer c inner join c.organization.accounts accounts where accounts.id = ?1")
     <T> Page<T> findByOrganization_Accounts_Id(UUID id, Pageable pageable, Class<T> type);
 
     @Query("select c from Customer c inner join c.organization.accounts accounts where c.name = ?1 and accounts.id = ?2")
-    <T>
-    Page<T> findByNameAndOrganization_Accounts_Id(String name, UUID id, Pageable pageable, Class<T> type);
-
+    <T> Page<T> findByNameAndOrganization_Accounts_Id(String name, UUID id, Pageable pageable, Class<T> type);
 
     @Query("select c from Customer c where c.organization.id = ?1")
     <T> Page<T> findByOrganization_Id(UUID id, Pageable pageable, Class<T> type);
@@ -47,7 +43,6 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
                 .name(c.getName())
                 .avatar(c.getAvatar())
                 .dob(c.getDob())
-                .data(c.getData())
                 .build());
     }
 

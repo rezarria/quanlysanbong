@@ -35,7 +35,7 @@ public abstract class AccountUpdateDTOMapper {
 
     public void patch(AccountUpdateDTO src, @MappingTarget Account dis) {
         convert(src, dis);
-        if (dis.getUser() == null | dis.getUser().getId() != src.userId()) {
+        if (dis.getUser() == null || dis.getUser().getId() != src.userId()) {
             var user = dis.getUser();
             user.setAccount(null);
             userRepository.save(user);
@@ -43,17 +43,18 @@ public abstract class AccountUpdateDTOMapper {
         }
         var roles = dis.getRoles();
         accountRoleRepository.deleteAll(roles.stream().filter(
-                i -> !src.roleIds().contains(i.getId().getRoleId())).toList());
-        roles.removeIf(i -> !src.roleIds().contains(i.getId().getRoleId()));
-        var currentroleIds = dis.getRoles().stream().map(AccountRole::getId).map(AccountRoleKey::getRoleId)
-                .collect(Collectors.toSet());
-        var newRoleIds = src.roleIds().stream().filter(i -> !currentroleIds.contains(i))
-                .map(i -> AccountRole.builder().id(AccountRoleKey.builder().roleId(i).accountId(dis.getId()).build())
-                        .account(dis)
-                        .role(Role.builder().id(i).build())
-                        .build())
-                .toList();
-        roles.addAll(newRoleIds);
+                i -> src.roleIds() != i.getId().getRoleId()).toList());
+        roles.removeIf(i -> src.roleIds() != i.getId().getRoleId());
+        if (roles.isEmpty()) {
+            var role = roleRepository.findById(src.roleIds()).orElseThrow();
+            roles.add(AccountRole.builder()
+                    .id(AccountRoleKey.builder()
+                            .accountId(dis.getId())
+                            .roleId(role.getId())
+                            .build())
+                    .role(role)
+                    .account(dis).build());
+        }
     }
 
     @Named("toRoles")

@@ -3,6 +3,7 @@ package io.rezarria.api.system;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.rezarria.api.action.Model;
 import io.rezarria.dto.PatchDTO;
+import io.rezarria.dto.delete.DeleteDTO;
 import io.rezarria.dto.post.UserPostDTO;
 import io.rezarria.dto.update.UserUpdateDTO;
 import io.rezarria.mapper.UserMapper;
@@ -40,7 +41,8 @@ public class UserController {
 
     @GetMapping(produces = "application/json", name = "/{id}")
     @Transactional(readOnly = true)
-    public ResponseEntity<?> getAll(@PathVariable @RequestParam @Nullable UUID id, @RequestParam @Nullable String name, @RequestParam @Nullable Integer size, @RequestParam @Nullable Integer page) {
+    public ResponseEntity<?> getAll(@PathVariable @RequestParam @Nullable UUID id, @RequestParam @Nullable String name,
+            @RequestParam @Nullable Integer size, @RequestParam @Nullable Integer page) {
         if (name != null) {
             var data = userService.getRepo().findAllByNameContaining(name, UserInfo.class);
             return ResponseEntity.ok(data.stream());
@@ -70,7 +72,8 @@ public class UserController {
     @PatchMapping(consumes = "application/json-patch+json", produces = "application/json")
     @SneakyThrows
     public ResponseEntity<?> update(@RequestBody PatchDTO data) {
-        Model.update(data.id(), data.patch(), objectMapper, userService.getRepo()::findByIdForUpdate, userService.getRepo()::findById, userUpdateDTOMapper::patch, UserUpdateDTO.class);
+        userService.update(Model.update(data.id(), data.patch(), objectMapper, userService.getRepo()::findByIdForUpdate,
+                userService.getRepo()::findById, userUpdateDTOMapper::patch, UserUpdateDTO.class));
         return ResponseEntity.ok().build();
     }
 
@@ -81,8 +84,8 @@ public class UserController {
     }
 
     @DeleteMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> delete(@RequestBody Set<UUID> ids) {
-        userService.removeIn(ids);
+    public ResponseEntity<?> delete(@RequestBody DeleteDTO dto) {
+        userService.removeIn(dto.ids());
         return ResponseEntity.ok().build();
     }
 

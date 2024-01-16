@@ -103,19 +103,20 @@ public class AccountService extends IService<AccountRepository, Account> {
     @Nullable
     public Account patch(AccountUpdateDTO dto) {
         var account = accountRepository.findById(dto.id()).orElse(null);
-        if (account != null && account.getRoles().stream()
-                .map(AccountRole::getId)
-                .map(AccountRoleKey::getRoleId)
-                .collect(Collectors.toSet())
-                .equals(dto.roleIds())) {
+        if (account != null) {
             var accountRoles = account.getRoles();
-            accountRoles.removeIf(i -> !dto.roleIds().contains(i.getId().getRoleId()));
-            Set<UUID> accountRoleIds = accountRoles.stream().map(AccountRole::getId).map(AccountRoleKey::getRoleId)
-                    .collect(Collectors.toSet());
-            var newRoleIds = dto.roleIds().stream().filter(accountRoleIds::contains).toList();
-            var newRoles = roleRepository.findAllById(newRoleIds).stream()
-                    .map(i -> AccountRole.builder().role(i).build()).toList();
-            accountRoles.addAll(newRoles);
+            accountRoles.removeIf(i -> i.getId().getRoleId() != dto.roleIds());
+            if (accountRoles.isEmpty() && dto.roleIds() != null) {
+                var role = roleRepository.findById(dto.roleIds()).orElseThrow();
+                account.getRoles().add(AccountRole.builder()
+                        .account(account)
+                        .role(role)
+                        .id(AccountRoleKey.builder()
+                                .roleId(role.getId())
+                                .accountId(account.getId())
+                                .build())
+                        .build());
+            }
         }
         return account;
     }

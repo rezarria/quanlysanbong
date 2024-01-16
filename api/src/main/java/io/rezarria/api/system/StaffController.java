@@ -33,7 +33,8 @@ public class StaffController {
 
     @GetMapping(produces = "application/json")
     @Transactional
-    public ResponseEntity<?> getAll(@RequestParam @Nullable UUID id, @RequestParam @Nullable Integer page, @RequestParam @Nullable Integer size, @RequestParam @Nullable String name) {
+    public ResponseEntity<?> getAll(@RequestParam @Nullable UUID id, @RequestParam @Nullable Integer page,
+            @RequestParam @Nullable Integer size, @RequestParam @Nullable String name) {
         if (id != null) {
             return ResponseEntity.ok(staffService.getById(id, StaffInfo.class).orElseThrow());
         }
@@ -66,7 +67,8 @@ public class StaffController {
 
     @PatchMapping
     public ResponseEntity<?> update(@RequestBody PatchDTO dto) {
-        Model.update(dto.id(), dto.patch(), objectMapper, staffService.getRepo()::getUpdateById, staffService.getRepo()::findById, staffUpdateDTOMapper::patch, StaffUpdateDTO.class);
+        staffService.update(Model.update(dto.id(), dto.patch(), objectMapper, staffService.getRepo()::getUpdateById,
+                staffService.getRepo()::findById, staffUpdateDTOMapper::patch, StaffUpdateDTO.class));
         return ResponseEntity.ok().build();
     }
 

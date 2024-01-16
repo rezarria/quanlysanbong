@@ -19,7 +19,6 @@ public class CustomerUpdateDTO {
     private String name;
     private String avatar;
     private Date dob;
-    private JsonNode data;
 
     public static CustomerUpdateDTO create(Customer customer) {
         return CustomerUpdateDTO.builder()
@@ -27,7 +26,6 @@ public class CustomerUpdateDTO {
                 .name(customer.getName())
                 .avatar(customer.getAvatar())
                 .dob(customer.getDob())
-                .data(customer.getData())
                 .build();
     }
 }

@@ -72,12 +72,10 @@ public class AccountController {
         if (size != null && page != null) {
             var pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "lastModifiedDate"));
             if (name != null && !name.isBlank()) {
-                if (skipUser == null || !skipUser)
-                    return ResponseEntity.ok(accountService.getPageContainName(name, pageable, AccountInfo.class));
-                else
-                    return ResponseEntity
-                            .ok(accountService.getPageContainNameSkipUser(name, pageable, AccountInfo.class));
+                return ResponseEntity.ok(accountService.getPageContainName(name, pageable, AccountInfo.class));
+
             }
+            return ResponseEntity.ok(accountService.getRepo().findAllProjection(pageable, AccountInfo.class));
         }
         throw new NoSuchMethodException();
     }
