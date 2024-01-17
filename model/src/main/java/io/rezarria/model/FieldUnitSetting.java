@@ -26,7 +26,6 @@ public class FieldUnitSetting extends BaseEntity {
     private boolean unitStyle;
     private String unitName;
     private int minimumDuration;
-    private int duration;
     private int openTime;
     private int closeTime;
 

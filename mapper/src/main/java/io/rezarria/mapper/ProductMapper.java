@@ -57,12 +57,13 @@ public abstract class ProductMapper {
 
     @Named("mapOrganizationId")
     protected Organization mapOrganizationId(@Nullable UUID id) {
-        var auth = new Auth();
-        if (auth.isLogin()) {
-            if (!auth.hasRole("SUPER_ADMIN") && id == null)
-                return repository.findByAccounts_Id(auth.getAccountId()).orElseThrow();
-            return repository.findById(id).orElseThrow();
-        }
-        throw new RuntimeException();
+        return null;
+        // var auth = new Auth();
+        // if (auth.isLogin()) {
+        // if (!auth.hasRole("SUPER_ADMIN") && id == null)
+        // return repository.findByAccounts_Id(auth.getAccountId()).orElseThrow();
+        // return repository.findById(id).orElse(null);
+        // }
+        // throw new RuntimeException();
     }
 }

@@ -65,7 +65,8 @@ public class FieldHistoryService extends IService<FieldHistoryRepository, FieldH
         var end = (Calendar) start.clone();
         end.set(Calendar.MINUTE, closeTime % 60);
         end.set(Calendar.HOUR_OF_DAY, closeTime / 60);
-        return repository.findByField_IdAndFromLessThanEqualAndToGreaterThanEqual(id, start.toInstant(), end.toInstant());
+        return repository.findByField_IdAndFromLessThanEqualAndToGreaterThanEqual(id, start.toInstant(),
+                end.toInstant());
     }
 
     private Instant getStart(UUID id) {
@@ -94,10 +95,16 @@ public class FieldHistoryService extends IService<FieldHistoryRepository, FieldH
         return fieldUnitSettingRepository.findByIdProjection(id, type);
     }
 
-    public @Nullable FieldHistory order(UUID customerId, UUID fieldId, UUID priceId, UUID settingId, Instant from, Instant to) throws FieldOrderServiceException {
+    public @Nullable FieldHistory order(UUID customerId, UUID fieldId, UUID priceId, UUID settingId, Instant from,
+            Instant to) throws FieldOrderServiceException {
         var count = repository.countByField_IdAndFromLessThanEqualAndToGreaterThanEqual(fieldId, from, to);
         if (count == 0) {
-            var builder = FieldHistory.builder().unitSetting(fieldUnitSettingRepository.findById(settingId).orElseThrow()).customer(customerRepository.findById(customerId).orElseThrow()).price(productPriceRepository.findById(priceId).orElseThrow()).from(from).to(to).field(fieldRepository.findById(fieldId).orElseThrow());
+            var setting = fieldUnitSettingRepository.findById(settingId).orElseThrow();
+            var customer = customerRepository.findById(customerId).orElseThrow();
+            var price = productPriceRepository.findById(priceId).orElseThrow();
+            var field = fieldRepository.findById(fieldId).orElseThrow();
+            var builder = FieldHistory.builder().unitSetting(setting).customer(customer).price(price).from(from).to(to)
+                    .field(field);
             var auth = new Auth();
             if (auth.isLogin() && !auth.hasRole("SUPER_ADMIN")) {
                 var staff = staffRepository.findByAccount_Id(auth.getAccountId()).orElseThrow();
